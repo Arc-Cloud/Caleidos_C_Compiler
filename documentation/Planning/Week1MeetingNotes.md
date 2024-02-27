@@ -1,6 +1,7 @@
 ## Setup
 **Start of the Week**
-- a
+- Confirm understanding of the current state of the compiler
+- Confirm repo structure
 
 **Review**
 - a
@@ -8,7 +9,9 @@
 ## Lexer and Parser Development
 
 **Start of the Week**
-- a
+- Will use existing parser and grammar
+- Will use existing lexer
+- Complete current understanding of lexer and parser
 
 **Review**
 - a
@@ -16,7 +19,7 @@
 ## Basic Language Constructs
 
 **Start of the Week**
-- a
+- Aim to implement all basic features
 
 **Review**
 - a

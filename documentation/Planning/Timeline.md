@@ -3,10 +3,10 @@
 
 ### Week 1: Project Setup, Initial Review and Initiation (26 February - 04 March)
 
-| Category | Task | Date Completed | 
-|----------|------|:--------:| 
+| Category | Task | Date Completed |
+|----------|------|:--------:|
 | Setup | Set up version control (Git repository). | 26/02/2024 [ x ] |
-|  | Configure development environment with necessary tools. | [ ] |
+|  | Configure development environment with necessary tools. | 27/02/2024 [ x ] |
 |  | Conduct review of the C90 and RISC-V specifications. | [ ] |
 |  | Plan project structure and outline architecture for the compiler. | [ ] |
 | Lexer and Parser Development | Start development of lexer and parser. | [ ] |

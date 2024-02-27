@@ -1,6 +1,6 @@
 # Caleidos_C_Compiler
 <p align="center">
-  <img src="./documentation/media/logo_img.png" alt="image_alt_text">
+  <img src="./documentation/media/logo_img2.png" alt="image_alt_text">
 </p>
 
 This repository contains an implementation of a C90 to RISC-V assembly compiler created as part of the EIE 2nd year Instruction Set Architecture and Compilers coursework.

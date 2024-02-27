@@ -9,6 +9,7 @@ class Context
 {
 protected:
     std::string InstType;
+    int makeNameUnq = 0;
 
 public:
     void WriteInstType(std::string input)
@@ -18,6 +19,10 @@ public:
 
     std:: string ReadInstType (){
         return InstType;
+    }
+
+    std:: string generateLabel (std:: string label){
+        return label + std::to_string(makeNameUnq++);
     }
 };
 

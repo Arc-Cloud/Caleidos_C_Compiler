@@ -1,31 +1,31 @@
 ## Lexer and Parser Development
 
-**Start of the Week**
+### **Start of the Week**
 - a
 
-**Review**
+### **Review**
 - a
 
 ## Basic Language Constructs
 
-**Start of the Week**
+### **Start of the Week**
 - a
 
-**Review**
+### **Review**
 - a
 
 ## Intermediate Features
 
-**Start of the Week**
+### **Start of the Week**
 - a
 
-**Review**
+### **Review**
 - a
 
-## Testing 
+## Testing
 
-**Start of the Week**
+### **Start of the Week**
 - a
 
-**Review**
+### **Review**
 - a

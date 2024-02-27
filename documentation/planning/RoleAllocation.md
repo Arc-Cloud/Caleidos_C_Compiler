@@ -5,9 +5,12 @@
 #### Week 1: Project Setup, Initial Review and Initiation (26 February - 03 March)
 | Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
-| Add support for while loops | | N/A  | | Set up version control (Git repository) |
-| N/A | | N/A | | N/A |
+| Add support for while loops | | N/A  | | Set up version control (Git repository) - 2 hours |
+| N/A | | N/A | | Set up time / project management - 4 hours |
+- Expected hours:
+- Aproximate hours worked:
 
+[Review](./Week1MeetingNotes.md)
 
 #### Week 2: Complete Basic and Start Intermediate Features Implementation (04 March - 10 March)
 
@@ -16,6 +19,11 @@
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
 
+- Expected hours:
+- Aproximate hours worked:
+
+[Review](./Week2MeetingNotes.md)
+
 #### Week 3: Intermediate Features and Start of Advanced Features (11 March - 17 March)
 
 | Currently Working On | | Planning to Work On | | Implemented |
@@ -23,12 +31,22 @@
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
 
+- Expected hours:
+- Aproximate hours worked:
+
+[Review](./Week3MeetingNotes.md)
+
 #### Week 4: Finalization, Testing, Documentation, and Submission (18 March - 22 March)
 
 | Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
+
+- Expected hours:
+- Aproximate hours worked:
+
+[Review](./Week4MeetingNotes.md)
 
 ### Hanif:
 
@@ -39,12 +57,22 @@
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
 
+- Expected hours:
+- Aproximate hours worked:
+
+[Review](./Week1MeetingNotes.md)
+
 #### Week 2: Complete Basic and Start Intermediate Features Implementation (04 March - 10 March)
 
 | Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
+
+- Expected hours:
+- Aproximate hours worked:
+
+[Review](./Week2MeetingNotes.md)
 
 #### Week 3: Intermediate Features and Start of Advanced Features (11 March - 17 March)
 
@@ -53,12 +81,22 @@
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
 
+- Expected hours:
+- Aproximate hours worked:
+
+[Review](./Week3MeetingNotes.md)
+
 #### Week 4: Finalization, Testing, Documentation, and Submission (18 March - 22 March)
 
 | Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
+
+- Expected hours:
+- Aproximate hours worked:
+
+[Review](./Week4MeetingNotes.md)
 
 
 ## List of Tasks
@@ -67,7 +105,8 @@
 **Add any tasks you think are needed**
 
 ### Setup and Planning
-- ~~Set up version control (Git repository)~~.
+- ~~Set up version control (Git repository)~~
+- ~~Set up time / project management~~
 - Conduct review of the C90 and RISC-V specifications.
 - Plan project structure and outline architecture for the compiler.
 

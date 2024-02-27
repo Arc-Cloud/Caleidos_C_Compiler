@@ -20,11 +20,11 @@ This repository contains an implementation of a C90 to RISC-V assembly compiler 
 ### Planning
 
 
-[Weekly Meetings](./documentation/Planning/)
+[Weekly Meetings](./documentation/planning/)
 
-[Timeline](./documentation/Planning/Timeline.md)
+[Timeline](./documentation/planning/Timeline.md)
 
-[Test Pass Tracker](./documentation/Planning/TestPassTracker.md)
+[Test Pass Tracker](./documentation/planning/TestPassTracker.md)
 
 
 ### Utility

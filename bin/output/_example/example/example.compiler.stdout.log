@@ -1,6 +1,0 @@
-Parsing: /workspaces/Caleidos_C_Compiler/testing/compiler_tests/_example/example.c
-AST parsing complete
-Printing parsed AST...
-Printed parsed AST to: /workspaces/Caleidos_C_Compiler/bin/output/_example/example/example.s.printed
-Compiling parsed AST...
-Compiled to: /workspaces/Caleidos_C_Compiler/bin/output/_example/example/example.s

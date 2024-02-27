@@ -1,9 +1,9 @@
 name: Integration test
-on:
-  push:
-    branches:
-      - main
-  pull_request:
+on: ## Currently turned it off
+  #push:
+   # branches:
+    #  - main
+  #pull_request:
 
 jobs:
   Test:

@@ -1,0 +1,6 @@
+Parsing: /workspaces/Caleidos_C_Compiler/testing/compiler_tests/strings/chliteral.c
+AST parsing complete
+Printing parsed AST...
+Printed parsed AST to: /workspaces/Caleidos_C_Compiler/bin/output/strings/chliteral/chliteral.s.printed
+Compiling parsed AST...
+Compiled to: /workspaces/Caleidos_C_Compiler/bin/output/strings/chliteral/chliteral.s

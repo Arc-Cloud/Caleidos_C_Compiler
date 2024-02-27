@@ -8,16 +8,16 @@
 class Context
 {
 protected:
-    std::string DataType;
+    std::string InstType;
 
 public:
-    void WriteDataType(std::string input)
+    void WriteInstType(std::string input)
     {
-        DataType = input;
+        InstType = input;
     };
 
-    std:: string ReadDataType (){
-        return DataType;
+    std:: string ReadInstType (){
+        return InstType;
     }
 };
 

@@ -1,10 +1,9 @@
-*/bin/*
-*/.vscode/*
-*/build/*
+bin/
+.vscode/
+build/
 
-
-# Prerequisites
+# Ignore all .d files in the repository
 *.d
 
-# Compiled object files
+# Ignore all .o files in the repository
 *.o

@@ -1,0 +1,10 @@
+*/bin/*
+*/.vscode/*
+*/build/*
+
+
+# Prerequisites
+*.d
+
+# Compiled object files
+*.o

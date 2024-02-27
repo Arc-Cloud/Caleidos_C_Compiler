@@ -1,6 +1,7 @@
 bin/
 .vscode/
 build/
+coverage/
 
 # Ignore all .d files in the repository
 *.d

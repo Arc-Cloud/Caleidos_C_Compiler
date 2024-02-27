@@ -1,31 +1,31 @@
-## Advanced Features 
+## Lexer and Parser Development
 
-**Start of the Week**
+### **Start of the Week**
 - a
 
-**Review**
+### **Review**
 - a
 
-## Testing and Debugging
+## Basic Language Constructs
 
-**Start of the Week**
+### **Start of the Week**
 - a
 
-**Review**
+### **Review**
 - a
 
-## Documentation and Cleanup
+## Intermediate Features
 
-**Start of the Week**
+### **Start of the Week**
 - a
 
-**Review**
+### **Review**
 - a
 
-## Submission
+## Testing
 
-**Start of the Week**
+### **Start of the Week**
 - a
 
-**Review**
+### **Review**
 - a

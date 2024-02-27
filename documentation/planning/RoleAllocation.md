@@ -3,29 +3,29 @@
 ### Maximlian:
 
 #### Week 1: Project Setup, Initial Review and Initiation (26 February - 03 March)
-| Currently Working On | | Implemented | | Planning to Work On |
+| Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
-| N/A | | N/A  | | N/A |
+| Add support for while loops | | N/A  | | Set up version control (Git repository) |
 | N/A | | N/A | | N/A |
 
 
 #### Week 2: Complete Basic and Start Intermediate Features Implementation (04 March - 10 March)
 
-| Currently Working On | | Implemented | | Planning to Work On |
+| Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
 
 #### Week 3: Intermediate Features and Start of Advanced Features (11 March - 17 March)
 
-| Currently Working On | | Implemented | | Planning to Work On |
+| Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
 
 #### Week 4: Finalization, Testing, Documentation, and Submission (18 March - 22 March)
 
-| Currently Working On | | Implemented | | Planning to Work On |
+| Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
@@ -34,28 +34,28 @@
 
 #### Week 1: Project Setup, Initial Review and Initiation (26 February - 03 March)
 
-| Currently Working On | | Implemented | | Planning to Work On |
+| Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
 
 #### Week 2: Complete Basic and Start Intermediate Features Implementation (04 March - 10 March)
 
-| Currently Working On | | Implemented | | Planning to Work On |
+| Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
 
 #### Week 3: Intermediate Features and Start of Advanced Features (11 March - 17 March)
 
-| Currently Working On | | Implemented | | Planning to Work On |
+| Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
 
 #### Week 4: Finalization, Testing, Documentation, and Submission (18 March - 22 March)
 
-| Currently Working On | | Implemented | | Planning to Work On |
+| Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
 | N/A | | N/A  | | N/A |
 | N/A | | N/A | | N/A |
@@ -67,8 +67,7 @@
 **Add any tasks you think are needed**
 
 ### Setup and Planning
-- Set up version control (Git repository).
-- Configure development environment with necessary tools.
+- ~~Set up version control (Git repository)~~.
 - Conduct review of the C90 and RISC-V specifications.
 - Plan project structure and outline architecture for the compiler.
 
@@ -84,7 +83,7 @@
 - Implement variable declarations and support for the int type.
 - Code generation for arithmetic and logical expressions.
 - Implement if-then-else statements.
-- Add support for while loops.
+- ~~Add support for while loops.~~
 - Continue development and testing of basic constructs.
 
 ### Intermediate Features

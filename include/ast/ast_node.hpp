@@ -25,8 +25,8 @@ private:
     std::vector<Node *> nodes_;
 
 public:
-    NodeList(Node *first_node) : nodes_({first_node}) {}
-
+    NodeList(Node *first_node) : nodes_({first_node}) {};
+    NodeList(){};
     ~NodeList()
     {
         for (auto node : nodes_)

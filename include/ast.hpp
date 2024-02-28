@@ -6,7 +6,8 @@
 #include <vector>
 
 #include "ast/ast_direct_declarator.hpp"
-#include "ast/ast_function_definition.hpp"
+#include "ast/functions/ast_function_definition.hpp"
+#include "ast/functions/ast_translation.hpp"
 #include "ast/ast_identifier.hpp"
 #include "ast/ast_jump_statement.hpp"
 #include "ast/ast_node.hpp"

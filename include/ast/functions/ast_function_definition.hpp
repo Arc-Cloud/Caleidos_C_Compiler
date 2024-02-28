@@ -1,7 +1,7 @@
 #ifndef AST_FUNCTION_DEFINITION_HPP
 #define AST_FUNCTION_DEFINITION_HPP
 
-#include "ast_node.hpp"
+#include "../ast_node.hpp"
 
 class FunctionDefinition : public Node
 {
@@ -21,5 +21,7 @@ public:
     void EmitRISC(std::ostream &stream, Context &context) const override;
     void Print(std::ostream &stream) const override;
 };
-
 #endif
+
+
+

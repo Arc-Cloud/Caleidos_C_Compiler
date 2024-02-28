@@ -8,9 +8,6 @@ void Identifier::EmitRISC(std::ostream &stream, Context &context) const
     else if (context.ReadInstType() == "function"){
     stream << identifier_; //temporary needs to expand this for the future
     }
-    else if (context.ReadInstType() == "top"){
-        stream << identifier_ << std:: endl;
-    }
 }
 
 void Identifier::Print(std::ostream &stream) const

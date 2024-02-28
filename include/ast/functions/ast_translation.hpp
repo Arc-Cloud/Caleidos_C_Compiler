@@ -2,10 +2,13 @@
 #define AST_TRANSLATION_HPP
 #include "../ast_node.hpp"
 
+#include <iostream>
+#include <vector>
+
 // this is the top most branch i think?
 class Translation : public NodeList{
     private:
-    std:: vector <Node*> functions_;
+    std:: vector <Node *> functions_;
     public:
     Translation(Node *first_node) : functions_({first_node}) {};
     ~Translation(){

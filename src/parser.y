@@ -69,52 +69,6 @@ function_definition
 	}
 	;
 
-declaration_specifiers
-	: type_specifier { $$ = $1; }
-	;
-
-type_specifier
-	: INT {
-		$$ = new TypeSpecifier("int");
-	}
-	;
-
-declarator
-	: direct_declarator { $$ = $1; }
-	;
-
-direct_declarator
-	: IDENTIFIER {
-		$$ = new Identifier(*$1);
-		delete $1;
-	}
-	| direct_declarator '(' ')' {
-		$$ = new DirectDeclarator($1);
-	}
-	;
-
-statement
-	: jump_statement { $$ = $1; }
-	;
-
-compound_statement
-	: '{' statement_list '}' { $$ = $2; }
-	;
-
-statement_list
-	: statement { $$ = new NodeList($1); }
-	| statement_list statement { $1->PushBack($2); $$=$1; }
-	;
-
-jump_statement
-	: RETURN ';' {
-		$$ = new ReturnStatement(nullptr);
-	}
-	| RETURN expression ';' {
-		$$ = new ReturnStatement($2);
-	}
-	;
-
 primary_expression
 	: INT_CONSTANT {
 		$$ = new IntConstant($1);
@@ -188,6 +142,53 @@ assignment_expression
 expression
 	: assignment_expression
 	;
+
+declaration_specifiers
+	: type_specifier { $$ = $1; }
+	;
+
+type_specifier
+	: INT {
+		$$ = new TypeSpecifier("int");
+	}
+	;
+
+declarator
+	: direct_declarator { $$ = $1; }
+	;
+
+direct_declarator
+	: IDENTIFIER {
+		$$ = new Identifier(*$1);
+		delete $1;
+	}
+	| direct_declarator '(' ')' {
+		$$ = new DirectDeclarator($1);
+	}
+	;
+
+statement
+	: jump_statement { $$ = $1; }
+	;
+
+compound_statement
+	: '{' statement_list '}' { $$ = $2; }
+	;
+
+statement_list
+	: statement { $$ = new NodeList($1); }
+	| statement_list statement { $1->PushBack($2); $$=$1; }
+	;
+
+jump_statement
+	: RETURN ';' {
+		$$ = new ReturnStatement(nullptr);
+	}
+	| RETURN expression ';' {
+		$$ = new ReturnStatement($2);
+	}
+	;
+
 
 %%
 

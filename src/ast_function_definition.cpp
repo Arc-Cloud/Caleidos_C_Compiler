@@ -1,4 +1,4 @@
-#include "ast/ast_function_definition.hpp"
+#include "ast/functions/ast_function_definition.hpp"
 
 void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
 {
@@ -6,13 +6,18 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     // TODO: these are just examples ones, make sure you understand
     // the concept of directives and correct them.
     stream << ".text" << std::endl;
-    stream << ".globl f" << std::endl;
-
+    stream << ".globl f" << std:: endl;
+    if(context.ReadInstType() == "top"){
+        declarator_ -> EmitRISC(stream, context);
+    }
+    else {
+    context.WriteInstType("function");
     declarator_->EmitRISC(stream, context);
 
     if (compound_statement_ != nullptr)
     {
         compound_statement_->EmitRISC(stream, context);
+    }
     }
 
     // for now we implement the memory location manually first

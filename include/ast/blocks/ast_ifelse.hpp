@@ -16,7 +16,7 @@ class ifNoElse : public Node{
     }
 
     void EmitRISC(std::ostream &stream, Context &context) const override;
-    void Print(std::ostream &stream) const override;
+    // void Print(std::ostream &stream) const override;
 };
 
 
@@ -32,6 +32,8 @@ class ifElse : public Node{
         delete statement_;
         delete alternative_;
     }
+
+    void EmitRISC(std::ostream &stream, Context &context) const override;
 };
 
 

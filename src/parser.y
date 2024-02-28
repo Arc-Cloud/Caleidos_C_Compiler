@@ -95,8 +95,6 @@ direct_declarator
 
 statement
 	: jump_statement { $$ = $1; }
-	| selection_statement {$$ = $1;}
-	| compound_statement {$$ = $1;}
 	;
 
 compound_statement
@@ -106,11 +104,6 @@ compound_statement
 statement_list
 	: statement { $$ = new NodeList($1); }
 	| statement_list statement { $1->PushBack($2); $$=$1; }
-	;
-
-selection_statement
-	: IF '('expression')' statement {}
-	| IF '('expression ')' statement ELSE statement{}
 	;
 
 jump_statement
@@ -185,7 +178,7 @@ logical_or_expression
 	;
 
 conditional_expression
-	:  expression 
+	: logical_or_expression
 	;
 
 assignment_expression

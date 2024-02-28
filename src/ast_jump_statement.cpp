@@ -1,7 +1,7 @@
 #include "ast/ast_jump_statement.hpp"
 
 void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
-{   
+{
     Context _return;
     _return.WriteInstType("return");
     if (expression_ != nullptr)

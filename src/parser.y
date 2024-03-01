@@ -65,30 +65,102 @@ external_declaration
 	;
 
 function_definition
-	: declaration_specifiers declarator compound_statement {
-		$$ = new FunctionDefinition($1, $2, $3);
-	}
-	| declaration_specifiers declarator ';' {$$ = new FunctionDefinition($1, $2, nullptr);}
+	: declaration_specifiers declarator compound_statement {$$ = new FunctionDefinition($1, $2, $3);}
 	;
 
 primary_expression
-	: INT_CONSTANT {
+    : IDENTIFIER {$$ = new Identifier(*$1); delete $1;}
+	| INT_CONSTANT {
 		$$ = new IntConstant($1);
 	}
 	;
+postfix_expression
+    : primary_expression {$$ = $1;}
+    ;
 
-expression
-	: primary_expression;
+unary_expression
+    : postfix_expression {$$ = $1;}
+    ;
+
+multiplicative_expression
+    : unary_expression {$$ = $1;}
+    ;
+
+additive_expression
+    : multiplicative_expression {$$ = $1}
+    ;
+
+shift_expression
+	: additive_expression {$$ = $1;}
+	| shift_expression LEFT_OP additive_expression
+	| shift_expression RIGHT_OP additive_expression
+	;
+relational_expression
+	: shift_expression {$$ = $1;}
+	| relational_expression '<' shift_expression
+	| relational_expression '>' shift_expression
+	| relational_expression LE_OP shift_expression
+	| relational_expression GE_OP shift_expression
+	;
+equality_expression
+	: relational_expression {$$ = $1;}
+	| equality_expression EQ_OP relational_expression
+	| equality_expression NE_OP relational_expression
+	;
+and_expression
+	: equality_expression {$$ = $1;}
+	| and_expression '&' equality_expression
+	;
+exclusive_or_expression
+	: and_expression {$$ = $1;}
+	| exclusive_or_expression '^' and_expression
+	;
+inclusive_or_expression
+	: exclusive_or_expression {$$ = $1;}
+	| inclusive_or_expression '|' exclusive_or_expression
+	;
+logical_and_expression
+	: inclusive_or_expression {$$ = $1;}
+	| logical_and_expression AND_OP inclusive_or_expression
 	;
 
+logical_or_expression
+	: logical_and_expression {$$ = $1;}
+	| logical_or_expression OR_OP logical_and_expression
+	;
+conditional_expression
+	: logical_or_expression {$$ = $1;}
+	| logical_or_expression '?' expression ':' conditional_expression
+	;
+
+assignment_expression
+	: conditional_expression {$$ = $1;}
+	| unary_expression '=' assignment_expression
+	;
+expression
+	: assignment_expression {$$ = $1;}
+	;
+constant_expression
+	: conditional_expression {$$ = $1;}
+	;
+declaration
+	: declaration_specifiers ';'
+	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);}
+	;
 declaration_specifiers
 	: type_specifier { $$ = $1; }
 	;
 
+init_declarator_list
+	: init_declarator {$$ = $1;}//only for cases like int x; should be implemented as nodelist but lets handle the one by one case
+	| init_declarator_list ',' init_declarator  // for example: int a,b declare two at the same time
+	;
+
+init_declarator
+	: declarator {$$ = $1;} //declarator within a function
+	;
 type_specifier
-	: INT {
-		$$ = new TypeSpecifier("int");
-	}
+	: INT {$$ = new TypeSpecifier(_Types::_int);}
 	;
 
 declarator
@@ -96,12 +168,12 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER {
+	: IDENTIFIER { // example : g or x or f
 		$$ = new Identifier(*$1);
 		delete $1;
 	}
 	| direct_declarator '(' ')' {
-		$$ = new DirectDeclarator($1);
+		$$ = new DirectDeclarator($1); // accepts f ()
 	}
 	;
 
@@ -121,7 +193,6 @@ statement_list
 jump_statement
 	: RETURN ';' {$$ = new ReturnStatement(nullptr);}
 	| RETURN expression ';' {$$ = new ReturnStatement($2);}
-	| RETURN declarator ';' {$$ = new ReturnStatement ($2);}
 	;
 
 

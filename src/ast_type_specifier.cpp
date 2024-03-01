@@ -4,5 +4,15 @@ void TypeSpecifier::EmitRISC(std::ostream &stream, Context &context) const {}
 
 void TypeSpecifier::Print(std::ostream &stream) const
 {
-    stream << type_;
 }
+
+std::string TypeSpecifier::getType() const
+{
+    switch (id)
+    {
+    case _int:
+        return "int";
+        break;
+    }
+}
+

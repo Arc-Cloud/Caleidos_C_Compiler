@@ -8,14 +8,15 @@
 
 class Node
 {
-protected:
-    std::vector<Node *> branches_;
 
 public:
     Node(){};
-    virtual ~Node();
     virtual void EmitRISC(std::ostream &stream, Context &context) const = 0;
     virtual void Print(std::ostream &stream) const = 0;
+    virtual ~Node() {};
+
+    // helper fuction for child functions
+    virtual std::string getType() const {};
 };
 
 // Represents a list of nodes.
@@ -38,6 +39,7 @@ public:
     void PushBack(Node *item);
     virtual void EmitRISC(std::ostream &stream, Context &context) const override;
     virtual void Print(std::ostream &stream) const override;
+
 };
 
 #endif

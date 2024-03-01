@@ -3,16 +3,19 @@
 
 #include "ast_node.hpp"
 
+enum _Types{
+    _int,
+};
 class TypeSpecifier : public Node
 {
 private:
-    std::string type_;
-
+    _Types id;
 public:
-    TypeSpecifier(std::string type) : type_(type){};
+    TypeSpecifier(_Types TypeId) : id(TypeId){};
     ~TypeSpecifier(){};
     void EmitRISC(std::ostream &stream, Context &context) const override;
     void Print(std::ostream &stream) const override;
+    std::string getType() const override;
 };
 
 #endif

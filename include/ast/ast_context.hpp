@@ -1,6 +1,8 @@
 #ifndef AST_CONTEXT_HPP
 #define AST_CONTEXT_HPP
 #include <string>
+#include <unordered_map>
+#include <map>
 
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being
@@ -8,22 +10,46 @@
 class Context
 {
 protected:
-    std::string InstType;
-    int makeNameUnq = 0;
+    int Reg[32] = {
+        1,                            // x0 zero
+        1,                            // x1 ra return address
+        1,                            // x2 sp stack pointer
+        1,                            // x3 gp global pointer
+        1,                            // x4 tp thread pointer
+        0, 0, 0,                      // x5, x6, x7 temporary registers
+        1,                            // x8 s0 frame pointer
+        1,                            // x9 s1 saved register 1
+        1, 1,                         // x10,x11 a0, a1 return values
+        0, 0, 0, 0, 0, 0,             // a2 -a6   function registers (cn use for anything really)
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // s2 - s11 saved registers
+        0, 0, 0, 0                    // t3 - t6 temporary registers.
+    };
 
+    std::string InstType;
+    std::string dataType;
+    int makeNameUnq = 0;
+    std::unordered_map<std::string, std::string> bindings;
+    std::map<std::string, int> RegLocation;
+    int lastMemory;
 public:
+    // set the memory usage to 128 as default; should automize this in the future
+    int memDefault = 32;
     void WriteInstType(std::string input)
     {
         InstType = input;
-    };
+    }
 
-    std:: string ReadInstType (){
+    std::string ReadInstType()
+    {
         return InstType;
     }
-
-    std:: string generateLabel (std:: string label){
-        return label + std::to_string(makeNameUnq++);
+    void writeDataType (std::string input){
+        dataType = input;
     }
+    std:: string ReadDataType(){
+    return  dataType;
+    }
+
 };
 
 #endif

@@ -1,12 +1,6 @@
 #include "ast/ast_node.hpp"
 
-Node::~Node()
-{
-    for (auto branch : branches_)
-    {
-        delete branch;
-    }
-}
+
 
 void NodeList::PushBack(Node *item)
 {

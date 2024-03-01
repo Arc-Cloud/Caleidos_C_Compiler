@@ -5,23 +5,22 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     // Emit assembler directives.
     // TODO: these are just examples ones, make sure you understand
     // the concept of directives and correct them.
-    stream << ".text" << std:: endl;
-    stream << ".globl f" << std:: endl;
-    context.WriteInstType("function");
-    declarator_->EmitRISC(stream, context);
-    stream << "addi	sp,sp,-16" << std:: endl;
-	stream << "sw	s0,12(sp)" << std:: endl;
-	stream << "addi	s0,sp,16" << std::endl;
-
     if (compound_statement_ != nullptr)
     {
+        stream << ".text" << std:: endl;
+        stream << ".globl f" << std::endl;
+        context.WriteInstType("function");
+        declarator_->EmitRISC(stream, context);
+        stream << "addi	sp,sp,-32" << std::endl;
+        stream << "sw	s0,28(sp)" << std::endl;
+        stream << "addi	s0,sp,32" << std::endl;
+
         compound_statement_->EmitRISC(stream, context);
+
+        stream << "lw	s0,28(sp)" << std::endl;
+        stream << "addi	sp,sp,32" << std::endl;
+        stream << "ret" << std::endl;
     }
-
-    stream << "lw	s0,12(sp)" << std:: endl;
-	stream << "addi	sp,sp,16" << std::endl;
-	stream << "ret" << std:: endl;
-
     // for now we implement the memory location manually first
     // we will deal with this properly in the future for memory management.
 }

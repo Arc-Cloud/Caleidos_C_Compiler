@@ -13,11 +13,13 @@ public:
     Node(){};
     virtual void EmitRISC(std::ostream &stream, Context &context) const = 0;
     virtual void Print(std::ostream &stream) const = 0;
-    virtual ~Node() {};
+    virtual ~Node(){};
 
     // helper fuction for child functions
     virtual std::string getType() const {};
-    virtual std::string getVar() const {};
+    virtual std::string getId() const {};
+    virtual int getSize() const {};
+    virtual int getVal() const{};
 };
 
 // Represents a list of nodes.
@@ -27,7 +29,7 @@ private:
     std::vector<Node *> nodes_;
 
 public:
-    NodeList(Node *first_node) : nodes_({first_node}) {};
+    NodeList(Node *first_node) : nodes_({first_node}){};
     NodeList(){};
     ~NodeList()
     {
@@ -36,11 +38,23 @@ public:
             delete node;
         }
     }
+    virtual void Print(std::ostream &stream) const override{};
 
-    void PushBack(Node *item);
-    virtual void EmitRISC(std::ostream &stream, Context &context) const override;
-    virtual void Print(std::ostream &stream) const override;
-
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override
+    {
+        for (auto node : nodes_)
+        {
+            if (node == nullptr)
+            {
+                continue;
+            }
+            node->EmitRISC(stream, context);
+        }
+    }
+    void PushBack(Node *item)
+    {
+        nodes_.push_back(item);
+    }
 };
 
 #endif

@@ -28,35 +28,19 @@ protected:
     std::string InstType;
     std::unordered_map<std::string, std::string> bindings;
     std::map<std::string, int> MemoryMapping;
-    int memDefault = 32; // for now we set it to default in the future we need to dynamically allocate memory
-    int memused = 0;
 public:
-    // set the memory usage to 32 as default; should automize this in the future
+
+    //allocate memory manually :) hope doesnt get larger than this
+    int memDefault = 32;
+    int lastmemused = 0;
+
     void WriteInstType(std::string input)
     {
         InstType = input;
     }
 
-    std::string ReadInstType()
-    {
+    std:: string ReadInstType(){
         return InstType;
-    }
-    void MemAlloc(std:: string variable){
-        if (memused == 0){
-            memused = -(memDefault - 12);
-            MemoryMapping[variable] = memused;
-        }
-        else{
-            MemoryMapping[variable] = memused - 4;
-        }
-    }
-    //do we even need this lol?
-    void MemDealloc(){
-        memused = 0;
-    }
-
-    std::string GetMem(std:: string variable){
-        return std::to_string(MemoryMapping[variable]);
     }
     ~Context(){};
 };

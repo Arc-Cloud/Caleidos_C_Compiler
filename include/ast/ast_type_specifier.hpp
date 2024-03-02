@@ -13,9 +13,21 @@ private:
 public:
     TypeSpecifier(_Types TypeId) : id(TypeId){};
     ~TypeSpecifier(){};
-    void EmitRISC(std::ostream &stream, Context &context) const override;
-    void Print(std::ostream &stream) const override;
-    std::string getType() const override;
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override {};
+    virtual void Print(std::ostream &stream) const override {};
+    virtual std::string getType() const override{
+        return "not implemented";
+    };
+    virtual int getSize() const override{
+        switch (id)
+        {
+        case _int: return 4;
+            break;
+
+        default: std:: cerr << "data Type not implemented" << std::endl;
+            break;
+        }
+    }
 };
 
 #endif

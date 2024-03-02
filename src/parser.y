@@ -51,19 +51,20 @@
 
 %start ROOT
 %%
-
+//extract the AST
 ROOT
     : translation_unit { g_root = $1; }
-
+// top level entity
 translation_unit
 	: external_declaration { $$ = new NodeList($1); }
 	| translation_unit external_declaration {$1->PushBack($2); $$ = $1;}
 	;
-
+// global variable goes here
 external_declaration
 	: function_definition { $$ = $1; }
+	| declaration {$$ = $1;}
 	;
-
+// this is for function definition
 function_definition
 	: declaration_specifiers declarator compound_statement {$$ = new FunctionDefinition($1, $2, $3);}
 	;
@@ -74,6 +75,7 @@ primary_expression
 		$$ = new IntConstant($1);
 	}
 	;
+
 postfix_expression
     : primary_expression {$$ = $1;}
     ;
@@ -87,7 +89,7 @@ multiplicative_expression
     ;
 
 additive_expression
-    : multiplicative_expression {$$ = $1}
+    : multiplicative_expression {$$ = $1;}
     ;
 
 shift_expression
@@ -135,7 +137,7 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression {$$ = $1;}
-	| unary_expression '=' assignment_expression
+	| unary_expression '=' assignment_expression {$$ = new SimpleAssignment($1, $2);}
 	;
 expression
 	: assignment_expression {$$ = $1;}

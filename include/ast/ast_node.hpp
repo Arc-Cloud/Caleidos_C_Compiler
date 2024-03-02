@@ -17,6 +17,7 @@ public:
 
     // helper fuction for child functions
     virtual std::string getType() const {};
+    virtual std::string getVar() const {};
 };
 
 // Represents a list of nodes.

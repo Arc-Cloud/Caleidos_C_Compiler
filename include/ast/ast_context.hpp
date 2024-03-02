@@ -26,14 +26,12 @@ protected:
     };
 
     std::string InstType;
-    std::string dataType;
-    int makeNameUnq = 0;
     std::unordered_map<std::string, std::string> bindings;
-    std::map<std::string, int> RegLocation;
-    int lastMemory;
+    std::map<std::string, int> MemoryMapping;
+    int memDefault = 32; // for now we set it to default in the future we need to dynamically allocate memory
+    int memused = 0;
 public:
-    // set the memory usage to 128 as default; should automize this in the future
-    int memDefault = 32;
+    // set the memory usage to 32 as default; should automize this in the future
     void WriteInstType(std::string input)
     {
         InstType = input;
@@ -43,13 +41,24 @@ public:
     {
         return InstType;
     }
-    void writeDataType (std::string input){
-        dataType = input;
+    void MemAlloc(std:: string variable){
+        if (memused == 0){
+            memused = -(memDefault - 12);
+            MemoryMapping[variable] = memused;
+        }
+        else{
+            MemoryMapping[variable] = memused - 4;
+        }
     }
-    std:: string ReadDataType(){
-    return  dataType;
+    //do we even need this lol?
+    void MemDealloc(){
+        memused = 0;
     }
 
+    std::string GetMem(std:: string variable){
+        return std::to_string(MemoryMapping[variable]);
+    }
+    ~Context(){};
 };
 
 #endif

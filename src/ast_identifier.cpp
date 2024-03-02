@@ -14,3 +14,7 @@ void Identifier::Print(std::ostream &stream) const
 {
     stream << identifier_;
 };
+
+std:: string Identifier::getVar() const {
+    return identifier_;
+}

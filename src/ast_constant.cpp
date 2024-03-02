@@ -1,10 +1,13 @@
 #include "ast/ast_constant.hpp"
 
 void IntConstant::EmitRISC(std::ostream &stream, Context &context) const
-{   
+{
     std::string InstType = context.ReadInstType();
     if (InstType == "return"){
     stream << "li a0, " << value_ << std::endl;
+    }
+    else if (InstType == "simpleassign"){
+        stream << value_ << std::endl;
     }
 }
 

@@ -13,6 +13,7 @@ public:
     ~Identifier(){};
     void EmitRISC(std::ostream &stream, Context &context) const override;
     void Print(std::ostream &stream) const override;
+    std:: string getVar() const override;
 };
 
 #endif

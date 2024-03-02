@@ -26,14 +26,9 @@ protected:
     };
 
     std::string InstType;
-    std::unordered_map<std::string, std::string> bindings;
-    std::map<std::string, int> MemoryMapping;
+    std::map<std::string, std::string> bindings;//to store the register which was assigned to the variable
 public:
-
-    //allocate memory manually :) hope doesnt get larger than this
-    int memDefault = 32;
-    int lastmemused = 0;
-
+    Context(){}
     void WriteInstType(std::string input)
     {
         InstType = input;
@@ -43,6 +38,32 @@ public:
         return InstType;
     }
     ~Context(){};
+
+     /*
+        -----------------------------MEMORY MANAGEMENT-------------------------------
+    */
+    //probably not enough lmao
+    int default_mem = 64;
+    int last_used = 64;
+    std::map<std::string, std::vector<int>> MemoryMapping; // to track where the value of a varibale is stored in mem. the value is a vector bcs datatypes like long requires two register
+
+
+    int AllocateStack(){
+        if (last_used == 0){
+            std:: cerr << "overflow" << std::endl;
+        }
+        else {
+            last_used -= 4;
+            return last_used;
+        }
+    }
+
+    int DeallocStack(){
+        int curr = last_used;
+        last_used += 4;
+        return curr;
+    }
+
 };
 
 #endif

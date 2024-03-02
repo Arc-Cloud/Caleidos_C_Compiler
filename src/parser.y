@@ -33,7 +33,7 @@
 
 %type <node> TypeSpecifier  function
 %type <node> external_declaration compound_statement
-%type <node> statement  expr
+%type <node> statement  expr declarator
 %type <node> jump_statement BASE
 
 %type <nodes> functionsGroup declaration statement_list
@@ -87,7 +87,7 @@ jump_statement
 
 
 declaration
-:
+: TypeSpecifier IDENTIFIER
 ;
 
 
@@ -98,7 +98,6 @@ expr
 
 BASE
 : INT_CONSTANT {$$ = new IntConstant($1);}
-| IDENTIFIER 	{$$ = new Variable(*$1); delete $1;}
 ;
 
 TypeSpecifier

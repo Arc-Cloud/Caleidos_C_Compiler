@@ -21,7 +21,7 @@ public:
     virtual int getSize() const override{
         switch (id)
         {
-        case _int: return 4;
+        case _int: return 1; //(requires 4 bytes or "1" word)
             break;
 
         default: std:: cerr << "data Type not implemented" << std::endl;

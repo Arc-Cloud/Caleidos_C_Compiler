@@ -22,8 +22,15 @@ class Function: public Node {
             if (compound_statement_ != nullptr){
                 stream << ".globl " << id << std::endl;
                 stream << id << ":" << std::endl;
+                stream << "addi sp,sp," << (-context.default_mem) << std::endl;
+                stream << "sw ra," << std::to_string(context.AllocateStack()) <<"(sp)" << std::endl;
+                stream <<  "sw s0," << std::to_string(context.AllocateStack()) <<"(sp)" << std:: endl;
+                stream << "addi s0,sp," << context.default_mem << std:: endl;
 
                 compound_statement_ -> EmitRISC(stream,context);
+                stream << "lw s0,"<< std::to_string(context.DeallocStack())<< "(sp)" << std:: endl;
+                stream << "lw ra," << std:: to_string(context.DeallocStack()) << "(sp)" << std::endl;
+                stream << "addi sp,sp," << context.default_mem << std::endl;
 
                 stream << "ret" << std::endl;
             }

@@ -31,12 +31,12 @@
 %token STRUCT UNION ENUM ELLIPSIS
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
-%type <node> TypeSpecifier  function
+%type <node> TypeSpecifier  function assignment
 %type <node> external_declaration compound_statement
 %type <node> statement  expr declarator
-%type <node> jump_statement BASE
+%type <node> jump_statement BASE declaration
 
-%type <nodes> functionsGroup declaration statement_list
+%type <nodes> functionsGroup  statement_list
 
 %type <number_int> INT_CONSTANT STRING_LITERAL
 %type <number_float> FLOAT_CONSTANT
@@ -62,7 +62,7 @@ external_declaration
 ;
 // implementing the different types of function
 function
-: TypeSpecifier IDENTIFIER '(' ')' ';'  {$$ = new Function($1, *$2, nullptr, nullptr);}
+: TypeSpecifier IDENTIFIER '(' ')' ';'  {$$ = new Function($1, *$2, nullptr, nullptr); delete $2;}
 | TypeSpecifier IDENTIFIER '(' ')' compound_statement {$$ = new Function($1, *$2, nullptr, $5);}
 ;
 // this is for function with definitions or other definitions also can
@@ -71,8 +71,8 @@ compound_statement
 | '{' '}'  {$$ = nullptr;}
 ;
 statement_list
-: statement  {new NodeList($1);}
-| statement_list statement {$1 -> PushBack($2); $$ = $1;}
+: statement_list statement {$1 -> PushBack($2); $$ = $1;}
+| statement  {new NodeList($1);}
 ;
 statement
 : jump_statement';' {$$  = $1;}
@@ -84,12 +84,11 @@ jump_statement
 | RETURN expr {$$ = new Return($2);}
 ;
 // took it from the parser labs lol
-
-
 declaration
-: TypeSpecifier IDENTIFIER
+: TypeSpecifier IDENTIFIER {$$ = new Declaration($1, *$2); delete $2;}
+| IDENTIFIER '=' expr {$$ = new Assignment {*$1, $3}; delete $1;}
 ;
-
+// note for tmr: change identifier to node by adding new variable inside the constructor;
 
 expr
 : BASE {$$ = $1;}
@@ -98,6 +97,7 @@ expr
 
 BASE
 : INT_CONSTANT {$$ = new IntConstant($1);}
+| IDENTIFIER {$$ = new Variable(*$1); delete $1;}
 ;
 
 TypeSpecifier

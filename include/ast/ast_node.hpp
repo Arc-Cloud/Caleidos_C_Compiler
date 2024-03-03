@@ -42,13 +42,13 @@ public:
 
     virtual void EmitRISC(std::ostream &stream, Context &context) const override
     {
-        for (auto node : nodes_)
+        for (int i = 0; i < nodes_.size(); i++)
         {
-            if (node == nullptr)
+            if (nodes_[i]== nullptr)
             {
                 continue;
             }
-            node->EmitRISC(stream, context);
+            nodes_[i]->EmitRISC(stream, context);
         }
     }
     void PushBack(Node *item)

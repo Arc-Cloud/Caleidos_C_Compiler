@@ -11,6 +11,7 @@
 #include "ast/primitives/ast_primitives.hpp"
 #include "ast/jumps/ast_return.hpp"
 #include "ast/functions/ast_function.hpp"
+#include "ast/ast_declaration.hpp"
 extern Node *ParseAST(std::string file_name);
 
 #endif

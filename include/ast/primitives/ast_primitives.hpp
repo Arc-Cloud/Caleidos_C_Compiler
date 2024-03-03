@@ -41,7 +41,7 @@ class IntConstant: public Node{
     }
     virtual void Print(std::ostream &stream) const override{};
 
-    std::string getType(){
+    virtual std::string getType() const override{
         return "constant";
     }
 

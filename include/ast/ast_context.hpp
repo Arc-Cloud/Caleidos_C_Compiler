@@ -44,24 +44,34 @@ public:
     */
     //probably not enough lmao
     int default_mem = 64;
-    int last_used = 64;
+    int LastStack = 64;
+    int LastMem = 64;
     std::map<std::string, std::vector<int>> MemoryMapping; // to track where the value of a varibale is stored in mem. the value is a vector bcs datatypes like long requires two register
 
 
     int AllocateStack(){
-        if (last_used == 0){
+        if (LastStack == 0){
             std:: cerr << "overflow" << std::endl;
         }
         else {
-            last_used -= 4;
-            return last_used;
+            LastStack -= 4;
+            return LastStack;
         }
     }
 
     int DeallocStack(){
-        int curr = last_used;
-        last_used += 4;
+        int curr = LastStack;
+        LastStack += 4;
         return curr;
+    }
+
+    int memAlloc(){
+        LastMem -= 4;
+        return LastMem;
+    }
+
+    void memDealloc(){
+        LastMem = default_mem;
     }
 
 };

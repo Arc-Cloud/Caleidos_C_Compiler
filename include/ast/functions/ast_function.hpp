@@ -19,21 +19,22 @@ class Function: public Node {
         }
 
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
-            if (compound_statement_ != nullptr){
                 stream << ".globl " << id << std::endl;
                 stream << id << ":" << std::endl;
                 stream << "addi sp,sp," << (-context.default_mem) << std::endl;
                 stream << "sw ra," << std::to_string(context.AllocateStack()) <<"(sp)" << std::endl;
                 stream <<  "sw s0," << std::to_string(context.AllocateStack()) <<"(sp)" << std:: endl;
                 stream << "addi s0,sp," << context.default_mem << std:: endl;
-
+                if (compound_statement_ != nullptr){
                 compound_statement_ -> EmitRISC(stream,context);
+                }
+                context.memDealloc();
                 stream << "lw s0,"<< std::to_string(context.DeallocStack())<< "(sp)" << std:: endl;
                 stream << "lw ra," << std:: to_string(context.DeallocStack()) << "(sp)" << std::endl;
                 stream << "addi sp,sp," << context.default_mem << std::endl;
 
                 stream << "ret" << std::endl;
-            }
+
         }
 
         virtual void Print(std::ostream &stream) const override{};

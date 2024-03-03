@@ -6,6 +6,7 @@
 
 %code requires{
     #include "ast.hpp"
+    #include <cassert>
 
     extern Node *g_root;
     extern FILE *yyin;
@@ -42,6 +43,7 @@
 %type <number_float> FLOAT_CONSTANT
 %type <string> IDENTIFIER
 
+%right '='
 
 %start ROOT
 
@@ -62,8 +64,8 @@ external_declaration
 ;
 // implementing the different types of function
 function
-: TypeSpecifier IDENTIFIER '(' ')' ';'  {$$ = new Function($1, *$2, nullptr, nullptr); delete $2;}
-| TypeSpecifier IDENTIFIER '(' ')' compound_statement {$$ = new Function($1, *$2, nullptr, $5);}
+: TypeSpecifier IDENTIFIER '(' ')' ';'  {$$ = new Function($1, *$2, nullptr, nullptr);delete $2;}
+| TypeSpecifier IDENTIFIER '(' ')' compound_statement {$$ = new Function($1, *$2, nullptr, $5);delete $2;}
 ;
 // this is for function with definitions or other definitions also can
 compound_statement
@@ -71,8 +73,8 @@ compound_statement
 | '{' '}'  {$$ = nullptr;}
 ;
 statement_list
-: statement_list statement {$1 -> PushBack($2); $$ = $1;}
-| statement  {new NodeList($1);}
+: statement  {new NodeList($1);}
+| statement_list statement {$1 -> PushBack($2); $$ = $1;}
 ;
 statement
 : jump_statement';' {$$  = $1;}
@@ -80,15 +82,13 @@ statement
 ;
 
 jump_statement
-: RETURN  {$$ = new Return(NULL);}
-| RETURN expr {$$ = new Return($2);}
+: RETURN expr {$$ = new Return($2);}
+| RETURN  {$$ = new Return(NULL);}
 ;
 // took it from the parser labs lol
 declaration
-: TypeSpecifier IDENTIFIER {$$ = new Declaration($1, *$2); delete $2;}
-| IDENTIFIER '=' expr {$$ = new Assignment {*$1, $3}; delete $1;}
+:TypeSpecifier IDENTIFIER '=' expr {$$ = new DirectInit($1, "hello", $4); delete $2;}
 ;
-// note for tmr: change identifier to node by adding new variable inside the constructor;
 
 expr
 : BASE {$$ = $1;}

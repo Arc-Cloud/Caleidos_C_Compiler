@@ -20,13 +20,12 @@ protected:
         1,                            // x8 s0 frame pointer
         1,                            // x9 s1 saved register 1
         1, 1,                         // x10,x11 a0, a1 return values
-        0, 0, 0, 0, 0, 0,             // a2 -a6   function registers (cn use for anything really)
+        0, 0, 0, 0, 0, 0,             // a2 -a7  function registers (cn use for anything really)
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // s2 - s11 saved registers
         0, 0, 0, 0                    // t3 - t6 temporary registers.
     };
 
-    std::string InstType;
-    std::map<std::string, std::string> bindings;//to store the register which was assigned to the variable
+    std::string InstType; // to inform the next node the type of operation currently doing
 public:
     Context(){}
     void WriteInstType(std::string input)
@@ -39,41 +38,51 @@ public:
     }
     ~Context(){};
 
+
+     /*
+        -----------------------------Register Management-------------------------------
+    */
+    std:: map<std:: string, std::string> bindings;
+    std:: string AllocReg(std:: string var){
+        for (int i = 4; i < 32; i++){
+            if (Reg[i] == 0){
+                Reg[i] = 1;
+                bindings[var] = "x" + std::to_string(i);
+                return ("x" + std::to_string(i));
+            }
+        }
+    }
+
+
+
+
+
      /*
         -----------------------------MEMORY MANAGEMENT-------------------------------
     */
     //probably not enough lmao
     int default_mem = 64;
     int LastStack = 64;
-    int LastMem = 64;
-    std::map<std::string, std::vector<int>> MemoryMapping; // to track where the value of a varibale is stored in mem. the value is a vector bcs datatypes like long requires two register
+    std::map<std::string, int> MemoryMapping; // to track where the value of a varibale is stored in mem.
 
 
-    int AllocateStack(){
+    int AllocateStack(std:: string input){
         if (LastStack == 0){
             std:: cerr << "overflow" << std::endl;
+            exit(1);
         }
         else {
             LastStack -= 4;
+            MemoryMapping[input] = LastStack;
             return LastStack;
         }
     }
 
-    int DeallocStack(){
-        int curr = LastStack;
-        LastStack += 4;
-        return curr;
-    }
 
-    int memAlloc(){
-        LastMem -= 4;
-        return LastMem;
+    int memDef(){
+        LastStack = default_mem;
+        return default_mem;
     }
-
-    void memDealloc(){
-        LastMem = default_mem;
-    }
-
 };
 
 #endif

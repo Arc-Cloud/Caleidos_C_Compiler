@@ -11,19 +11,20 @@ class Variable
 private:
     std::string id;
 public:
-    Variable(const std::string &_id)
+    Variable(std::string _id)
         : id(_id)
     {}
 
-    virtual std::string getId() const override
-    { return id; }
+    virtual std::string getId() const  override{
+        return id;
+    }
 
     virtual std:: string getType() const override{
         return "variable";
     }
 
     virtual void EmitRISC(std::ostream &stream, Context &context) const override{
-        // to be implemented
+        stream << "hi";
     }
 
     virtual void Print(std::ostream &stream) const override{};

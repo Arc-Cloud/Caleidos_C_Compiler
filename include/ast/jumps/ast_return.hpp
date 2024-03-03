@@ -17,8 +17,9 @@ public:
         {
             stream << "li a0, " << ret->getVal() << std::endl;
         }
-        else if (ret -> getType() == "variable"){
-            stream << "lw a0," << context.MemoryMapping[ret->getId()][0] <<"(s0)"<< std:: endl;
+        else {
+            stream << "lw " << context.bindings["x"] << "," << context.MemoryMapping["x"] << "(sp)" << std::endl;
+            stream << "mv a0," << context.bindings["x"] << std::endl;
         }
     }
     virtual void Print(std::ostream &stream) const override{};

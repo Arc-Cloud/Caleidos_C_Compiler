@@ -21,16 +21,15 @@ class Function: public Node {
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
                 stream << ".globl " << id << std::endl;
                 stream << id << ":" << std::endl;
-                stream << "addi sp,sp," << (-context.default_mem) << std::endl;
-                stream << "sw ra," << std::to_string(context.AllocateStack()) <<"(sp)" << std::endl;
-                stream <<  "sw s0," << std::to_string(context.AllocateStack()) <<"(sp)" << std:: endl;
+                stream << "addi sp,sp,-" << context.memDef() << std::endl;
+                stream << "sw ra," << std::to_string(context.AllocateStack("ra")) <<"(sp)" << std::endl;
+                stream <<  "sw s0," << std::to_string(context.AllocateStack("s0")) <<"(sp)" << std:: endl;
                 stream << "addi s0,sp," << context.default_mem << std:: endl;
                 if (compound_statement_ != nullptr){
                 compound_statement_ -> EmitRISC(stream,context);
                 }
-                context.memDealloc();
-                stream << "lw s0,"<< std::to_string(context.DeallocStack())<< "(sp)" << std:: endl;
-                stream << "lw ra," << std:: to_string(context.DeallocStack()) << "(sp)" << std::endl;
+                stream << "lw s0,"<< std::to_string(context.MemoryMapping["s0"])<< "(sp)" << std:: endl;
+                stream << "lw ra," << std:: to_string(context.MemoryMapping["ra"]) << "(sp)" << std::endl;
                 stream << "addi sp,sp," << context.default_mem << std::endl;
 
                 stream << "ret" << std::endl;

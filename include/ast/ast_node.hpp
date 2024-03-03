@@ -16,10 +16,13 @@ public:
     virtual ~Node(){};
 
     // helper fuction for child functions
-    virtual std::string getType() const {};
-    virtual std::string getId() const {};
-    virtual int getSize() const {};
-    virtual int getVal() const{};
+    virtual std::string getType() const {}
+    virtual std::string getId() const {
+        return "why am i here";
+    }
+    virtual int getSize() const {}
+    virtual int getVal() const {}
+    virtual void memAlloc(Context &context) const {}
 };
 
 // Represents a list of nodes.
@@ -42,13 +45,13 @@ public:
 
     virtual void EmitRISC(std::ostream &stream, Context &context) const override
     {
-        for (int i = 0; i < nodes_.size(); i++)
+        for (auto node : nodes_)
         {
-            if (nodes_[i]== nullptr)
+            if (node == nullptr)
             {
                 continue;
             }
-            nodes_[i]->EmitRISC(stream, context);
+            node->EmitRISC(stream, context);
         }
     }
     void PushBack(Node *item)

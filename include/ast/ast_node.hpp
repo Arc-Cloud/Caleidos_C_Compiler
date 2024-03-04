@@ -58,6 +58,10 @@ public:
     {
         nodes_.push_back(item);
     }
+
+    int getSize() const override {
+        return nodes_.size();
+    }
 };
 
 #endif

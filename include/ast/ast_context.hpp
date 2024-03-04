@@ -53,6 +53,18 @@ public:
         }
     }
 
+    void DeallocReg(std:: string reg){
+        int location = reg[1] - '0';
+        if (Reg[location] == 0){
+            std:: cerr << "the register was never assigned";
+            exit(1);
+        }
+        else{
+            Reg[location] = 1;
+        }
+
+    }
+
 
 
 

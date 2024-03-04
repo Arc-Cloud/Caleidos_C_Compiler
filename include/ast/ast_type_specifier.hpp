@@ -3,28 +3,34 @@
 
 #include "ast_node.hpp"
 
-enum _Types{
+enum _Types
+{
     _int,
 };
 class TypeSpecifier : public Node
 {
 private:
     _Types id;
+
 public:
     TypeSpecifier(_Types TypeId) : id(TypeId){};
     ~TypeSpecifier(){};
-    virtual void EmitRISC(std::ostream &stream, Context &context) const override {};
-    virtual void Print(std::ostream &stream) const override {};
-    virtual std::string getType() const override{
+    void EmitRISC(std::ostream &stream, Context &context) const override{};
+    void Print(std::ostream &stream) const override{};
+    std::string getType() const override
+    {
         return "not implemented";
     };
-    virtual int getSize() const override{
+    int getSize() const override
+    {
         switch (id)
         {
-        case _int: return 1; //(requires 4 bytes or "1" word)
+        case _int:
+            return 1; //(requires 4 bytes or "1" word)
             break;
 
-        default: std:: cerr << "data Type not implemented" << std::endl;
+        default:
+            std::cerr << "data Type not implemented" << std::endl;
             break;
         }
     }

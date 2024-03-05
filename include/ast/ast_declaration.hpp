@@ -40,9 +40,12 @@ public:
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
         std::string var = init_->getId();
+        // context.AllocReg(var);
         int datatype = Typespec_->getSize(); // will be useful later when we deal with numbers other than integer
         context.AllocateStack(var);
+        if (init_ -> getType() != "variable"){
         init_->EmitRISC(stream, context);
+        }
     };
 
     void Print(std::ostream &stream) const override{};
@@ -61,6 +64,9 @@ public:
         delete identifier_;
         delete value;
     }
+    std:: string getType() const override {
+        return "InitDeclarator";
+    }
 
     std::string getId() const override
     {
@@ -69,7 +75,9 @@ public:
 
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
-        std::string dst = context.AllocReg(identifier_->getId());
+        context.AllocReg(identifier_->getId());
+        std::string dst = context.bindings[identifier_->getId()];
+        context.DeallocReg(identifier_->getId());
         stream << "li " << dst << "," << value->getVal() << std::endl;
         stream << "sw " << dst << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
     };

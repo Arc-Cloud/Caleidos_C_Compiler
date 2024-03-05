@@ -77,7 +77,7 @@ primary_expression
 	;
 
 postfix_expression
-	: primary_expression
+	: primary_expression {$$ = $1;}
 	| postfix_expression '[' expression ']'
 	| postfix_expression '(' ')'
 	| postfix_expression '(' argument_expression_list ')'
@@ -175,7 +175,7 @@ conditional_expression
 	;
 assignment_expression
 	: conditional_expression {$$ = $1;}
-    | unary_expression '=' assignment_expression
+    | unary_expression '=' assignment_expression {$$ = new Assign($1, $3);}
 	| unary_expression MUL_ASSIGN assignment_expression
     | unary_expression DIV_ASSIGN assignment_expression
     | unary_expression MOD_ASSIGN assignment_expression
@@ -261,9 +261,9 @@ struct_declarator_list
 	;
 
 struct_declarator
-	: declarator
-	| ':' constant_expression
-	| declarator ':' constant_expression
+	: declarator {$$ = $1;}
+	| ':' constant_expression // not needed
+	| declarator ':' constant_expression //not needed
 	;
 
 enum_specifier

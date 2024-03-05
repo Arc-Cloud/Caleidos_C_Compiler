@@ -53,14 +53,16 @@ public:
         }
     }
 
-    void DeallocReg(std:: string reg){
+    void DeallocReg(std:: string var){
+        std:: string reg = bindings[var];
         int location = reg[1] - '0';
         if (Reg[location] == 0){
             std:: cerr << "the register was never assigned";
             exit(1);
         }
         else{
-            Reg[location] = 1;
+            Reg[location] = 0;
+            bindings.erase(var);
         }
 
     }
@@ -75,7 +77,7 @@ public:
     //probably not enough lmao
     int default_mem = 64;
     int LastStack = 64;
-    std::map<std::string, int> MemoryMapping; // to track where the value of a varibale is stored in mem.
+    std::map<std::string, int> MemoryMapping; // to track where the value of a varibale is stored in mem.for riscv all local variables are always stored in mem
 
 
     int AllocateStack(std:: string input){

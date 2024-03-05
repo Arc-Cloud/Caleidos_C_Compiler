@@ -12,6 +12,7 @@
 #include "ast/jumps/ast_return.hpp"
 #include "ast/functions/ast_function.hpp"
 #include "ast/ast_declaration.hpp"
+#include "ast/operators/ast_assign.hpp"
 extern Node *ParseAST(std::string file_name);
 
 #endif

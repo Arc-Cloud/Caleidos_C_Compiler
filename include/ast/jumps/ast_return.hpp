@@ -18,8 +18,11 @@ public:
             stream << "li a0, " << ret->getVal() << std::endl;
         }
         else if (ret->getType() == "variable"){
-            stream << "lw " << context.bindings[ret->getId()] << "," << context.MemoryMapping[ret->getId()] << "(sp)" << std::endl;
-            stream << "mv a0," << context.bindings[ret ->getId()] << std::endl;
+            std:: string var = ret->getId();
+            context.AllocReg(var);
+            stream << "lw " << context.bindings[var] << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
+            stream << "mv a0," << context.bindings[var] << std::endl;
+            context.DeallocReg(var);
         }
     }
     virtual void Print(std::ostream &stream) const override{};

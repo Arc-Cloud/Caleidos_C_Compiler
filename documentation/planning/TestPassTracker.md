@@ -10,9 +10,9 @@
 
 | Category | Test Case | Checkbox |
 |----------|-----------|:--------:|
-| Declare Global | `declare_global.c` | `[ ]` |
-| Declare Local | `declare_local.c` | `[ ]` |
-| Index Constant | `index_constant.c` | `[ ]` |
+| Declare Global | `declare_global.c` | `[ x ]` |
+| Declare Local | `declare_local.c` | `[ x ]` |
+| Index Constant | `index_constant.c` | `[ x ]` |
 | Index Expression | `index_expression.c` | `[ ]` |
 | Index Variable | `index_variable.c` | `[ ]` |
 
@@ -41,7 +41,7 @@
 | Test ADD0 | `test_ADD0.c` | `[ ]` |
 | Test ADD1 | `test_ADD1.c` | `[ ]` |
 | Test CALL | `test_CALL.c` | `[ ]` |
-| Test LOCAL | `test_LOCAL.c` | `[ ]` |
+| Test LOCAL | `test_LOCAL.c` | `[ x ]` |
 
 
 ### Float Test Cases
@@ -90,12 +90,12 @@
 
 | Category | Test Case | Checkbox |
 |----------|-----------|:--------:|
-| Constant Initialiser | `constant_initialiser.c` | `[ ]` |
-| Dual Var | `dual_var.c` | `[ ]` |
+| Constant Initialiser | `constant_initialiser.c` | `[ x ]` |
+| Dual Var | `dual_var.c` | `[ x ]` |
 | Expression Initialiser | `expression_initialiser.c` | `[ ]` |
 | Identity | `identity.c` | `[ ]` |
 | Scoped Var | `scoped_var.c` | `[ ]` |
-| Single Var | `single_var.c` | `[ ]` |
+| Single Var | `single_var.c` | `[ x ]` |
 
 ### Misc Test Cases
 
@@ -154,7 +154,7 @@
 | Sizeof Char Type | `sizeof_char_type.c` | `[ ]` |
 | Sizeof Int Inst | `sizeof_int_inst.c` | `[ ]` |
 | Sizeof Int Type | `sizeof_int_type.c` | `[ ]` |
-| Unsigned | `unsigned.c` | `[ ]` |
+| Unsigned | `unsigned.c` | `[ x ]` |
 
 
 

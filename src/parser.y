@@ -87,7 +87,7 @@ multiplicative_expression
     ;
 
 additive_expression
-    : multiplicative_expression {$$ = $1}
+    : multiplicative_expression {$$ = $1;}
     ;
 
 shift_expression

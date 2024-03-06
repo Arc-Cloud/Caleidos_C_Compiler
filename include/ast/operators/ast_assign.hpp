@@ -31,6 +31,15 @@ class Assign : public Node{
             stream << "lw " << dst << "," << context.MemoryMapping[value_ ->getId()] << "(sp)" << std::endl;
             stream << "sw " << dst << "," << context.MemoryMapping[identifier_ ->getId()] << "(sp)" << std::endl;
         }
+        /*
+        else if (value_ -> getType() == "operator"){
+            context.AllocReg(identifier_->getId());
+            std:: string dst = context.bindings[identifier_->getId()];
+            context.DeallocReg(identifier_->getId());
+            stream << "lw " << dst << "," << context.MemoryMapping[value_ ->getId()] << "(sp)" << std::endl;
+            stream << "sw " << dst << "," << context.MemoryMapping[identifier_ ->getId()] << "(sp)" << std::endl;
+        }
+        */
     };
 
 

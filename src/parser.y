@@ -120,7 +120,7 @@ multiplicative_expression
 
 additive_expression
 	: multiplicative_expression {$$ = $1;}
-	| additive_expression '+' multiplicative_expression
+	| additive_expression '+' multiplicative_expression {$$ = new Add($1, $3);}
 	| additive_expression '-' multiplicative_expression
 	;
 
@@ -367,18 +367,15 @@ labeled_statement
 
 compound_statement
 	: '{' '}' {
-		// TODO: correct this
 		$$ = new CompoundStat(NULL, NULL);
 	}
 	| '{' statement_list '}' {
 		$$ = $2;
 	}
 	| '{' declaration_list '}' {
-		// TODO: correct this
 		$$ = new CompoundStat($2, NULL);
 	}
 	| '{' declaration_list statement_list '}'  {
-		// TODO: correct this
 		$$ = new CompoundStat($2, $3);
 	}
 	;

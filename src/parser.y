@@ -33,10 +33,10 @@
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
 %type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer parameter_list parameter_declaration
-%type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
+%type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list translation_unit declaration_list
+%type <nodes> statement_list translation_unit declaration_list initializer_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -120,7 +120,7 @@ multiplicative_expression
 
 additive_expression
 	: multiplicative_expression {$$ = $1;}
-	| additive_expression '+' multiplicative_expression
+	| additive_expression '+' multiplicative_expression {$$ = new AddOperator($1, $3);}
 	| additive_expression '-' multiplicative_expression
 	;
 
@@ -340,14 +340,14 @@ direct_abstract_declarator
 	;
 
 initializer
-	: assignment_expression
+	: assignment_expression {$$ = $1;}
 	| '{' initializer_list '}'
 	| '{' initializer_list ',' '}'
 	;
 
 initializer_list
-	: initializer
-	| initializer_list ',' initializer
+	: initializer {$$ = new NodeList($1);}
+	| initializer_list ',' initializer {$1 -> PushBack($3); $$ = $1;}
 	;
 
 statement

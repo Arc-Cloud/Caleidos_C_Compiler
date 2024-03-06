@@ -32,13 +32,6 @@ class Assign : public Node{
             stream << "sw " << dst << "," << context.MemoryMapping[identifier_ ->getId()] << "(sp)" << std::endl;
         }
     };
-
-
-
-
-
-
-
 };
 
 

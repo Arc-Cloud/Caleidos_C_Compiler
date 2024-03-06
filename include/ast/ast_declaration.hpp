@@ -75,11 +75,18 @@ public:
 
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
-        context.AllocReg(identifier_->getId());
-        std::string dst = context.bindings[identifier_->getId()];
+        if (value -> getType() == "constant"){
+        std::string dst = context.AllocReg(identifier_->getId());
         context.DeallocReg(identifier_->getId());
         stream << "li " << dst << "," << value->getVal() << std::endl;
         stream << "sw " << dst << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+        }
+        else if (value -> getType() == "operator"){
+            value ->EmitRISC(stream, context);
+            stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+            context.DeallocReg(context.dst);
+
+        }
     };
 
     void Print(std::ostream &stream) const override{};

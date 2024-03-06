@@ -9,11 +9,12 @@ class Add : public Node{
     Node* rightOperand_;
 
     public:
+
+    Add(Node* left, Node* right): leftOperand_(left), rightOperand_(right){};
+
     std::string getType() const override{
         return "operator";
     };
-
-    Add(Node* left, Node* right): leftOperand_(left), rightOperand_(right){};
 
     virtual ~Add() {
         delete leftOperand_;

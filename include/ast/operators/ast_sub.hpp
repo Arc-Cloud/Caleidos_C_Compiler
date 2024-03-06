@@ -23,46 +23,6 @@ class Sub : public Node{
     virtual void Print(std::ostream &stream) const override {};
 
     void EmitRISC(std::ostream &stream, Context &context) const override {
-        std::string dst, src;
-
-        if (leftOperand_->getType() == "constant") {
-            std::string leftReg = context.AllocReg(leftOperand_->getId());
-            stream << "li " << leftReg << ", " << leftOperand_->getVal() << std::endl;
-
-            if (rightOperand_->getType() == "constant") {
-                std::string rightReg = context.AllocReg(rightOperand_->getId());
-                stream << "li " << rightReg << ", " << rightOperand_->getVal() << std::endl;
-                dst = leftReg;
-                src = rightReg;
-                stream << "sub " << dst << ", " << dst << ", " << src << std::endl;
-                context.DeallocReg(rightOperand_->getId());
-            } else {
-                dst = leftReg;
-                src = context.bindings[rightOperand_->getId()];
-                stream << "sub " << dst << ", " << dst << ", " << src << std::endl;
-            }
-
-            context.DeallocReg(leftOperand_->getId());
-        }
-        else {
-            context.AllocReg(leftOperand_->getId());
-            dst = context.bindings[leftOperand_->getId()];
-
-            if (rightOperand_->getType() == "constant") {
-                stream << "addi " << dst << ", " << dst << ", -" << rightOperand_->getVal() << std::endl;
-            } else {
-                context.AllocReg(rightOperand_->getId());
-                src = context.bindings[rightOperand_->getId()];
-                stream << "sub " << dst << ", " << dst << ", " << src << std::endl;
-                context.DeallocReg(rightOperand_->getId());
-            }
-
-            context.DeallocReg(leftOperand_->getId());
-        }
-
-    };
-
-    void EmitRISC(std::ostream &stream, Context &context) const override {
     std::string dst, src;
 
         if (leftOperand_->getType() == "constant" && rightOperand_->getType() == "constant") {

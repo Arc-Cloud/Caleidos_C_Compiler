@@ -1,5 +1,5 @@
-#ifndef AST_ADD_HPP
-#define AST_ADD_HPP
+#ifndef AST_SUB_HPP
+#define AST_SUB_HPP
 
 #include "../ast_node.hpp"
 

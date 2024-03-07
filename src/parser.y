@@ -110,7 +110,7 @@ cast_expression
 
 multiplicative_expression
 	: cast_expression {$$ = $1;}
-	| multiplicative_expression '*' cast_expression
+	| multiplicative_expression '*' cast_expression {$$ = new Mul($1, $3);}
 	| multiplicative_expression '/' cast_expression
 	| multiplicative_expression '%' cast_expression
 	;
@@ -137,7 +137,7 @@ relational_expression
 
 equality_expression
 	: relational_expression {$$ = $1;}
-	| equality_expression EQ_OP relational_expression
+	| equality_expression EQ_OP relational_expression {$$ = new Equal($1, $3);}
 	| equality_expression NE_OP relational_expression
 	;
 

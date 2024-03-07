@@ -24,6 +24,11 @@ public:
             stream << "mv a0," << context.bindings[var] << std::endl;
             context.DeallocReg(var);
         }
+        else if (ret -> getType() == "operator"){
+            ret -> EmitRISC(stream, context);
+            stream << "mv a0," << context.bindings[context.dst] << std::endl;
+            context.DeallocReg(context.dst);
+        }
     }
     virtual void Print(std::ostream &stream) const override{};
 };

@@ -32,11 +32,11 @@
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
-%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer parameter_list parameter_declaration
+%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list translation_unit declaration_list initializer_list
+%type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -62,10 +62,7 @@ external_declaration
 	;
 
 function_definition
-	: declaration_specifiers declarator declaration_list compound_statement
-	| declaration_specifiers declarator compound_statement {$$ = new Function($1, $2, NULL, $3);}
-	| declarator declaration_list compound_statement
-	| declarator compound_statement
+	: declaration_specifiers declarator compound_statement {$$ = new Function($1, $2, $3);}
 	;
 
 primary_expression
@@ -121,7 +118,7 @@ multiplicative_expression
 additive_expression
 	: multiplicative_expression {$$ = $1;}
 	| additive_expression '+' multiplicative_expression {$$ = new Add($1, $3);}
-	| additive_expression '-' multiplicative_expression {$$ = new Sub($1, $3);}
+	| additive_expression '-' multiplicative_expression {$$ = new Sub($1,$3);}
 	;
 
 shift_expression
@@ -292,9 +289,9 @@ direct_declarator
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_list ')'
+	| direct_declarator '(' parameter_list ')' {$$ = new FunctionDeclarator($1, $3);}
 	| direct_declarator '(' identifier_list ')'
-	| direct_declarator '(' ')' {$$ = new FunctionDeclarator($1);}
+	| direct_declarator '(' ')' {$$ = new FunctionDeclarator($1, NULL);}
 	;
 
 pointer
@@ -303,14 +300,14 @@ pointer
 	;
 
 parameter_list
-	: parameter_declaration
-	| parameter_list ',' parameter_declaration
+	: parameter_declaration {$$ = new NodeList($1);}
+	| parameter_list ',' parameter_declaration {$1 -> PushBack($3); $$ = $1;}
 	;
 
 parameter_declaration
-	: declaration_specifiers declarator
+	: declaration_specifiers declarator {$$ = new Declaration($1,$2);}
 	| declaration_specifiers abstract_declarator
-	| declaration_specifiers
+	| declaration_specifiers // not needed i guess
 	;
 identifier_list
 	: IDENTIFIER

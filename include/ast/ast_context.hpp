@@ -27,6 +27,7 @@ protected:
 
     std::string InstType; // to inform the next node the type of operation currently doing
 public:
+    std:: string dst;
     Context(){}
     void WriteInstType(std::string input)
     {

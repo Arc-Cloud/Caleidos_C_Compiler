@@ -27,33 +27,29 @@ public:
             std::string resultReg = context.AllocReg("result");
             int resultVal = leftOperand_->getVal() * rightOperand_->getVal();
             stream << "li " << resultReg << ", " << resultVal << std::endl;
-            context.DeallocReg("result");
+            context.dst = "result";
         }
         else {
             std::string leftReg, rightReg, dst;
 
             if (leftOperand_->getType() == "constant") {
-                // Left operand is constant, load it into a register.
                 int constVal = leftOperand_->getVal();
                 leftReg = context.AllocReg("tmp");
                 stream << "li " << leftReg << ", " << constVal << std::endl;
                 rightReg = context.AllocReg(rightOperand_->getId());
             } else if (rightOperand_->getType() == "constant") {
-                // Right operand is constant, load it into a register.
                 int constVal = rightOperand_->getVal();
                 rightReg = context.AllocReg("tmp");
                 stream << "li " << rightReg << ", " << constVal << std::endl;
                 leftReg = context.AllocReg(leftOperand_->getId());
             } else {
-                // Neither operand is a constant.
                 leftReg = context.AllocReg(leftOperand_->getId());
                 rightReg = context.AllocReg(rightOperand_->getId());
             }
 
-            dst = leftReg; // Assuming result is stored in the left operand's register (or a new register if needed).
+            dst = leftReg;
             stream << "mul " << dst << ", " << leftReg << ", " << rightReg << std::endl;
 
-            // Deallocation of temporary registers if necessary.
             context.DeallocReg(leftOperand_->getType() == "constant" ? "tmp" : leftOperand_->getId());
             context.DeallocReg(rightOperand_->getType() == "constant" ? "tmp" : rightOperand_->getId());
         }

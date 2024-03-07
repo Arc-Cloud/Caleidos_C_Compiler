@@ -92,7 +92,7 @@
 |----------|-----------|:--------:|
 | Constant Initialiser | `constant_initialiser.c` | `[ x ]` |
 | Dual Var | `dual_var.c` | `[ x ]` |
-| Expression Initialiser | `expression_initialiser.c` | `[ ]` |
+| Expression Initialiser | `expression_initialiser.c` | `[ x ]` |
 | Identity | `identity.c` | `[ ]` |
 | Scoped Var | `scoped_var.c` | `[ ]` |
 | Single Var | `single_var.c` | `[ x ]` |

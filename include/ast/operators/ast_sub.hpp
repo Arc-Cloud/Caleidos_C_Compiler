@@ -29,7 +29,7 @@ class Sub : public Node{
             std::string resultReg = context.AllocReg("result");
             int result = leftOperand_->getVal() - rightOperand_->getVal();
             stream << "li " << resultReg << ", " << result << std::endl;
-            context.DeallocReg("result");
+            context.dst = "result";
         }
         else if (leftOperand_->getType() == "constant") {
             std::string leftReg = context.AllocReg(leftOperand_->getId());
@@ -38,7 +38,7 @@ class Sub : public Node{
             src = rightReg;
             stream << "li " << leftReg << ", " << leftOperand_->getVal() << std::endl;
             stream << "sub " << dst << ", " << dst << ", " << src << std::endl;
-            context.DeallocReg(leftOperand_->getId());
+            context.dst = leftOperand_->getId();
             context.DeallocReg(rightOperand_->getId());
         }
         else {
@@ -54,7 +54,7 @@ class Sub : public Node{
                 context.DeallocReg(rightOperand_->getId());
             }
 
-            context.DeallocReg(leftOperand_->getId());
+            context.dst = leftOperand_->getId();
         }
     }
 

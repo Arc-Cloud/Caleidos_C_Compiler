@@ -118,7 +118,7 @@ multiplicative_expression
 additive_expression
 	: multiplicative_expression {$$ = $1;}
 	| additive_expression '+' multiplicative_expression {$$ = new Add($1, $3);}
-	| additive_expression '-' multiplicative_expression
+	| additive_expression '-' multiplicative_expression {$$ = new Sub($1,$3);}
 	;
 
 shift_expression

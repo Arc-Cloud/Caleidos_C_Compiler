@@ -31,6 +31,10 @@ class Assign : public Node{
             stream << "lw " << dst << "," << context.MemoryMapping[value_ ->getId()] << "(sp)" << std::endl;
             stream << "sw " << dst << "," << context.MemoryMapping[identifier_ ->getId()] << "(sp)" << std::endl;
         }
+        else if (value_ -> getType() == "operator"){
+            value_ -> EmitRISC(stream, context);
+            stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std:: endl;
+        }
     };
 };
 

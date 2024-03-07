@@ -14,6 +14,7 @@
 #include "ast/ast_declaration.hpp"
 #include "ast/operators/ast_assign.hpp"
 #include "ast/operators/ast_addoperator.hpp"
+#include "ast/operators/ast_sub.hpp"
 extern Node *ParseAST(std::string file_name);
 
 #endif

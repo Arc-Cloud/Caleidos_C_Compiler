@@ -28,6 +28,9 @@
 #include "ast/operators/ast_sub.hpp"
 #include "ast/operators/ast_mul.hpp"
 #include "ast/operators/ast_div.hpp"
+#include "ast/operators/ast_bitwise_and.hpp"
+#include "ast/operators/ast_bitwise_or.hpp"
+#include "ast/operators/ast_bitwise_xor.hpp"
 
 // pointers
 

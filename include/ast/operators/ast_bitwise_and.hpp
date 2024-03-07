@@ -1,54 +1,50 @@
-#ifndef AST_DIV_HPP
-#define AST_DIV_HPP
+#ifndef AST_BITWISEAND_HPP
+#define AST_BITWISEAND_HPP
 
 #include "../ast_node.hpp"
 
-class Div : public Node {
-private:
+class BitwiseAnd : public Node{
+    private:
     Node* leftOperand_;
     Node* rightOperand_;
 
-public:
-    std::string getType() const override {
-        return "operator";
-    };
+    public:
 
-    Div(Node* left, Node* right): leftOperand_(left), rightOperand_(right) {};
+    BitwiseAnd(Node* left, Node* right): leftOperand_(left), rightOperand_(right){};
 
-    virtual ~Div() {
+    virtual ~BitwiseAnd() {
         delete leftOperand_;
         delete rightOperand_;
     }
 
-    void Print(std::ostream &stream) const override {};
+    std::string getType() const override{
+        return "operator";
+    };
+
+
+
+    virtual void Print(std::ostream &stream) const override {};
 
     void EmitRISC(std::ostream &stream, Context &context) const override {
 
         if (leftOperand_->getType() == "constant" && rightOperand_->getType() == "constant") {
             std::string resultReg = context.AllocReg("result");
-            int result = leftOperand_->getVal() / rightOperand_->getVal();
+            int result = leftOperand_->getVal() & rightOperand_->getVal();
             stream << "li " << resultReg << "," << result << std::endl;
             context.dst = "result";
         }
-        else if (leftOperand_->getType() == "constant" || rightOperand_->getType() == "constant"){
-
+        else if (leftOperand_->getType() == "constant" || rightOperand_->getType() == "constant") {
             if (leftOperand_->getType() == "constant") {
-                std::string tmp = context.AllocReg("tmp");
                 std::string dst = context.AllocReg(rightOperand_->getId());
-                stream << "li " << tmp << "," << leftOperand_->getVal() << std::endl;
                 stream << "lw " << dst << "," << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
-                stream << "div " << dst << "," << dst << "," << tmp << std::endl;
-                context.DeallocReg(leftOperand_->getId());
+                stream << "andi " << dst << "," << dst << "," << leftOperand_->getVal() << std::endl;
                 context.dst = rightOperand_->getId();
             }
             else {
                 std::string dst = context.AllocReg(leftOperand_->getId());
-                std::string tmp = context.AllocReg("tmp");
                 stream << "lw " << dst << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
-                stream << "li " << tmp << "," << rightOperand_->getVal() << std::endl;
-                stream << "div " << dst << "," << dst << "," << tmp << std::endl;
+                stream << "andi " << dst << "," << dst << "," << rightOperand_->getVal() << std::endl;
                 context.dst = leftOperand_->getId();
-                context.DeallocReg(rightOperand_->getId());
             }
         }
         else {
@@ -56,11 +52,12 @@ public:
             std::string tmp = context.AllocReg(rightOperand_->getId());
             stream << "lw " << dst << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
             stream << "lw " << tmp << "," << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
-            stream << "div " << dst << "," << dst << "," << tmp << std::endl;
+            stream << "and " << dst << "," << dst << "," << tmp << std::endl;
             context.dst = leftOperand_->getId();
             context.DeallocReg(rightOperand_->getId());
         }
-    }
-};
 
+    }
+
+};
 #endif

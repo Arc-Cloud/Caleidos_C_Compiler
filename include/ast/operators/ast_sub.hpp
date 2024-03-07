@@ -31,30 +31,32 @@ class Sub : public Node{
             stream << "li " << resultReg << ", " << result << std::endl;
             context.dst = "result";
         }
-        else if (leftOperand_->getType() == "constant") {
-            std::string leftReg = context.AllocReg(leftOperand_->getId());
-            std::string rightReg = context.AllocReg(rightOperand_->getId());
-            dst = leftReg;
-            src = rightReg;
-            stream << "li " << leftReg << ", " << leftOperand_->getVal() << std::endl;
-            stream << "sub " << dst << ", " << dst << ", " << src << std::endl;
+        else if (leftOperand_->getType() == "constant" || rightOperand_->getType() == "constant") {
+            if (leftOperand_->getType() == "constant") {
+            std::string dst = context.AllocReg(rightOperand_->getId());
+            std::string tmp = context.AllocReg("tmp");
+            stream << "li " << tmp << ", " << leftOperand_->getVal() << std::endl;
+            stream << "sub " << dst << ", " << tmp << ", " << dst << std::endl;
+            context.dst = rightOperand_->getId();
+            context.DeallocReg("tmp");
+            }
+            else{
+            std::string dst = context.AllocReg(leftOperand_->getId());
+            std::string tmp = context.AllocReg("tmp");
+            stream << "li " << tmp << ", " << rightOperand_->getVal() << std::endl;
+            stream << "sub " << dst << ", " << dst << ", " << tmp << std::endl;
             context.dst = leftOperand_->getId();
-            context.DeallocReg(rightOperand_->getId());
+            context.DeallocReg("tmp");
+            }
         }
         else {
-            context.AllocReg(leftOperand_->getId());
-            dst = context.bindings[leftOperand_->getId()];
-
-            if (rightOperand_->getType() == "constant") {
-                stream << "addi " << dst << ", " << dst << ", -" << rightOperand_->getVal() << std::endl;
-            } else {
-                context.AllocReg(rightOperand_->getId());
-                src = context.bindings[rightOperand_->getId()];
-                stream << "sub " << dst << ", " << dst << ", " << src << std::endl;
-                context.DeallocReg(rightOperand_->getId());
-            }
-
+            std::string dst = context.AllocReg(leftOperand_->getId());
+            std::string tmp = context.AllocReg(rightOperand_->getId());
+            stream << "lw " << dst << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
+            stream << "lw " << tmp << "," << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
+            stream << "sub" << dst << ", " << dst << ", " << tmp << std::endl;
             context.dst = leftOperand_->getId();
+            context.DeallocReg(rightOperand_->getId());
         }
     }
 

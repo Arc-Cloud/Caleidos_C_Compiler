@@ -37,7 +37,7 @@ class Add : public Node{
             if (leftOperand_->getType() == "constant") {
                 std::string dst = context.AllocReg(rightOperand_->getId());
                 stream << "lw " << dst << "," << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
-                stream << "addi " << dst << ", " << leftOperand_->getVal() << ", " << dst << std::endl;
+                stream << "addi " << dst << ", " << dst << ", " << leftOperand_->getVal() << std::endl;
                 context.dst = rightOperand_->getId();
             }
             else {

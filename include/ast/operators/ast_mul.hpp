@@ -37,7 +37,7 @@ public:
                 std::string dst = context.AllocReg(rightOperand_->getId());
                 stream << "li " << tmp << ", " << leftOperand_->getVal() << std::endl;
                 stream << "lw " << dst << "," << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
-                stream << "mul " << dst << ", " << tmp << ", " << dst << std::endl;
+                stream << "mul " << dst << ", " << dst << ", " << tmp << std::endl;
                 context.DeallocReg(leftOperand_->getId());
                 context.dst = rightOperand_->getId();
             }

@@ -35,17 +35,16 @@ class Sub : public Node{
             std::string tmp = context.AllocReg("tmp");
             std::string dst = context.AllocReg(rightOperand_->getId());
             stream << "li " << tmp << ", " << leftOperand_->getVal() << std::endl;
-            stream << "sub " << dst << ", " << tmp << ", " << dst << std::endl;
+            stream << "lw " << dst << "," << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
+            stream << "sub " << dst << ", " << dst << ", " << tmp << std::endl;
             context.DeallocReg("tmp");
             context.dst = rightOperand_->getId();
             }
             else{
             std::string dst = context.AllocReg(leftOperand_->getId());
-            std::string tmp = context.AllocReg("tmp");
-            stream << "li " << tmp << ", " << rightOperand_->getVal() << std::endl;
-            stream << "sub " << dst << ", " << dst << ", " << tmp << std::endl;
+            stream << "lw " << dst << ", " <<  context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
+            stream << "addi " << dst << ", " << dst << ", -" << rightOperand_->getVal() << std::endl;
             context.dst = leftOperand_->getId();
-            context.DeallocReg("tmp");
             }
         }
         else {

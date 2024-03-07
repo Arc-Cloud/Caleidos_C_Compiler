@@ -36,15 +36,16 @@ public:
                 std::string tmp = context.AllocReg("tmp");
                 std::string dst = context.AllocReg(rightOperand_->getId());
                 stream << "li " << tmp << ", " << leftOperand_->getVal() << std::endl;
+                stream << "lw " << dst << "," << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
                 stream << "mul " << dst << ", " << tmp << ", " << dst << std::endl;
                 context.DeallocReg(leftOperand_->getId());
                 context.dst = rightOperand_->getId();
             }
             else {
-                int constVal = rightOperand_->getVal();
                 std::string dst = context.AllocReg(leftOperand_->getId());
                 std::string tmp = context.AllocReg("tmp");
-                stream << "li " << tmp << ", " << constVal << std::endl;
+                stream << "lw " << dst << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
+                stream << "li " << tmp << ", " << rightOperand_->getVal() << std::endl;
                 stream << "mul " << dst << ", " << dst << ", " << tmp << std::endl;
                 context.dst = leftOperand_->getId();
                 context.DeallocReg(rightOperand_->getId());

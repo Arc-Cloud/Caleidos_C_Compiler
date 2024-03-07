@@ -23,35 +23,41 @@ public:
     void Print(std::ostream &stream) const override {};
 
     void EmitRISC(std::ostream &stream, Context &context) const override {
+
         if (leftOperand_->getType() == "constant" && rightOperand_->getType() == "constant") {
             std::string resultReg = context.AllocReg("result");
-            int resultVal = leftOperand_->getVal() * rightOperand_->getVal();
-            stream << "li " << resultReg << ", " << resultVal << std::endl;
+            int result = leftOperand_->getVal() * rightOperand_->getVal();
+            stream << "li " << resultReg << ", " << result << std::endl;
             context.dst = "result";
         }
-        else {
-            std::string leftReg, rightReg, dst;
+        else if (leftOperand_->getType() == "constant" || rightOperand_->getType() == "constant"){
 
             if (leftOperand_->getType() == "constant") {
-                int constVal = leftOperand_->getVal();
-                leftReg = context.AllocReg("tmp");
-                stream << "li " << leftReg << ", " << constVal << std::endl;
-                rightReg = context.AllocReg(rightOperand_->getId());
-            } else if (rightOperand_->getType() == "constant") {
-                int constVal = rightOperand_->getVal();
-                rightReg = context.AllocReg("tmp");
-                stream << "li " << rightReg << ", " << constVal << std::endl;
-                leftReg = context.AllocReg(leftOperand_->getId());
-            } else {
-                leftReg = context.AllocReg(leftOperand_->getId());
-                rightReg = context.AllocReg(rightOperand_->getId());
+                std::string tmp = context.AllocReg("tmp");
+                std::string dst = context.AllocReg(rightOperand_->getId());
+                stream << "li " << tmp << ", " << leftOperand_->getVal() << std::endl;
+                stream << "mul " << dst << ", " << tmp << ", " << dst << std::endl;
+                context.DeallocReg(leftOperand_->getId());
+                context.dst = rightOperand_->getId();
             }
-
-            dst = leftReg;
-            stream << "mul " << dst << ", " << leftReg << ", " << rightReg << std::endl;
-
-            context.DeallocReg(leftOperand_->getType() == "constant" ? "tmp" : leftOperand_->getId());
-            context.DeallocReg(rightOperand_->getType() == "constant" ? "tmp" : rightOperand_->getId());
+            else {
+                int constVal = rightOperand_->getVal();
+                std::string dst = context.AllocReg(leftOperand_->getId());
+                std::string tmp = context.AllocReg("tmp");
+                stream << "li " << tmp << ", " << constVal << std::endl;
+                stream << "mul " << dst << ", " << dst << ", " << tmp << std::endl;
+                context.dst = leftOperand_->getId();
+                context.DeallocReg(rightOperand_->getId());
+            }
+        }
+        else {
+            std::string dst = context.AllocReg(leftOperand_->getId());
+            std::string tmp = context.AllocReg(rightOperand_->getId());
+            stream << "lw " << dst << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
+            stream << "lw " << tmp << "," << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
+            stream << "mul " << dst << ", " << dst << ", " << tmp << std::endl;
+            context.dst = leftOperand_->getId();
+            context.DeallocReg(rightOperand_->getId());
         }
     }
 };

@@ -23,7 +23,6 @@ class Sub : public Node{
     virtual void Print(std::ostream &stream) const override {};
 
     void EmitRISC(std::ostream &stream, Context &context) const override {
-    std::string dst, src;
 
         if (leftOperand_->getType() == "constant" && rightOperand_->getType() == "constant") {
             std::string resultReg = context.AllocReg("result");
@@ -33,12 +32,12 @@ class Sub : public Node{
         }
         else if (leftOperand_->getType() == "constant" || rightOperand_->getType() == "constant") {
             if (leftOperand_->getType() == "constant") {
-            std::string dst = context.AllocReg(rightOperand_->getId());
             std::string tmp = context.AllocReg("tmp");
+            std::string dst = context.AllocReg(rightOperand_->getId());
             stream << "li " << tmp << ", " << leftOperand_->getVal() << std::endl;
             stream << "sub " << dst << ", " << tmp << ", " << dst << std::endl;
-            context.dst = rightOperand_->getId();
             context.DeallocReg("tmp");
+            context.dst = rightOperand_->getId();
             }
             else{
             std::string dst = context.AllocReg(leftOperand_->getId());

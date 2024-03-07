@@ -27,6 +27,7 @@
 #include "ast/operators/ast_add.hpp"
 #include "ast/operators/ast_sub.hpp"
 #include "ast/operators/ast_mul.hpp"
+#include "ast/operators/ast_div.hpp"
 
 // pointers
 

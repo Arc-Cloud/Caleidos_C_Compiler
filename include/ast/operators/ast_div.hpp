@@ -1,9 +1,9 @@
-#ifndef AST_MUL_HPP
-#define AST_MUL_HPP
+#ifndef AST_DIV_HPP
+#define AST_DIV_HPP
 
 #include "../ast_node.hpp"
 
-class Mul : public Node {
+class Div : public Node {
 private:
     Node* leftOperand_;
     Node* rightOperand_;
@@ -13,9 +13,9 @@ public:
         return "operator";
     };
 
-    Mul(Node* left, Node* right): leftOperand_(left), rightOperand_(right) {};
+    Div(Node* left, Node* right): leftOperand_(left), rightOperand_(right) {};
 
-    virtual ~Mul() {
+    virtual ~Div() {
         delete leftOperand_;
         delete rightOperand_;
     }
@@ -26,7 +26,7 @@ public:
 
         if (leftOperand_->getType() == "constant" && rightOperand_->getType() == "constant") {
             std::string resultReg = context.AllocReg("result");
-            int result = leftOperand_->getVal() * rightOperand_->getVal();
+            int result = leftOperand_->getVal() / rightOperand_->getVal();
             stream << "li " << resultReg << ", " << result << std::endl;
             context.dst = "result";
         }
@@ -37,16 +37,16 @@ public:
                 std::string dst = context.AllocReg(rightOperand_->getId());
                 stream << "li " << tmp << ", " << leftOperand_->getVal() << std::endl;
                 stream << "lw " << dst << ", " << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
-                stream << "mul " << dst << ", " << dst << ", " << tmp << std::endl;
+                stream << "div " << dst << ", " << dst << ", " << tmp << std::endl;
                 context.DeallocReg(leftOperand_->getId());
                 context.dst = rightOperand_->getId();
             }
             else {
                 std::string dst = context.AllocReg(leftOperand_->getId());
                 std::string tmp = context.AllocReg("tmp");
-                stream << "lw " << dst << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
+                stream << "lw " << dst << ", " << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
                 stream << "li " << tmp << ", " << rightOperand_->getVal() << std::endl;
-                stream << "mul " << dst << ", " << dst << ", " << tmp << std::endl;
+                stream << "div " << dst << ", " << dst << ", " << tmp << std::endl;
                 context.dst = leftOperand_->getId();
                 context.DeallocReg(rightOperand_->getId());
             }
@@ -56,7 +56,7 @@ public:
             std::string tmp = context.AllocReg(rightOperand_->getId());
             stream << "lw " << dst << ", " << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
             stream << "lw " << tmp << ", " << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
-            stream << "mul " << dst << ", " << dst << ", " << tmp << std::endl;
+            stream << "div " << dst << ", " << dst << ", " << tmp << std::endl;
             context.dst = leftOperand_->getId();
             context.DeallocReg(rightOperand_->getId());
         }

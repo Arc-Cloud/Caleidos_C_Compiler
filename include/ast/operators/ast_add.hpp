@@ -36,13 +36,13 @@ class Add : public Node{
         else if (leftOperand_->getType() == "constant" || rightOperand_->getType() == "constant") {
             if (leftOperand_->getType() == "constant") {
                 std::string dst = context.AllocReg(rightOperand_->getId());
-                stream << "lw " << dst << "," << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
+                stream << "lw " << dst << ", " << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
                 stream << "addi " << dst << ", " << dst << ", " << leftOperand_->getVal() << std::endl;
                 context.dst = rightOperand_->getId();
             }
             else {
                 std::string dst = context.AllocReg(leftOperand_->getId());
-                stream << "lw " << dst << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
+                stream << "lw " << dst << ", " << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
                 stream << "addi " << dst << ", " << dst << ", " << rightOperand_->getVal() << std::endl;
                 context.dst = leftOperand_->getId();
             }
@@ -50,8 +50,8 @@ class Add : public Node{
         else {
             std::string dst = context.AllocReg(leftOperand_->getId());
             std::string tmp = context.AllocReg(rightOperand_->getId());
-            stream << "lw " << dst << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
-            stream << "lw " << tmp << "," << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
+            stream << "lw " << dst << ", " << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
+            stream << "lw " << tmp << ", " << context.MemoryMapping[rightOperand_->getId()] << "(sp)" << std::endl;
             stream << "add " << dst << ", " << dst << ", " << tmp << std::endl;
             context.dst = leftOperand_->getId();
             context.DeallocReg(rightOperand_->getId());

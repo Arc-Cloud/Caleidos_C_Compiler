@@ -5,7 +5,7 @@
 #### Week 1: Project Setup, Initial Review and Initiation (26 February - 03 March)
 | Currently Working On | | Planning to Work On | | Implemented |
 |--------------------------|-|------------------------------|-|---------------------------------|
-| Add support for while loops | | N/A  | | Set up version control (Git repository) - 2 hours |
+| N/A | | N/A  | | Set up version control (Git repository) - 2 hours |
 | N/A | | N/A | | Set up time / project management - 4 hours |
 - Expected hours:
 - Aproximate hours worked:

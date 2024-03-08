@@ -32,11 +32,11 @@
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
-%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer parameter_list parameter_declaration
-%type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
+%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
+%type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list translation_unit declaration_list
+%type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -62,10 +62,7 @@ external_declaration
 	;
 
 function_definition
-	: declaration_specifiers declarator declaration_list compound_statement
-	| declaration_specifiers declarator compound_statement {$$ = new Function($1, $2, NULL, $3);}
-	| declarator declaration_list compound_statement
-	| declarator compound_statement
+	: declaration_specifiers declarator compound_statement {$$ = new Function($1, $2, $3);}
 	;
 
 primary_expression
@@ -113,15 +110,17 @@ cast_expression
 
 multiplicative_expression
 	: cast_expression {$$ = $1;}
-	| multiplicative_expression '*' cast_expression
-	| multiplicative_expression '/' cast_expression
+	| multiplicative_expression '*' cast_expression {$$ = new Mul($1, $3);}
+	| multiplicative_expression '/' cast_expression {$$ = new Div($1, $3);}
+	| multiplicative_expression '*' cast_expression {$$ = new Mul($1, $3);}
+	| multiplicative_expression '/' cast_expression {$$ = new Div($1, $3);}
 	| multiplicative_expression '%' cast_expression
 	;
 
 additive_expression
 	: multiplicative_expression {$$ = $1;}
-	| additive_expression '+' multiplicative_expression
-	| additive_expression '-' multiplicative_expression
+	| additive_expression '+' multiplicative_expression {$$ = new Add($1, $3);}
+	| additive_expression '-' multiplicative_expression {$$ = new Sub($1,$3);}
 	;
 
 shift_expression
@@ -132,31 +131,31 @@ shift_expression
 
 relational_expression
 	: shift_expression {$$ = $1;}
-	| relational_expression '<' shift_expression
-	| relational_expression '>' shift_expression
-	| relational_expression LE_OP shift_expression
-	| relational_expression GE_OP shift_expression
+	| relational_expression '<' shift_expression {$$ = new LessThan($1,$3);}
+	| relational_expression '>' shift_expression {$$ = new GreaterThan($1,$3);}
+	| relational_expression LE_OP shift_expression {$$ = new LessThanEqual($1,$3);}
+	| relational_expression GE_OP shift_expression {$$ = new GreaterThanEqual($1,$3);}
 	;
 
 equality_expression
 	: relational_expression {$$ = $1;}
-	| equality_expression EQ_OP relational_expression
-	| equality_expression NE_OP relational_expression
+	| equality_expression EQ_OP relational_expression {$$ = new Equal($1,$3);}
+	| equality_expression NE_OP relational_expression {$$ = new NotEqual($1,$3);}
 	;
 
 and_expression
 	: equality_expression {$$ = $1;}
-	| and_expression '&' equality_expression
+	| and_expression '&' equality_expression {$$ = new BitwiseAnd($1,$3);}
 	;
 
 exclusive_or_expression
 	: and_expression {$$ = $1;}
-	| exclusive_or_expression '^' and_expression
+	| exclusive_or_expression '^' and_expression {$$ = new BitwiseXor($1,$3);}
 	;
 
 inclusive_or_expression
 	: exclusive_or_expression {$$ = $1;}
-	| inclusive_or_expression '|' exclusive_or_expression
+	| inclusive_or_expression '|' exclusive_or_expression {$$ = new BitwiseOr($1,$3);}
 	;
 
 logical_and_expression
@@ -292,9 +291,9 @@ direct_declarator
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_list ')'
+	| direct_declarator '(' parameter_list ')' {$$ = new FunctionDeclarator($1, $3);}
 	| direct_declarator '(' identifier_list ')'
-	| direct_declarator '(' ')' {$$ = new FunctionDeclarator($1);}
+	| direct_declarator '(' ')' {$$ = new FunctionDeclarator($1, NULL);}
 	;
 
 pointer
@@ -303,14 +302,14 @@ pointer
 	;
 
 parameter_list
-	: parameter_declaration
-	| parameter_list ',' parameter_declaration
+	: parameter_declaration {$$ = new NodeList($1);}
+	| parameter_list ',' parameter_declaration {$1 -> PushBack($3); $$ = $1;}
 	;
 
 parameter_declaration
-	: declaration_specifiers declarator
+	: declaration_specifiers declarator {$$ = new Declaration($1,$2);}
 	| declaration_specifiers abstract_declarator
-	| declaration_specifiers
+	| declaration_specifiers // not needed i guess
 	;
 identifier_list
 	: IDENTIFIER
@@ -340,14 +339,14 @@ direct_abstract_declarator
 	;
 
 initializer
-	: assignment_expression
+	: assignment_expression {$$ = $1;}
 	| '{' initializer_list '}'
 	| '{' initializer_list ',' '}'
 	;
 
 initializer_list
-	: initializer
-	| initializer_list ',' initializer
+	: initializer {$$ = new NodeList($1);}
+	| initializer_list ',' initializer {$1 -> PushBack($3); $$ = $1;}
 	;
 
 statement
@@ -367,18 +366,15 @@ labeled_statement
 
 compound_statement
 	: '{' '}' {
-		// TODO: correct this
 		$$ = new CompoundStat(NULL, NULL);
 	}
 	| '{' statement_list '}' {
 		$$ = $2;
 	}
 	| '{' declaration_list '}' {
-		// TODO: correct this
 		$$ = new CompoundStat($2, NULL);
 	}
 	| '{' declaration_list statement_list '}'  {
-		// TODO: correct this
 		$$ = new CompoundStat($2, $3);
 	}
 	;
@@ -401,7 +397,7 @@ expression_statement
 
 selection_statement
 	: IF '(' expression ')' statement
-	| IF '(' expression ')' statement ELSE statement
+	| IF '(' expression ')' statement ELSE statement {$$ = new IfElse($3, $5,$7);}
 	| SWITCH '(' expression ')' statement
 	;
 

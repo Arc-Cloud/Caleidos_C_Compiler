@@ -92,7 +92,7 @@
 |----------|-----------|:--------:|
 | Constant Initialiser | `constant_initialiser.c` | `[ x ]` |
 | Dual Var | `dual_var.c` | `[ x ]` |
-| Expression Initialiser | `expression_initialiser.c` | `[ ]` |
+| Expression Initialiser | `expression_initialiser.c` | `[ x ]` |
 | Identity | `identity.c` | `[ ]` |
 | Scoped Var | `scoped_var.c` | `[ ]` |
 | Single Var | `single_var.c` | `[ x ]` |
@@ -101,7 +101,7 @@
 
 | Category | Test Case | Checkbox |
 |----------|-----------|:--------:|
-| Enum1 | `enum1.c` | `[ ]` |
+| Enum1 | `enum1.c` | `[ x ?]` |
 | Enum2 | `enum2.c` | `[ ]` |
 | Switch1 | `switch1.c` | `[ ]` |
 | Switch2 | `switch2.c` | `[ ]` |

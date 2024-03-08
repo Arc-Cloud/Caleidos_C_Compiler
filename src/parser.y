@@ -398,7 +398,7 @@ expression_statement
 
 selection_statement
 	: IF '(' expression ')' statement
-	| IF '(' expression ')' statement ELSE statement
+	| IF '(' expression ')' statement ELSE statement {$$ = new IfElse($3, $5,$7);}
 	| SWITCH '(' expression ')' statement
 	;
 

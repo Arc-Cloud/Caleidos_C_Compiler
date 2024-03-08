@@ -24,11 +24,11 @@
 | For One | `for_one.c` | `[ ]` |
 | For Zero V1 | `for_zero_v1.c` | `[ ]` |
 | For Zero V2 | `for_zero_v2.c` | `[ ]` |
-| If Else False | `if_else_false.c` | `[ ]` |
-| If Else True | `if_else_true.c` | `[ ]` |
+| If Else False | `if_else_false.c` | `[ x ]` |
+| If Else True | `if_else_true.c` | `[ x ]` |
 | If False | `if_false.c` | `[ ]` |
 | If True | `if_true.c` | `[ ]` |
-| Sequence | `sequence.c` | `[ ]` |
+| Sequence | `sequence.c` | `[ x ]` |
 | While Multiple | `while_multiple.c` | `[ ]` |
 | While Once | `while_once.c` | `[ ]` |
 | While Zero | `while_zero.c` | `[ ]` |
@@ -38,8 +38,8 @@
 
 | Category | Test Case | Checkbox |
 |----------|-----------|:--------:|
-| Test ADD0 | `test_ADD0.c` | `[ ]` |
-| Test ADD1 | `test_ADD1.c` | `[ ]` |
+| Test ADD0 | `test_ADD0.c` | `[ x ]` |
+| Test ADD1 | `test_ADD1.c` | `[ x ]` |
 | Test CALL | `test_CALL.c` | `[ ]` |
 | Test LOCAL | `test_LOCAL.c` | `[ x ]` |
 
@@ -73,18 +73,18 @@
 
 | Category | Test Case | Checkbox |
 |----------|-----------|:--------:|
-| Add | `add.c` | `[ ]` |
-| Bitwise And | `bitwise_and.c` | `[ ]` |
-| Bitwise Or | `bitwise_or.c` | `[ ]` |
-| Bitwise Xor | `bitwise_xor.c` | `[ ]` |
-| Div | `div.c` | `[ ]` |
-| Equal | `equal.c` | `[ ]` |
-| Less Than | `less_than.c` | `[ ]` |
-| Less Than Equal | `less_than_equal.c` | `[ ]` |
+| Add | `add.c` | `[ x ]` |
+| Bitwise And | `bitwise_and.c` | `[ x ]` |
+| Bitwise Or | `bitwise_or.c` | `[ x ]` |
+| Bitwise Xor | `bitwise_xor.c` | `[ x ]` |
+| Div | `div.c` | `[ x ]` |
+| Equal | `equal.c` | `[ x ]` |
+| Less Than | `less_than.c` | `[ x ]` |
+| Less Than Equal | `less_than_equal.c` | `[ x ]` |
 | Logical And | `logical_and.c` | `[ ]` |
 | Logical Or | `logical_or.c` | `[ ]` |
-| Mul | `mul.c` | `[ ]` |
-| Sub | `sub.c` | `[ ]` |
+| Mul | `mul.c` | `[ x ]` |
+| Sub | `sub.c` | `[ x ]` |
 
 ### Local Variable Test Cases
 
@@ -93,7 +93,7 @@
 | Constant Initialiser | `constant_initialiser.c` | `[ x ]` |
 | Dual Var | `dual_var.c` | `[ x ]` |
 | Expression Initialiser | `expression_initialiser.c` | `[ x ]` |
-| Identity | `identity.c` | `[ ]` |
+| Identity | `identity.c` | `[ x ]` |
 | Scoped Var | `scoped_var.c` | `[ ]` |
 | Single Var | `single_var.c` | `[ x ]` |
 
@@ -101,7 +101,7 @@
 
 | Category | Test Case | Checkbox |
 |----------|-----------|:--------:|
-| Enum1 | `enum1.c` | `[ x ?]` |
+| Enum1 | `enum1.c` | `[ x ]` |
 | Enum2 | `enum2.c` | `[ ]` |
 | Switch1 | `switch1.c` | `[ ]` |
 | Switch2 | `switch2.c` | `[ ]` |

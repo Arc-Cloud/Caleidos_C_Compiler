@@ -11,18 +11,33 @@ class Context
 {
 protected:
     int Reg[32] = {
-        1,                            // x0 zero
-        1,                            // x1 ra return address
-        1,                            // x2 sp stack pointer
-        1,                            // x3 gp global pointer
-        1,                            // x4 tp thread pointer
-        0, 0, 0,                      // x5, x6, x7 temporary registers
-        1,                            // x8 s0 frame pointer
-        1,                            // x9 s1 saved register 1
-        1, 1,                         // x10,x11 a0, a1 return values
-        0, 0, 0, 0, 0, 0,             // a2 -a7  function registers (cn use for anything really)
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // s2 - s11 saved registers
-        0, 0, 0, 0                    // t3 - t6 temporary registers.
+        1,                            // x0         zero
+        1,                            // x1         ra          return address
+        1,                            // x2         sp          stack pointer
+        1,                            // x3         gp          global pointer
+        1,                            // x4         tp          thread pointer
+        0, 0, 0,                      // x5 - x7    t0 - t2     temporary registers
+        1,                            // x8         s0          frame pointer
+        1,                            // x9         s1          saved register 1
+        1, 1,                         // x10,x11    a0, a1      return values
+        0, 0, 0, 0, 0, 0,             // x12 - x17  a2 - a7     function registers (cn use for anything really)
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // x18 - x27  s2 - s11    saved registers
+        0, 0, 0, 0                    // x28 - x31  t3 - t6     temporary registers.
+    };
+
+    int FloatReg[32] = {
+        1,                            // f0         zero
+        1,                            // f1         ra          return address
+        1,                            // f2         sp          stack pointer
+        1,                            // f3         gp          global pointer
+        1,                            // f4         tp          thread pointer
+        0, 0, 0,                      // f5 - f7    t0 - t2     temporary registers
+        1,                            // f8         s0          frame pointer
+        1,                            // f9         s1          saved register 1
+        1, 1,                         // f10,f11    a0, a1      return values
+        0, 0, 0, 0, 0, 0,             // f12 - f17  a2 - a7     function registers (cn use for anything really)
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // f18 - f27  s2 - s11    saved registers
+        0, 0, 0, 0                    // f28 - f31  t3 - t6     temporary registers.
     };
 
     std::string InstType; // to inform the next node the type of operation currently doing

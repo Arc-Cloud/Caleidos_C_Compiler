@@ -4,7 +4,7 @@
 - Confirm repo structure
 
 ### **Review**
-- a
+- good progress on forming understanding and we have decided on our repo structure and workflow
 
 ## Lexer and Parser Development
 
@@ -14,12 +14,17 @@
 - Complete current understanding of lexer and parser
 
 ### **Review**
-- a
+- have started to correctly integrate rest of the compiler with the parser and we are relatively happy with our understanding of it
 
-## Basic Language Constructs
+## Basic Features
 
 ### **Start of the Week**
 - Aim to implement all basic features
 
 ### **Review**
-- a
+- Haven't quite implemented all basic features but we see a clear path in how to do so
+
+
+## Overall Progress
+
+*Test Cases Passed: 11*

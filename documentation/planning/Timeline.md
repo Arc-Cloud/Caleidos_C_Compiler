@@ -7,29 +7,28 @@
 |----------|------|:--------:|
 | Setup | Set up version control (Git repository). | 26/02/2024 [ x ] |
 |  | Configure development environment with necessary tools. | 27/02/2024 [ x ] |
-|  | Conduct review of the C90 and RISC-V specifications. | [ ] |
-|  | Plan project structure and outline architecture for the compiler. | [ ] |
-| Lexer and Parser Development | Start development of lexer and parser. | [ ] |
-| Basic Language Constructs | Support for parsing a single function with no arguments. | [ ] |
-|  | Implement variable declarations and support for the int type. | [ ] |
-|  | Code generation for arithmetic and logical expressions. | [ ] |
-|  | Implement if-then-else statements. | [ ] |
+|  | Conduct review of the C90 and RISC-V specifications. | [ x ] |
+|  | Plan project structure and outline architecture for the compiler. | [ x ] |
+| Lexer and Parser Development | form understanding lexer and parser. | [ x ] |
+| Basic Language Constructs | Support for parsing a single function with no arguments. | [ x ] |
+|  | Implement variable declarations and support for the int type. | [ x ] |
+|  | Code generation for arithmetic and logical expressions. | [ x ] |
+|  | Implement if-then-else statements. | [ x ] |
 |  | Add support for while loops. | [ ] |
 
 ### Week 2: Complete Basic and Start Intermediate Features Implementation (05 March - 11 March)
 
 | Category | Task | Completed |
 |----------|------|:--------:|
-| Lexer and Parser Development | Refine lexer and parser based on initial implementation. | [ ] |
+| Parser Development | integrate code with the parser | [ x ] |
 | Basic Language Constructs | Continue development and testing of basic constructs. | [ ] |
 | Intermediate Features | Support files with multiple functions and function calls. | [ ] |
-|  | Implement functions with up to 8 parameters. | [ ] |
+|  | Implement functions with up to 8 parameters. | [ x ] |
 |  | Add support for for loops and both global and local arrays. | [ ] |
 |  | Implement array initialization and element manipulation. | [ ] |
 |  | Support for recursive function calls, enum, and switch statements. | [ ] |
 |  | Implement break and continue keywords. | [ ] |
-| Testing | Unit tests for lexer and parser. | [ ] |
-|  | Unit tests for each implemented feature. | [ ] |
+| Testing | Unit tests for each implemented feature. | [ ] |
 
 ### Week 3: Intermediate Features and Start of Advanced Features (12 March - 18 March)
 

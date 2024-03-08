@@ -111,7 +111,7 @@ cast_expression
 multiplicative_expression
 	: cast_expression {$$ = $1;}
 	| multiplicative_expression '*' cast_expression {$$ = new Mul($1, $3);}
-	| multiplicative_expression '/' cast_expression
+	| multiplicative_expression '/' cast_expression {$$ = new Div($1, $3);}
 	| multiplicative_expression '%' cast_expression
 	;
 
@@ -129,9 +129,9 @@ shift_expression
 
 relational_expression
 	: shift_expression {$$ = $1;}
-	| relational_expression '<' shift_expression
+	| relational_expression '<' shift_expression {$$ = new LessThan($1, $3);}
 	| relational_expression '>' shift_expression
-	| relational_expression LE_OP shift_expression
+	| relational_expression LE_OP shift_expression {$$ = new LessThanEqual($1,$3);}
 	| relational_expression GE_OP shift_expression
 	;
 
@@ -148,12 +148,12 @@ and_expression
 
 exclusive_or_expression
 	: and_expression {$$ = $1;}
-	| exclusive_or_expression '^' and_expression
+	| exclusive_or_expression '^' and_expression {$$ = new BitwiseXor($1, $3);}
 	;
 
 inclusive_or_expression
 	: exclusive_or_expression {$$ = $1;}
-	| inclusive_or_expression '|' exclusive_or_expression
+	| inclusive_or_expression '|' exclusive_or_expression {$$ = new BitwiseOr($1, $3);}
 	;
 
 logical_and_expression

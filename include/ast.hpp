@@ -18,6 +18,11 @@
 #include "ast/operators/ast_mul.hpp"
 #include "ast/operators/ast_equal.hpp"
 #include "ast/operators/ast_bitwise_and.hpp"
+#include "ast/operators/ast_bitwise_or.hpp"
+#include "ast/operators/ast_bitwise_xor.hpp"
+#include "ast/operators/ast_div.hpp"
+#include"ast/operators/ast_less_than.hpp"
+#include "ast/operators/ast_less_than_equal.hpp"
 extern Node *ParseAST(std::string file_name);
 
 #endif

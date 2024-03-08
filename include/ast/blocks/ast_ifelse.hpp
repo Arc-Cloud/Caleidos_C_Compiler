@@ -28,7 +28,7 @@ class IfElse: public Node{
             }
         }
 
-        if (expr -> getType() == "variable"){
+        else if (expr -> getType() == "variable"){
             std:: string dst = context.AllocReg(expr->getId());
             std:: string label1 = context.makeName("L");
             std::string label2 = context.makeName("L");
@@ -41,6 +41,19 @@ class IfElse: public Node{
             stream << label2 << ":" << std::endl;
 
         }
+        else if (expr -> getType() == "operator"){
+            expr -> EmitRISC(stream, context);
+            std:: string dst = context.bindings[context.dst];
+            std:: string label1 = context.makeName("L");
+            std::string label2 = context.makeName("L");
+            stream << "beq " << dst << ",zero," << label1 << std::endl;
+            context.DeallocReg(context.dst);
+            statement -> EmitRISC(stream,context);
+            stream << "j " << label2 <<  std::endl;
+            stream << label1 <<":" << std::endl;
+            statement1 -> EmitRISC(stream, context);
+            stream << label2 << ":" << std::endl;
+        } 
 
     }
 

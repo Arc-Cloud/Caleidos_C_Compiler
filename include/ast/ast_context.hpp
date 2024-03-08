@@ -41,6 +41,7 @@ protected:
     };
 
     std::string InstType; // to inform the next node the type of operation currently doing
+    int makeNameUnq = 0;
 public:
     std:: string dst;
     int ParamCounter = 0;
@@ -54,6 +55,11 @@ public:
         return InstType;
     }
     ~Context(){};
+
+    std::string makeName(std::string base)
+    {
+    return "." + base + std::to_string(makeNameUnq++);
+    }
 
 
      /*
@@ -114,6 +120,8 @@ public:
         LastStack = default_mem;
         return default_mem;
     }
+
+
 };
 
 #endif

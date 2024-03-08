@@ -28,6 +28,20 @@ class IfElse: public Node{
             }
         }
 
+        if (expr -> getType() == "variable"){
+            std:: string dst = context.AllocReg(expr->getId());
+            std:: string label1 = context.makeName("L");
+            std::string label2 = context.makeName("L");
+            stream << "lw " << dst << "," << context.MemoryMapping[expr->getId()] << "(sp)" << std::endl;
+            stream << "bne "<< dst << ",zero," << label1 << std::endl;
+            statement ->EmitRISC(stream,context);
+            stream << "j ";
+            stream << label1 << ":" << std::endl;
+            statement1 ->EmitRISC(stream,context);
+            stream << label2 << ":" << std::endl;
+
+        }
+
     }
 
 };

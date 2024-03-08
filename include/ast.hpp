@@ -34,6 +34,9 @@
 #include "ast/operators/ast_equal.hpp"
 #include "ast/operators/ast_less_than.hpp"
 #include "ast/operators/ast_less_than_equal.hpp"
+#include "ast/operators/ast_greater_than.hpp"
+#include "ast/operators/ast_greater_than_equal.hpp"
+#include "ast/operators/ast_not_equal.hpp"
 // pointers
 
 // primitives

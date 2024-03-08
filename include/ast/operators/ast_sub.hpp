@@ -48,6 +48,12 @@ class Sub : public Node{
             }
         }
         else {
+            if (leftOperand_ -> getId() == rightOperand_ -> getId()){
+                std:: string res = context.AllocReg(leftOperand_->getId());
+                stream << "mv " << res << ",zero" << std::endl;
+                context.dst = leftOperand_->getId(); 
+            }
+            else{
             std::string dst = context.AllocReg(leftOperand_->getId());
             std::string tmp = context.AllocReg(rightOperand_->getId());
             stream << "lw " << dst << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
@@ -55,6 +61,7 @@ class Sub : public Node{
             stream << "sub " << dst << "," << dst << "," << tmp << std::endl;
             context.dst = leftOperand_->getId();
             context.DeallocReg(rightOperand_->getId());
+            }
         }
     }
 

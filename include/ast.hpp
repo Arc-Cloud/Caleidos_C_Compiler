@@ -14,6 +14,7 @@
 
 // blocks
 #include "ast/blocks/ast_ifelse.hpp"
+#include "ast/blocks/ast_while.hpp"
 
 // functions
 #include "ast/functions/ast_function.hpp"

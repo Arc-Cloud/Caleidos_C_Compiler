@@ -112,6 +112,8 @@ multiplicative_expression
 	: cast_expression {$$ = $1;}
 	| multiplicative_expression '*' cast_expression {$$ = new Mul($1, $3);}
 	| multiplicative_expression '/' cast_expression {$$ = new Div($1, $3);}
+	| multiplicative_expression '*' cast_expression {$$ = new Mul($1, $3);}
+	| multiplicative_expression '/' cast_expression {$$ = new Div($1, $3);}
 	| multiplicative_expression '%' cast_expression
 	;
 
@@ -395,7 +397,7 @@ expression_statement
 
 selection_statement
 	: IF '(' expression ')' statement
-	| IF '(' expression ')' statement ELSE statement
+	| IF '(' expression ')' statement ELSE statement {$$ = new IfElse($3, $5,$7);}
 	| SWITCH '(' expression ')' statement
 	;
 

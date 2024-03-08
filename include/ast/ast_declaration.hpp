@@ -25,7 +25,7 @@ public:
         stream << "sw ra," << std::to_string(context.AllocateStack("ra")) <<"(sp)" << std::endl;
         stream <<  "sw s0," << std::to_string(context.AllocateStack("s0")) <<"(sp)" << std:: endl;
         stream << "addi s0,sp," << context.default_mem << std:: endl;
-        if (parameter != NULL){
+        if (parameter != NULL && parameter ->getSize() < 9){
             context.WriteInstType("params");
             parameter -> EmitRISC(stream, context);
         }

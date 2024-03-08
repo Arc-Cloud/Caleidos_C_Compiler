@@ -24,11 +24,13 @@ class Function: public Node {
                 if (compound_statement_ != nullptr){
                 compound_statement_ -> EmitRISC(stream,context);
                 }
-                stream << "lw s0,"<< std::to_string(context.MemoryMapping["s0"])<< "(sp)" << std:: endl;
-                stream << "lw ra," << std:: to_string(context.MemoryMapping["ra"]) << "(sp)" << std::endl;
-                stream << "addi sp,sp," << context.default_mem << std::endl;
 
-                stream << "ret" << std::endl;
+
+                // stream << "lw s0,"<< std::to_string(context.MemoryMapping["s0"])<< "(sp)" << std:: endl;
+                // stream << "lw ra," << std:: to_string(context.MemoryMapping["ra"]) << "(sp)" << std::endl;
+                // stream << "addi sp,sp," << context.default_mem << std::endl;
+
+                // stream << "ret" << std::endl;
 
         }
 

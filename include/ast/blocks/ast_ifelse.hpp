@@ -34,6 +34,7 @@ class IfElse: public Node{
             std::string label2 = context.makeName("L");
             stream << "lw " << dst << "," << context.MemoryMapping[expr->getId()] << "(sp)" << std::endl;
             stream << "beq "<< dst << ",zero," << label1 << std::endl;
+            context.DeallocReg(expr->getId());
             statement ->EmitRISC(stream,context);
             stream << "j " << label2 << std::endl;
             stream << label1 << ":" << std::endl;

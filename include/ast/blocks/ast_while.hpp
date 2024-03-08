@@ -23,15 +23,28 @@ class While: public Node{
             }
         }
         else if (expr ->getType() == "variable"){
-            std:: string dst = context.AllocReg(expr->getId());
             std:: string label1 = context.makeName("L");
             std::string label2 = context.makeName("L");
             stream << "j " << label1 << std::endl;
             stream << label2 << ":" << std::endl;
             statement -> EmitRISC(stream, context);
             stream << label1 << ":" << std::endl;
+            std:: string dst = context.AllocReg(expr->getId());
             stream << "lw " << dst << "," << context.MemoryMapping[expr->getId()] << "(sp)" << std::endl;
             stream << "bne " << dst << ",zero," << label2 << std::endl; 
+            context.DeallocReg(expr->getId());
+            // theres a mistake here with the dealloc
+        }
+        else if (expr -> getType() == "operator"){
+            std:: string label1 = context.makeName("L");
+            std::string label2 = context.makeName("L");
+            stream << "j " << label1 << std::endl;
+            stream << label2 << ":" << std::endl;
+            statement -> EmitRISC(stream, context);
+            stream << label1 << ":" << std:: endl;
+            expr -> EmitRISC(stream, context);
+            stream << "bne " << context.bindings[context.dst] << ",zero," << label2 << std::endl;
+            context.DeallocReg(context.dst);
         }
 
     }

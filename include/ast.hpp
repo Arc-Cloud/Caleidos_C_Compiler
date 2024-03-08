@@ -13,6 +13,7 @@
 // arrays
 
 // blocks
+#include "ast/blocks/ast_ifelse.hpp"
 
 // functions
 #include "ast/functions/ast_function.hpp"

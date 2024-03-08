@@ -56,7 +56,6 @@ class Equal: public Node{
             stream << "seqz " << right << "," << right << std::endl;
             stream << "andi " << right << "," << right << ",0xff" << std::endl;
             context.dst = rightOperand_->getId();
-
         }
     }
 

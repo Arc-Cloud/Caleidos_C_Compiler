@@ -143,7 +143,7 @@ equality_expression
 
 and_expression
 	: equality_expression {$$ = $1;}
-	| and_expression '&' equality_expression
+	| and_expression '&' equality_expression {$$ = new BitwiseAnd($1, $3);}
 	;
 
 exclusive_or_expression

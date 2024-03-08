@@ -84,6 +84,13 @@ class Add : public Node{
             }
         }
         else {
+             if (leftOperand_-> getId() == rightOperand_ ->getId()){
+                std:: string res = context.AllocReg(leftOperand_->getId());
+                stream << "lw " << res << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" <<std::endl;
+                stream << "slli " << res << ","<< res << ",1" << std::endl;
+                context.dst = leftOperand_->getId();
+            }
+            else{
             std::string dst = context.AllocReg(leftOperand_->getId());
             std::string tmp = context.AllocReg(rightOperand_->getId());
             stream << "lw " << dst << "," << context.MemoryMapping[leftOperand_->getId()] << "(sp)" << std::endl;
@@ -91,6 +98,7 @@ class Add : public Node{
             stream << "add " << dst << ", " << dst << ", " << tmp << std::endl;
             context.dst = leftOperand_->getId();
             context.DeallocReg(rightOperand_->getId());
+            }
         }
 
     }

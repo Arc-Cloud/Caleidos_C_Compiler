@@ -21,6 +21,7 @@
 
 // jumps
 #include "ast/jumps/ast_return.hpp"
+#include "ast/functions/ast_call.hpp"
 
 // keywords
 

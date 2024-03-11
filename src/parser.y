@@ -76,7 +76,7 @@ primary_expression
 postfix_expression
 	: primary_expression {$$ = $1;}
 	| postfix_expression '[' expression ']'
-	| postfix_expression '(' ')'
+	| postfix_expression '(' ')' {$$ = new Call($1);}
 	| postfix_expression '(' argument_expression_list ')'
 	| postfix_expression '.' IDENTIFIER
 	| postfix_expression PTR_OP IDENTIFIER

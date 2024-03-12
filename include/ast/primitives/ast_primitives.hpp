@@ -28,8 +28,11 @@ public:
     }
 
     void EmitRISC(std::ostream &stream, Context &context) const override
-    {
-        stream << "hi";
+    {   
+        std:: string variable_ = context.makeName("V");
+        std:: string res = context.AllocReg(variable_);
+        stream << "lw " <<  res  << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
+        context.dst = variable_;
     }
 
     void Print(std::ostream &stream) const override{};
@@ -44,8 +47,11 @@ public:
     IntConstant(int value) : value_(value){};
 
     void EmitRISC(std::ostream &stream, Context &context) const override
-    {
-        stream << value_;
+    {   
+        std:: string constant = context.makeName("I");
+        std:: string res = context.AllocReg(constant);
+        stream << "li " << res << "," << value_ << std::endl;
+        context.dst = constant;
     }
     void Print(std::ostream &stream) const override{};
 

@@ -43,7 +43,7 @@ protected:
     std::string InstType; // to inform the next node the type of operation currently doing
     int makeNameUnq = 0;
 public:
-    std:: string dst;
+    std:: string dst;// for this case use the dst to send the register instead
     int ParamCounter = 0;
     Context(){}
     void WriteInstType(std::string input)

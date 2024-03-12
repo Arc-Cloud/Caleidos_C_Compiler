@@ -47,11 +47,15 @@ public:
     IntConstant(int value) : value_(value){};
 
     void EmitRISC(std::ostream &stream, Context &context) const override
-    {   
+    {   if (context.ReadInstType() == "call"){
+            stream << "li a" << context.ParamCounter++ << "," << value_<< std::endl;
+        }
+        else{
         std:: string constant = context.makeName("I");
         std:: string res = context.AllocReg(constant);
         stream << "li " << res << "," << value_ << std::endl;
         context.dst = constant;
+        }
     }
     void Print(std::ostream &stream) const override{};
 

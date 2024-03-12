@@ -31,6 +31,9 @@ public:
             stream << "mv a0," << context.bindings[context.dst] << std::endl;
             context.DeallocReg(context.dst);
         }
+        else if (ret -> getType() == "call"){
+            ret -> EmitRISC(stream, context);
+        }
     }
     virtual void Print(std::ostream &stream) const override{};
 };

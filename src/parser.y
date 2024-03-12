@@ -76,7 +76,7 @@ primary_expression
 postfix_expression
 	: primary_expression {$$ = $1;}
 	| postfix_expression '[' expression ']'
-	| postfix_expression '(' ')'
+	| postfix_expression '(' ')' {$$ = new Call($1);}
 	| postfix_expression '(' argument_expression_list ')'
 	| postfix_expression '.' IDENTIFIER
 	| postfix_expression PTR_OP IDENTIFIER
@@ -95,7 +95,7 @@ unary_expression
 	| DEC_OP unary_expression
 	| '&' unary_expression
 	| '*' unary_expression
-  	| '+' unary_expression
+  	| '+' unary_expression {$$ = $2;}
 	| '-' unary_expression
 	| '~' unary_expression
 	| '!' unary_expression
@@ -119,7 +119,7 @@ multiplicative_expression
 
 additive_expression
 	: multiplicative_expression {$$ = $1;}
-	| additive_expression '+' multiplicative_expression {$$ = new Add($1, $3);}
+	| additive_expression '+' multiplicative_expression {$$ = new AddOp($1, $3);}
 	| additive_expression '-' multiplicative_expression {$$ = new Sub($1,$3);}
 	;
 

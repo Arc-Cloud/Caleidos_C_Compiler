@@ -21,6 +21,7 @@
 
 // jumps
 #include "ast/jumps/ast_return.hpp"
+#include "ast/functions/ast_call.hpp"
 
 // keywords
 
@@ -39,6 +40,7 @@
 #include "ast/operators/ast_greater_than.hpp"
 #include "ast/operators/ast_greater_than_equal.hpp"
 #include "ast/operators/ast_not_equal.hpp"
+#include "ast/operators/ast_AddOp.hpp"
 // pointers
 
 // primitives

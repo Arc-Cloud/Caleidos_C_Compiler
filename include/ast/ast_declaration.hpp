@@ -28,6 +28,7 @@ public:
         if (parameter != NULL && parameter ->getSize() < 9){
             context.WriteInstType("params");
             parameter -> EmitRISC(stream, context);
+            context.ParamCounter = 0; // pay attention to this;
         }
     };
     void Print(std::ostream &stream) const override{};

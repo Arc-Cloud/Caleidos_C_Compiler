@@ -1,6 +1,6 @@
-int f(int x, int y)
+int f(int x, int y, int z)
 {
-    int z;
-    z=x-y;
-    return z;
+    int a;
+    a=x-y-z;
+    return a;
 }

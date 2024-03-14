@@ -1,5 +1,5 @@
-#ifndef AST_ASSIGN_HPP
-#define AST_ASSIGN_HPP
+#ifndef AST_ASSIGNMENTOP_HPP
+#define AST_ASSIGNMENTOP_HPP
 
 #include "../ast_node.hpp"
 

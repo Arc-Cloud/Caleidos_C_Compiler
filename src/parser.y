@@ -158,12 +158,12 @@ inclusive_or_expression
 
 logical_and_expression
 	: inclusive_or_expression {$$ = $1;}
-	| logical_and_expression AND_OP inclusive_or_expression {$$ = new LogicalAnd($1,$3);}
+	| logical_and_expression AND_OP inclusive_or_expression {$$ = new LogicalAndOp($1,$3);}
 	;
 
 logical_or_expression
 	: logical_and_expression {$$ = $1;}
-	| logical_or_expression OR_OP logical_and_expression {$$ = new LogicalOr($1,$3);}
+	| logical_or_expression OR_OP logical_and_expression {$$ = new LogicalOrOp($1,$3);}
 	;
 
 conditional_expression

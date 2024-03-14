@@ -1,7 +1,7 @@
 
-int f(int x, int y);
+int f(int x, int y, int z);
 
 int main()
 {
-    return !(f(10,20)==-10);
+    return !(f(10,20,-20)==8);
 }

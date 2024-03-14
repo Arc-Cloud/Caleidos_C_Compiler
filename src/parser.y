@@ -27,7 +27,7 @@
 %token STRUCT UNION ENUM ELLIPSIS
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
-%type <node> external_declaration function_definition primary_expression postfix_expression 
+%type <node> external_declaration function_definition primary_expression postfix_expression
 %type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
@@ -110,17 +110,15 @@ cast_expression
 
 multiplicative_expression
 	: cast_expression {$$ = $1;}
-	| multiplicative_expression '*' cast_expression {$$ = new Mul($1, $3);}
-	| multiplicative_expression '/' cast_expression {$$ = new Div($1, $3);}
-	| multiplicative_expression '*' cast_expression {$$ = new Mul($1, $3);}
-	| multiplicative_expression '/' cast_expression {$$ = new Div($1, $3);}
+	| multiplicative_expression '*' cast_expression {$$ = new MulOp($1, $3);}
+	| multiplicative_expression '/' cast_expression {$$ = new DivOp($1, $3);}
 	| multiplicative_expression '%' cast_expression
 	;
 
 additive_expression
 	: multiplicative_expression {$$ = $1;}
 	| additive_expression '+' multiplicative_expression {$$ = new AddOp($1, $3);}
-	| additive_expression '-' multiplicative_expression {$$ = new Sub($1,$3);}
+	| additive_expression '-' multiplicative_expression {$$ = new SubOp($1,$3);}
 	;
 
 shift_expression
@@ -131,41 +129,41 @@ shift_expression
 
 relational_expression
 	: shift_expression {$$ = $1;}
-	| relational_expression '<' shift_expression {$$ = new LessThan($1,$3);}
-	| relational_expression '>' shift_expression {$$ = new GreaterThan($1,$3);}
-	| relational_expression LE_OP shift_expression {$$ = new LessThanEqual($1,$3);}
-	| relational_expression GE_OP shift_expression {$$ = new GreaterThanEqual($1,$3);}
+	| relational_expression '<' shift_expression {$$ = new LessThanOp($1,$3);}
+	| relational_expression '>' shift_expression {$$ = new GreaterThanOp($1,$3);}
+	| relational_expression LE_OP shift_expression {$$ = new LessThanEqualOp($1,$3);}
+	| relational_expression GE_OP shift_expression {$$ = new GreaterThanEqualOp($1,$3);}
 	;
 
 equality_expression
 	: relational_expression {$$ = $1;}
-	| equality_expression EQ_OP relational_expression {$$ = new Equal($1,$3);}
-	| equality_expression NE_OP relational_expression {$$ = new NotEqual($1,$3);}
+	| equality_expression EQ_OP relational_expression {$$ = new EqualOp($1,$3);}
+	| equality_expression NE_OP relational_expression {$$ = new NotEqualOp($1,$3);}
 	;
 
 and_expression
 	: equality_expression {$$ = $1;}
-	| and_expression '&' equality_expression {$$ = new BitwiseAnd($1,$3);}
+	| and_expression '&' equality_expression {$$ = new BitwiseAndOp($1,$3);}
 	;
 
 exclusive_or_expression
 	: and_expression {$$ = $1;}
-	| exclusive_or_expression '^' and_expression {$$ = new BitwiseXor($1,$3);}
+	| exclusive_or_expression '^' and_expression {$$ = new BitwiseXorOp($1,$3);}
 	;
 
 inclusive_or_expression
 	: exclusive_or_expression {$$ = $1;}
-	| inclusive_or_expression '|' exclusive_or_expression {$$ = new BitwiseOr($1,$3);}
+	| inclusive_or_expression '|' exclusive_or_expression {$$ = new BitwiseOrOp($1,$3);}
 	;
 
 logical_and_expression
 	: inclusive_or_expression {$$ = $1;}
-	| logical_and_expression AND_OP inclusive_or_expression
+	| logical_and_expression AND_OP inclusive_or_expression {$$ = new LogicalAnd($1,$3);}
 	;
 
 logical_or_expression
 	: logical_and_expression {$$ = $1;}
-	| logical_or_expression OR_OP logical_and_expression
+	| logical_or_expression OR_OP logical_and_expression {$$ = new LogicalOr($1,$3);}
 	;
 
 conditional_expression

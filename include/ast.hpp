@@ -26,21 +26,15 @@
 // keywords
 
 // operators
-#include "ast/operators/ast_assign.hpp"
-#include "ast/operators/ast_add.hpp"
-#include "ast/operators/ast_sub.hpp"
-#include "ast/operators/ast_mul.hpp"
-#include "ast/operators/ast_div.hpp"
-#include "ast/operators/ast_bitwise_and.hpp"
-#include "ast/operators/ast_bitwise_or.hpp"
-#include "ast/operators/ast_bitwise_xor.hpp"
-#include "ast/operators/ast_equal.hpp"
-#include "ast/operators/ast_less_than.hpp"
-#include "ast/operators/ast_less_than_equal.hpp"
-#include "ast/operators/ast_greater_than.hpp"
-#include "ast/operators/ast_greater_than_equal.hpp"
-#include "ast/operators/ast_not_equal.hpp"
-#include "ast/operators/ast_AddOp.hpp"
+#include "ast/operators/ast_assignment_operators.hpp"
+#include "ast/operators/ast_arithmetic_operators.hpp"
+#include "ast/operators/ast_bitwise_operators.hpp"
+#include "ast/operators/ast_realational_operators.hpp"
+
+#include "ast/operators/ast_logical_and.hpp"
+#include "ast/operators/ast_logical_or.hpp"
+
+
 // pointers
 
 // primitives

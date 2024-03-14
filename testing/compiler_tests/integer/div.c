@@ -1,4 +1,4 @@
-int f(int x, int y)
+int f(int x, int y, int z)
 {
-    return x/y;
+    return x/y/3/z;
 }

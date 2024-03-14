@@ -29,9 +29,9 @@
 | If False | `if_false.c` | `[ ]` |
 | If True | `if_true.c` | `[ ]` |
 | Sequence | `sequence.c` | `[ x ]` |
-| While Multiple | `while_multiple.c` | `[ ]` |
-| While Once | `while_once.c` | `[ ]` |
-| While Zero | `while_zero.c` | `[ ]` |
+| While Multiple | `while_multiple.c` | `[ x ]` |
+| While Once | `while_once.c` | `[ x ]` |
+| While Zero | `while_zero.c` | `[ x ]` |
 
 
 ### Default Test Cases
@@ -60,13 +60,13 @@
 
 | Category | Test Case | Checkbox |
 |----------|-----------|:--------:|
-| Call Constant External | `call_constant_external.c` | `[ ]` |
+| Call Constant External | `call_constant_external.c` | `[ x ]` |
 | Call Constant Internal | `call_constant_internal.c` | `[ ]` |
-| Call Five Args External | `call_five_args_external.c` | `[ ]` |
+| Call Five Args External | `call_five_args_external.c` | `[ x ]` |
 | Call Mutual Recursive | `call_mutual_recursive.c` | `[ ]` |
 | Call Recursive Internal | `call_recursive_internal.c` | `[ ]` |
 | Call Two Args External | `call_two_args_external.c` | `[ ]` |
-| Call Two Args Internal | `call_two_args_internal.c` | `[ ]` |
+| Call Two Args Internal | `call_two_args_internal.c` | `[ x ]` |
 
 
 ### Integer Test Cases
@@ -81,8 +81,8 @@
 | Equal | `equal.c` | `[ x ]` |
 | Less Than | `less_than.c` | `[ x ]` |
 | Less Than Equal | `less_than_equal.c` | `[ x ]` |
-| Logical And | `logical_and.c` | `[ ]` |
-| Logical Or | `logical_or.c` | `[ ]` |
+| Logical And | `logical_and.c` | `[ x ]` |
+| Logical Or | `logical_or.c` | `[ x ]` |
 | Mul | `mul.c` | `[ x ]` |
 | Sub | `sub.c` | `[ x ]` |
 

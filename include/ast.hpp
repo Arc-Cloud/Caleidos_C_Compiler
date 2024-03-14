@@ -29,7 +29,7 @@
 #include "ast/operators/ast_assignment_operators.hpp"
 #include "ast/operators/ast_arithmetic_operators.hpp"
 #include "ast/operators/ast_bitwise_operators.hpp"
-#include "ast/operators/ast_realational_operators.hpp"
+#include "ast/operators/ast_relational_operators.hpp"
 #include "ast/operators/ast_logical_operators.hpp"
 
 

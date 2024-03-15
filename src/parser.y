@@ -173,12 +173,12 @@ conditional_expression
 assignment_expression
 	: conditional_expression {$$ = $1;}
     | unary_expression '=' assignment_expression {$$ = new Assign($1, $3);}
-	| unary_expression MUL_ASSIGN assignment_expression
-    | unary_expression DIV_ASSIGN assignment_expression
-    | unary_expression MOD_ASSIGN assignment_expression
-    | unary_expression ADD_ASSIGN assignment_expression
-    | unary_expression SUB_ASSIGN assignment_expression
-    | unary_expression LEFT_ASSIGN assignment_expression
+	| unary_expression MUL_ASSIGN assignment_expression {$$ = new Assign($1, new MulOp($1, $3));}
+    | unary_expression DIV_ASSIGN assignment_expression {$$ = new Assign ($1, new DivOp($1, $3));}
+    | unary_expression MOD_ASSIGN assignment_expression 
+    | unary_expression ADD_ASSIGN assignment_expression {$$ = new Assign($1, new AddOp($1,$3));}
+    | unary_expression SUB_ASSIGN assignment_expression {$$ = new Assign($1, new SubOp($1, $3));}
+    | unary_expression LEFT_ASSIGN assignment_expression 
     | unary_expression RIGHT_ASSIGN assignment_expression
     | unary_expression AND_ASSIGN assignment_expression
     | unary_expression XOR_ASSIGN assignment_expression

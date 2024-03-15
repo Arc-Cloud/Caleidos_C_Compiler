@@ -31,7 +31,7 @@ class While: public Node{
             stream << label1 << ":" << std::endl;
             std:: string dst = context.AllocReg(expr->getId());
             stream << "lw " << dst << "," << context.MemoryMapping[expr->getId()] << "(sp)" << std::endl;
-            stream << "bne " << dst << ",zero," << label2 << std::endl; 
+            stream << "bne " << dst << ",zero," << label2 << std::endl;
             context.DeallocReg(expr->getId());
             // theres a mistake here with the dealloc
         }
@@ -48,7 +48,7 @@ class While: public Node{
         }
 
     }
-    
+
 };
 
 

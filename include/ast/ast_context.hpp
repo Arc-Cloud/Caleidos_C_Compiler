@@ -44,6 +44,7 @@ protected:
     int makeNameUnq = 0;
 public:
     std:: string dst;
+    std:: string EndLabel;
     int ParamCounter = 0;
     Context(){}
     void WriteInstType(std::string input)

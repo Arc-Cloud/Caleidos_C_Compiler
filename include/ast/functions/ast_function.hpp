@@ -21,11 +21,13 @@ class Function: public Node {
 
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
                 id ->EmitRISC(stream, context);
+                std:: string end = context.makeName("end");
+                context.EndLabel = end;
                 if (compound_statement_ != nullptr){
                 compound_statement_ -> EmitRISC(stream,context);
                 }
 
-
+                stream << end << ":" << std::endl;
                 stream << "lw s0,"<< std::to_string(context.MemoryMapping["s0"])<< "(sp)" << std:: endl;
                 stream << "lw ra," << std:: to_string(context.MemoryMapping["ra"]) << "(sp)" << std::endl;
                 stream << "addi sp,sp," << context.default_mem << std::endl;

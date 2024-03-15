@@ -60,6 +60,29 @@ class IfElse: public Node{
 
 };
 
+class IfNoElse: public Node{
+    private:
+    Node* expr;
+    Node* statement;
+    public:
+    IfNoElse(Node* expr_, Node* statement_): expr(expr_), statement(statement_){};
+    virtual ~IfNoElse(){
+        delete expr;
+        delete statement;
+    }
+    void Print(std::ostream &stream) const override{};
+    void EmitRISC(std::ostream &stream, Context &context) const override
+    {   
+        std:: string label = context.makeName("L");
+        expr -> EmitRISC(stream, context);
+        stream << "beq " << context.bindings[context.dst] << ",zero," << label << std::endl;
+        statement -> EmitRISC(stream, context);
+        stream << label << ":" << std::endl;
+
+    }
+
+};
+
 // need addition for the different cases of input
 
 

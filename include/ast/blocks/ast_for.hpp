@@ -25,19 +25,17 @@ public:
 
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
+        std::string label1 = context.makeName("L");
+        std::string label2 = context.makeName("L");
+
         if (initExpr != nullptr) {
         initExpr->EmitRISC(stream, context);
         }
 
-        std::string label1 = context.makeName("L");
-        std::string label2 = context.makeName("L");
+
+        stream << "j " << label2 << std::endl;
 
         stream << label1 << ":" << std::endl;
-
-        if (condExpr != nullptr) {
-        condExpr->EmitRISC(stream, context);
-        stream << "beqz " << context.bindings[context.dst] << ", " << label2 << std::endl;
-        }
 
         if (statement != nullptr) {
         statement->EmitRISC(stream, context);
@@ -47,9 +45,13 @@ public:
         incrExpr->EmitRISC(stream, context);
         }
 
-        stream << "j " << label1 << std::endl;
-
         stream << label2 << ":" << std::endl;
+
+        if (condExpr != nullptr) {
+        condExpr->EmitRISC(stream, context);
+        stream << "bne " << context.bindings[context.dst] << ",zero," << label1 << std::endl;
+        }
+        context.DeallocReg(context.dst);
 
     }
 

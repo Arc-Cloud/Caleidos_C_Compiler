@@ -91,16 +91,16 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression {$$ = $1;}
-	| INC_OP unary_expression
+	| INC_OP unary_expression {$$ = new UnaryIncrOp($2);}
 	| DEC_OP unary_expression
 	| '&' unary_expression
 	| '*' unary_expression
   	| '+' unary_expression {$$ = $2;}
 	| '-' unary_expression {$$ = new UnaryMinusOp($2);}
-	| '~' unary_expression
-	| '!' unary_expression
-	| SIZEOF unary_expression
-	| SIZEOF '(' type_name ')'
+	| '~' unary_expression {$$ = new UnaryBitwiseNotOp($2);}
+	| '!' unary_expression {$$ = new UnaryLogicNotOp($2);}
+	| SIZEOF unary_expression {$$ = new UnarySizeOfOp($2);}
+	| SIZEOF '(' type_name ')' {$$ = new UnarySizeOfOp($3);}
 	;
 
 cast_expression

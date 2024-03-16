@@ -70,7 +70,7 @@ primary_expression
 	| INT_CONSTANT {$$ = new IntConstant($1);}
     | FLOAT_CONSTANT
 	| STRING_LITERAL
-	| '(' expression ')'
+	| '(' expression ')' {$$ = $2;}
 	;
 
 postfix_expression

@@ -32,6 +32,7 @@
 #include "ast/operators/ast_bitwise_operators.hpp"
 #include "ast/operators/ast_relational_operators.hpp"
 #include "ast/operators/ast_logical_operators.hpp"
+#include "ast/operators/ast_unary_operators.hpp"
 
 
 // pointers

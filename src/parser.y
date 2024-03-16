@@ -91,16 +91,16 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression {$$ = $1;}
-	| INC_OP unary_expression
-	| DEC_OP unary_expression
+	| INC_OP unary_expression {$$ = new UnaryIncrOp($2);}
+	| DEC_OP unary_expression {$$ = new UnaryDecrOp($2);}
 	| '&' unary_expression
 	| '*' unary_expression
   	| '+' unary_expression {$$ = $2;}
-	| '-' unary_expression
-	| '~' unary_expression
-	| '!' unary_expression
-	| SIZEOF unary_expression
-	| SIZEOF '(' type_name ')'
+	| '-' unary_expression {$$ = new UnaryMinusOp($2);}
+	| '~' unary_expression {$$ = new UnaryBitwiseNotOp($2);}
+	| '!' unary_expression {$$ = new UnaryLogicNotOp($2);}
+	| SIZEOF unary_expression {$$ = new UnarySizeOfOp($2);}
+	| SIZEOF '(' type_name ')' {$$ = new UnarySizeOfOp($3);}
 	;
 
 cast_expression
@@ -112,7 +112,7 @@ multiplicative_expression
 	: cast_expression {$$ = $1;}
 	| multiplicative_expression '*' cast_expression {$$ = new MulOp($1, $3);}
 	| multiplicative_expression '/' cast_expression {$$ = new DivOp($1, $3);}
-	| multiplicative_expression '%' cast_expression
+	| multiplicative_expression '%' cast_expression {$$ = new ModOp($1, $3);}
 	;
 
 additive_expression
@@ -123,8 +123,8 @@ additive_expression
 
 shift_expression
 	: additive_expression {$$ = $1;}
-	| shift_expression LEFT_OP additive_expression
-	| shift_expression RIGHT_OP additive_expression
+	| shift_expression LEFT_OP additive_expression {$$ = new ShiftLeftOp($1,$3);}
+	| shift_expression RIGHT_OP additive_expression {$$ = new ShiftRightOp($1,$3);}
 	;
 
 relational_expression
@@ -168,17 +168,17 @@ logical_or_expression
 
 conditional_expression
 	: logical_or_expression {$$ = $1;}
-	| logical_or_expression '?' expression ':' conditional_expression
+	| logical_or_expression '?' expression ':' conditional_expression {$$ = new TernaryOp($1,$3,$5);}
 	;
 assignment_expression
 	: conditional_expression {$$ = $1;}
     | unary_expression '=' assignment_expression {$$ = new Assign($1, $3);}
 	| unary_expression MUL_ASSIGN assignment_expression {$$ = new Assign($1, new MulOp($1, $3));}
     | unary_expression DIV_ASSIGN assignment_expression {$$ = new Assign ($1, new DivOp($1, $3));}
-    | unary_expression MOD_ASSIGN assignment_expression 
+    | unary_expression MOD_ASSIGN assignment_expression
     | unary_expression ADD_ASSIGN assignment_expression {$$ = new Assign($1, new AddOp($1,$3));}
     | unary_expression SUB_ASSIGN assignment_expression {$$ = new Assign($1, new SubOp($1, $3));}
-    | unary_expression LEFT_ASSIGN assignment_expression 
+    | unary_expression LEFT_ASSIGN assignment_expression
     | unary_expression RIGHT_ASSIGN assignment_expression
     | unary_expression AND_ASSIGN assignment_expression
     | unary_expression XOR_ASSIGN assignment_expression

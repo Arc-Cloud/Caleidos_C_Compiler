@@ -128,4 +128,47 @@ public:
 };
 
 
+class TernaryOp : public Node
+{
+private:
+    Node *condExpr;
+    Node *leftExpr;
+    Node *rightExpr;
+
+public:
+    TernaryOp(Node *cond, Node *left, Node *right) : condExpr(cond), leftExpr(left), rightExpr(right){};
+
+    virtual ~TernaryOp()
+    {
+        delete condExpr;
+        delete leftExpr;
+        delete rightExpr;
+    }
+
+    std::string getType() const override
+    {
+        return "operator";
+    };
+
+    virtual void Print(std::ostream &stream) const override{};
+
+    void EmitRISC(std::ostream &stream, Context &context) const override
+    {
+        std::string label1 = context.makeName("L");
+        std::string label2 = context.makeName("L");
+
+        condExpr->EmitRISC(stream, context);
+        stream << "bne " << context.bindings[context.dst] << ",zero," << label1 << std::endl;
+        rightExpr->EmitRISC(stream, context);
+        stream << "j " << label2 << std::endl;
+        stream << label1 << ":" << std::endl;
+        leftExpr->EmitRISC(stream, context);
+        stream << label2 << ":" << std::endl;
+
+    }
+};
+
+
+
+
 #endif

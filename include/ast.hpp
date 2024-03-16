@@ -11,6 +11,7 @@
 #include "ast/ast_type_specifier.hpp"
 
 // arrays
+#include "ast/arrays/ast_array.hpp"
 
 // blocks
 #include "ast/blocks/ast_ifelse.hpp"

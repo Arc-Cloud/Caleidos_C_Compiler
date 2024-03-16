@@ -286,8 +286,8 @@ declarator
 
 direct_declarator
 	: IDENTIFIER {$$ = new Variable(*$1);delete $1;}
-	| '(' declarator ')'
-	| direct_declarator '[' constant_expression ']'
+	| '(' declarator ')' {$$ = $2;}
+	| direct_declarator '[' constant_expression ']' {$$ = new DeclareArray($1, $3);}
 	| direct_declarator '[' ']'
 	| direct_declarator '(' parameter_list ')' {$$ = new FunctionDeclarator($1, $3);}
 	| direct_declarator '(' identifier_list ')'
@@ -319,21 +319,21 @@ type_name
 	;
 
 abstract_declarator
-	: pointer
-	| direct_abstract_declarator
+	: pointer 
+	| direct_abstract_declarator 
 	| pointer direct_abstract_declarator
 	;
 
 direct_abstract_declarator
-	: '(' abstract_declarator ')'
-	| '[' ']'
-	| '[' constant_expression ']'
-	| direct_abstract_declarator '[' ']'
-	| direct_abstract_declarator '[' constant_expression ']'
-	| '(' ')'
-	| '(' parameter_list ')'
-	| direct_abstract_declarator '(' ')'
-	| direct_abstract_declarator '(' parameter_list ')'
+	: '(' abstract_declarator ')' {$$ = $2;}
+	| '[' ']' // wtf is this
+	| '[' constant_expression ']' // no need 
+	| direct_abstract_declarator '[' ']' //no need 
+	| direct_abstract_declarator '[' constant_expression ']' // no need
+	| '(' ')' //no need 
+	| '(' parameter_list ')' // no need
+	| direct_abstract_declarator '(' ')' // no need
+	| direct_abstract_declarator '(' parameter_list ')' // no need
 	;
 
 initializer

@@ -1,7 +1,7 @@
 int f()
 {
-    int y;
     int x[8];
+    int y;
     y=13;
     return y;
 }

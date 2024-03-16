@@ -193,7 +193,7 @@ public:
             leftOperand_->EmitRISC(stream, context);
             std:: string left = context.dst;
             rightOperand_->EmitRISC(stream, context);
-            std:: string right= context.dst;
+            std:: string right = context.dst;
             std:: string op = context.makeName("O");
             std:: string res = context.AllocReg(op);
             stream << "div " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;

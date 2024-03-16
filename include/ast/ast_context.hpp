@@ -46,6 +46,7 @@ public:
     std:: string dst;
     std:: string EndLabel;
     int ParamCounter = 0;
+    bool return_ = false;
     Context(){}
     void WriteInstType(std::string input)
     {
@@ -78,8 +79,8 @@ public:
     }
 
     void DeallocReg(std:: string var){
-        std:: string reg = bindings[var];
-        int location = reg[1] - '0';
+        std:: string reg = bindings[var].substr(1);
+        int location = stoi(reg);
         if (Reg[location] == 0){
             std:: cerr << "the register was never assigned";
             exit(1);

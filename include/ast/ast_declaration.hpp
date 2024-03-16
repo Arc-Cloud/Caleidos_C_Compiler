@@ -11,7 +11,7 @@ private:
     NodeList *parameter;
 
 public:
-    FunctionDeclarator(Node *identifier, NodeList* param) : identifier_(identifier), parameter(param){};
+    FunctionDeclarator(Node *identifier, NodeList *param) : identifier_(identifier), parameter(param){};
     virtual ~FunctionDeclarator()
     {
         delete identifier_;
@@ -22,12 +22,13 @@ public:
         stream << ".globl " << identifier_->getId() << std::endl;
         stream << identifier_->getId() << ":" << std::endl;
         stream << "addi sp,sp,-" << context.memDef() << std::endl;
-        stream << "sw ra," << std::to_string(context.AllocateStack("ra")) <<"(sp)" << std::endl;
-        stream <<  "sw s0," << std::to_string(context.AllocateStack("s0")) <<"(sp)" << std:: endl;
-        stream << "addi s0,sp," << context.default_mem << std:: endl;
-        if (parameter != NULL && parameter ->getSize() < 9){
+        stream << "sw ra," << std::to_string(context.AllocateStack("ra")) << "(sp)" << std::endl;
+        stream << "sw s0," << std::to_string(context.AllocateStack("s0")) << "(sp)" << std::endl;
+        stream << "addi s0,sp," << context.default_mem << std::endl;
+        if (parameter != NULL && parameter->getSize() < 9)
+        {
             context.WriteInstType("params");
-            parameter -> EmitRISC(stream, context);
+            parameter->EmitRISC(stream, context);
             context.ParamCounter = 0; // pay attention to this;
         }
     };
@@ -53,12 +54,27 @@ public:
         std::string var = init_->getId();
         // context.AllocReg(var);
         int datatype = Typespec_->getSize(); // will be useful later when we deal with numbers other than integer
-        context.AllocateStack(var);
-        if(context.ReadInstType() == "params"){
+        std::string type = init_->getType();
+        if (type == "variable")
+        { 
+            context.AllocateStack(var);
+        }
+        else if (type == "array")
+        {
+            int size = init_->getSize();
+            for (int i = 0; i < size; i++)
+            {
+                std:: string mem = var + std::to_string(i);
+                context.AllocateStack(mem);
+            }
+        }
+        if (context.ReadInstType() == "params")
+        {
             stream << "sw a" << context.ParamCounter++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
         }
-        if (init_ -> getType() != "variable"){
-        init_->EmitRISC(stream, context);
+        if (init_->getType() != "variable")
+        {
+            init_->EmitRISC(stream, context);
         }
     };
 
@@ -78,7 +94,8 @@ public:
         delete identifier_;
         delete value;
     }
-    std:: string getType() const override {
+    std::string getType() const override
+    {
         return "InitDeclarator";
     }
 
@@ -89,17 +106,18 @@ public:
 
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
-        if (value -> getType() == "constant"){
-        std::string dst = context.AllocReg(identifier_->getId());
-        context.DeallocReg(identifier_->getId());
-        stream << "li " << dst << "," << value->getVal() << std::endl;
-        stream << "sw " << dst << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+        if (value->getType() == "constant")
+        {
+            std::string dst = context.AllocReg(identifier_->getId());
+            context.DeallocReg(identifier_->getId());
+            stream << "li " << dst << "," << value->getVal() << std::endl;
+            stream << "sw " << dst << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
         }
-        else if (value -> getType() == "operator"){
-            value ->EmitRISC(stream, context);
+        else if (value->getType() == "operator")
+        {
+            value->EmitRISC(stream, context);
             stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
             context.DeallocReg(context.dst);
-
         }
     };
 

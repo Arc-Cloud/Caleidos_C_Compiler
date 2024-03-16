@@ -55,6 +55,7 @@ class While: public Node{
         stream << label1 << ":" << std::endl;
         expr -> EmitRISC(stream,context);
         stream << "bne " << context.bindings[context.dst] << ",zero," << label2 << std::endl;
+        context.DeallocReg(context.dst);
 
     }
 

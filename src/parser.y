@@ -70,11 +70,7 @@ primary_expression
 	| INT_CONSTANT {$$ = new IntConstant($1);}
     | FLOAT_CONSTANT
 	| STRING_LITERAL
-<<<<<<< HEAD
-	| '(' expression ')' { $$ = $2; }
-=======
 	| '(' expression ')' {$$ = $2;}
->>>>>>> main
 	;
 
 postfix_expression
@@ -96,7 +92,7 @@ argument_expression_list
 unary_expression
 	: postfix_expression {$$ = $1;}
 	| INC_OP unary_expression {$$ = new UnaryIncrOp($2);}
-	| DEC_OP unary_expression
+	| DEC_OP unary_expression {$$ = new UnaryDecrOp($2);}
 	| '&' unary_expression
 	| '*' unary_expression
   	| '+' unary_expression {$$ = $2;}

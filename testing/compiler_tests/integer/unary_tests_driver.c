@@ -1,7 +1,7 @@
 
-int unary(int x);
+int unary(int x, int y);
 
 int main()
 {
-    return !(unary(10)==1);
+    return !(unary(10, 0)==1);
 }

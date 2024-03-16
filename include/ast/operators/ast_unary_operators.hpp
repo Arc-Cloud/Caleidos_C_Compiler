@@ -195,12 +195,44 @@ public:
     {
 
         Operand->EmitRISC(stream, context);
-        std:: string mid = context.dst;
-        std:: string op = context.makeName("O");
-        std:: string res = context.AllocReg(op);
-        stream << "addi " << res << "," << context.bindings[mid] << "," << 1 << std::endl;
-        context.DeallocReg(mid);
-        context.dst = op;
+        stream << "addi " << context.bindings[context.dst] << "," << context.bindings[context.dst] << "," << 1 << std::endl;
+        stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[Operand->getId()] << "(sp)" << std:: endl;
+        context.DeallocReg(context.dst);
+
+    }
+
+};
+
+
+
+
+class UnaryDecrOp : public Node
+{
+private:
+    Node *Operand;
+
+public:
+    UnaryDecrOp(Node *oper) : Operand(oper){};
+
+    virtual ~UnaryDecrOp()
+    {
+        delete Operand;
+    }
+
+    std::string getType() const override
+    {
+        return "operator";
+    };
+
+    virtual void Print(std::ostream &stream) const override{};
+
+    void EmitRISC(std::ostream &stream, Context &context) const override
+    {
+
+        Operand->EmitRISC(stream, context);
+        stream << "addi " << context.bindings[context.dst] << "," << context.bindings[context.dst] << "," << -1 << std::endl;
+        stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[Operand->getId()] << "(sp)" << std:: endl;
+        context.DeallocReg(context.dst);
 
     }
 

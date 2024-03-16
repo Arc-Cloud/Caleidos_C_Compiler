@@ -1,7 +1,7 @@
-int unary(int x) {
+int unary(int x, int y) {
     x = -x;
     x = ~x;
     x = !x;
-    ++x;
-    return x;
+    y = ++x;
+    return y;
 }

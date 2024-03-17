@@ -13,7 +13,7 @@ class Assign : public Node{
         delete identifier_;
         delete value_;
     }
-    virtual void Print(std::ostream &stream) const override{};
+    virtual void Print(std::ostream &stream) const override{}; 
 
     std:: string getType() const override{
         return "operator";

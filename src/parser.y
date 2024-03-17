@@ -75,7 +75,7 @@ primary_expression
 
 postfix_expression
 	: primary_expression {$$ = $1;}
-	| postfix_expression '[' expression ']'
+	| postfix_expression '[' expression ']' {$$ = new ArrayIndex($1,$3);}
 	| postfix_expression '(' ')' {$$ = new Call($1, NULL);}
 	| postfix_expression '(' argument_expression_list ')' {$$ = new Call($1, $3);}
 	| postfix_expression '.' IDENTIFIER

@@ -12,6 +12,7 @@
 
 // arrays
 #include "ast/arrays/ast_array.hpp"
+#include "ast/arrays/ast_arrayindex.hpp"
 
 // blocks
 #include "ast/blocks/ast_ifelse.hpp"

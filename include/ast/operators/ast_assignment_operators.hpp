@@ -15,6 +15,10 @@ class Assign : public Node{
     }
     virtual void Print(std::ostream &stream) const override{};
 
+    std:: string getType() const override{
+        return "operator";
+    }
+
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
         // if (value_ ->getType() == "constant"){

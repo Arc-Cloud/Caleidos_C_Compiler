@@ -55,24 +55,24 @@ public:
         // context.AllocReg(var);
         int datatype = Typespec_->getSize(); // will be useful later when we deal with numbers other than integer
         std::string type = init_->getType();
-        if (type == "variable")
-        { 
-            context.AllocateStack(var);
-        }
-        else if (type == "array")
+        if (type == "array")
         {
             int size = init_->getSize();
             for (int i = 0; i < size; i++)
             {
-                std:: string mem = var + std::to_string(i);
+                std::string mem = var + std::to_string(i);
                 context.AllocateStack(mem);
             }
+        }
+        else
+        {
+            context.AllocateStack(var);
         }
         if (context.ReadInstType() == "params")
         {
             stream << "sw a" << context.ParamCounter++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
         }
-        if (init_->getType() != "variable")
+        if (type != "variable")
         {
             init_->EmitRISC(stream, context);
         }
@@ -106,19 +106,23 @@ public:
 
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
-        if (value->getType() == "constant")
-        {
-            std::string dst = context.AllocReg(identifier_->getId());
-            context.DeallocReg(identifier_->getId());
-            stream << "li " << dst << "," << value->getVal() << std::endl;
-            stream << "sw " << dst << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
-        }
-        else if (value->getType() == "operator")
-        {
-            value->EmitRISC(stream, context);
-            stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
-            context.DeallocReg(context.dst);
-        }
+        // if (value->getType() == "constant")
+        // {
+        //     std::string dst = context.AllocReg(identifier_->getId());
+        //     context.DeallocReg(identifier_->getId());
+        //     stream << "li " << dst << "," << value->getVal() << std::endl;
+        //     stream << "sw " << dst << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+        // }
+        // else if (value->getType() == "operator")
+        // {
+        //     value->EmitRISC(stream, context);
+        //     stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+        //     context.DeallocReg(context.dst);
+        // }
+
+        value->EmitRISC(stream, context);
+        stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+        context.DeallocReg(context.dst);
     };
 
     void Print(std::ostream &stream) const override{};

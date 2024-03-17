@@ -100,8 +100,8 @@ public:
         -----------------------------MEMORY MANAGEMENT-------------------------------
     */
     //probably not enough lmao
-    int default_mem = 64;
-    int LastStack = 64;
+    int default_mem = 128;
+    int LastStack = 128;
     std::map<std::string, int> MemoryMapping; // to track where the value of a varibale is stored in mem.for riscv all local variables are always stored in mem
 
 

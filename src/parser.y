@@ -80,8 +80,8 @@ postfix_expression
 	| postfix_expression '(' argument_expression_list ')' {$$ = new Call($1, $3);}
 	| postfix_expression '.' IDENTIFIER
 	| postfix_expression PTR_OP IDENTIFIER
-	| postfix_expression INC_OP
-	| postfix_expression DEC_OP
+	| postfix_expression INC_OP {$$ = new UnaryIncrOp($1);}
+	| postfix_expression DEC_OP {$$ = new UnaryDecrOp($1);}
 	;
 
 argument_expression_list
@@ -91,8 +91,8 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression {$$ = $1;}
-	| INC_OP unary_expression {$$ = new UnaryIncrOp($2);}
-	| DEC_OP unary_expression {$$ = new UnaryDecrOp($2);}
+	| INC_OP unary_expression //{$$ = new ($2);}
+	| DEC_OP unary_expression //{$$ = new ($2);}
 	| '&' unary_expression
 	| '*' unary_expression
   	| '+' unary_expression {$$ = $2;}
@@ -319,18 +319,18 @@ type_name
 	;
 
 abstract_declarator
-	: pointer 
-	| direct_abstract_declarator 
+	: pointer
+	| direct_abstract_declarator
 	| pointer direct_abstract_declarator
 	;
 
 direct_abstract_declarator
 	: '(' abstract_declarator ')' {$$ = $2;}
 	| '[' ']' // wtf is this
-	| '[' constant_expression ']' // no need 
-	| direct_abstract_declarator '[' ']' //no need 
+	| '[' constant_expression ']' // no need
+	| direct_abstract_declarator '[' ']' //no need
 	| direct_abstract_declarator '[' constant_expression ']' // no need
-	| '(' ')' //no need 
+	| '(' ')' //no need
 	| '(' parameter_list ')' // no need
 	| direct_abstract_declarator '(' ')' // no need
 	| direct_abstract_declarator '(' parameter_list ')' // no need

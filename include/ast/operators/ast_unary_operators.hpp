@@ -195,10 +195,13 @@ public:
     {
 
         Operand->EmitRISC(stream, context);
-        stream << "addi " << context.bindings[context.dst] << "," << context.bindings[context.dst] << "," << 1 << std::endl;
-        stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[Operand->getId()] << "(sp)" << std:: endl;
-        context.DeallocReg(context.dst);
-
+        std:: string mid = context.dst;
+        std:: string op = context.makeName("O");
+        std:: string res = context.AllocReg(op);
+        stream << "addi " << res << "," << context.bindings[mid] << "," << 1 << std::endl;
+        stream << "sw " << res << "," << context.MemoryMapping[Operand->getId()] << "(sp)" << std:: endl;
+        //context.DeallocReg(res);
+        context.dst = mid;
     }
 
 };
@@ -230,10 +233,13 @@ public:
     {
 
         Operand->EmitRISC(stream, context);
-        stream << "addi " << context.bindings[context.dst] << "," << context.bindings[context.dst] << "," << -1 << std::endl;
-        stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[Operand->getId()] << "(sp)" << std:: endl;
-        context.DeallocReg(context.dst);
-
+        std:: string mid = context.dst;
+        std:: string op = context.makeName("O");
+        std:: string res = context.AllocReg(op);
+        stream << "addi " << res << "," << context.bindings[mid] << "," << -1 << std::endl;
+        stream << "sw " << res << "," << context.MemoryMapping[Operand->getId()] << "(sp)" << std:: endl;
+        //context.DeallocReg(res);
+        context.dst = mid;
     }
 
 };

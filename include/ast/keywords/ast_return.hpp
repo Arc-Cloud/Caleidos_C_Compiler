@@ -10,6 +10,10 @@ protected:
 
 public:
     Return(Node *expr) : ret(expr){};
+    virtual ~Return()
+    {
+        delete ret;
+    }
 
     virtual void EmitRISC(std::ostream &stream, Context &context) const override
     {

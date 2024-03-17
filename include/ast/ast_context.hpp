@@ -63,6 +63,10 @@ public:
     return "." + base + std::to_string(makeNameUnq++);
     }
 
+    std::vector<std::string> labels;
+    std::vector<int> case_num;
+    std::string switch_end_label;
+
 
      /*
         -----------------------------Register Management-------------------------------

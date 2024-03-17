@@ -358,8 +358,8 @@ statement
 
 labeled_statement
 	: IDENTIFIER ':' statement
-	| CASE constant_expression ':' statement
-	| DEFAULT ':' statement
+	| CASE constant_expression ':' statement {$$ = new Case($2,$4);}
+	| DEFAULT ':' statement {$$ = new Default($3);}
 	;
 
 compound_statement
@@ -396,7 +396,7 @@ expression_statement
 selection_statement
 	: IF '(' expression ')' statement {$$ = new IfNoElse($3, $5);}
 	| IF '(' expression ')' statement ELSE statement {$$ = new IfElse($3, $5,$7);}
-	| SWITCH '(' expression ')' statement
+	| SWITCH '(' expression ')' statement {$$ = new Switch($3,$5);}
 	;
 
 iteration_statement
@@ -409,7 +409,7 @@ iteration_statement
 jump_statement
 	: GOTO IDENTIFIER ';'
 	| CONTINUE ';'
-	| BREAK ';'
+	| BREAK ';' {$$ = new Break();}
 	| RETURN ';' {$$ = new Return(nullptr);}
 	| RETURN expression ';' {$$ = new Return($2);}
 	;

@@ -26,7 +26,7 @@ public:
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
         std::string mem = identifier_->getId();
-        stream << context.datatype[identifier_->getId()] << std::endl;
+
         if(context.datatype[identifier_->getId()] == "float"){
             context.WriteInstType("AssignFloat");
             value_->EmitRISC(stream,context);

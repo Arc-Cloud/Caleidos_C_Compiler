@@ -6,6 +6,7 @@
 enum _Types
 {
     _int,
+    _float
 };
 class TypeSpecifier : public Node
 {
@@ -27,6 +28,9 @@ public:
         {
         case _int:
             return 1; //(requires 4 bytes or "1" word)
+            break;
+        case _float:
+            return 1; // 4 bytes
             break;
 
         default:

@@ -28,7 +28,7 @@ public:
     }
 
     void EmitRISC(std::ostream &stream, Context &context) const override
-    {   
+    {
         std:: string variable_ = context.makeName("V");
         std:: string res = context.AllocReg(variable_);
         stream << "lw " <<  res  << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
@@ -62,6 +62,52 @@ public:
     std::string getType() const override
     {
         return "constant";
+    }
+
+    int getVal() const override
+    {
+        return value_;
+    }
+};
+
+class FloatConstant : public Node
+{
+private:
+    float value_;
+
+public:
+    FloatConstant(int value) : value_(value){};
+
+    void EmitRISC(std::ostream &stream, Context &context) const override
+    {
+        float val = value_;
+        unsigned int ieee754 = *reinterpret_cast<unsigned int*>(&val);
+
+
+        if (context.ReadInstType() == "call"){
+            stream << "li a" << context.ParamCounter++ << "," << value_<< std::endl;
+        }
+        else{
+
+        std::string label = context.makeName("LC");
+
+        std:: string constant_hi = context.makeName("FH");
+        std:: string float_lo = context.makeName("FL");
+
+        std:: string high = context.AllocReg(constant_hi);
+        std:: string low = context.AllocReg(float_lo);
+
+        stream << "lui " << high << ",\%hi" << "("  << label << ")" << std::endl;
+        stream << "flw " << low << ",\%lo" << "("  << label << ")" << std::endl;
+
+        context.dst = float_lo;
+        }
+    }
+    void Print(std::ostream &stream) const override{};
+
+    std::string getType() const override
+    {
+        return "float";
     }
 
     int getVal() const override

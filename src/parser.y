@@ -68,7 +68,7 @@ function_definition
 primary_expression
 	: IDENTIFIER {$$ = new Variable(*$1); delete $1;}
 	| INT_CONSTANT {$$ = new IntConstant($1);}
-    | FLOAT_CONSTANT
+    | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
 	| STRING_LITERAL
 	| '(' expression ')' {$$ = $2;}
 	;
@@ -222,7 +222,7 @@ type_specifier
 	| CHAR
 	| SHORT
 	| INT {$$ = new TypeSpecifier(_Types::_int);}
-	| LONG
+	| LONG {$$ =  new TypeSpecifier(_Types:: _float);}
 	| FLOAT
 	| DOUBLE
 	| SIGNED
@@ -408,7 +408,7 @@ iteration_statement
 
 jump_statement
 	: GOTO IDENTIFIER ';'
-	| CONTINUE ';'
+	| CONTINUE ';' {$$ = new Continue();}
 	| BREAK ';' {$$ = new Break();}
 	| RETURN ';' {$$ = new Return(nullptr);}
 	| RETURN expression ';' {$$ = new Return($2);}

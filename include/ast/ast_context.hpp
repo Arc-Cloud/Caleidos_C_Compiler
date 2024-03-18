@@ -67,6 +67,8 @@ public:
     std::vector<int> case_num;
     std::string switch_end_label;
 
+    std::string contLabel;
+
 
      /*
         -----------------------------Register Management-------------------------------

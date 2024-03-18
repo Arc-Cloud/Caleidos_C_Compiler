@@ -222,8 +222,8 @@ type_specifier
 	| CHAR
 	| SHORT
 	| INT {$$ = new TypeSpecifier(_Types::_int);}
-	| LONG {$$ =  new TypeSpecifier(_Types:: _float);}
-	| FLOAT
+	| LONG
+	| FLOAT {$$ =  new TypeSpecifier(_Types:: _float);}
 	| DOUBLE
 	| SIGNED
 	| UNSIGNED

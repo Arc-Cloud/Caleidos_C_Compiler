@@ -38,12 +38,23 @@ public:
         // else if (ret -> getType() == "call"){
         //     ret -> EmitRISC(stream, context);
         // }
-
         ret->EmitRISC(stream, context);
-        stream << "mv a0," << context.bindings[context.dst] << std::endl;
-        context.DeallocReg(context.dst);
-        context.return_ = true;
-        stream << "j " << context.EndLabel << std::endl;
+
+        if (context.ReadInstType() == "float"){
+            stream << "fmv.s fa0," << context.bindingsFloat[context.dst] << std::endl;
+            context.DeallocFloatReg(context.dst);
+            context.return_ = true;
+            stream << "j " << context.EndLabel << std::endl;
+        }
+        else{
+            stream << "mv a0," << context.bindings[context.dst] << std::endl;
+            context.DeallocReg(context.dst);
+            context.return_ = true;
+            stream << "j " << context.EndLabel << std::endl;
+
+        }
+
+
     }
     virtual void Print(std::ostream &stream) const override{};
 };

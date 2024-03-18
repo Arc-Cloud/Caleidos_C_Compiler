@@ -20,7 +20,19 @@ public:
     void Print(std::ostream &stream) const override{};
     std::string getType() const override
     {
-        return "not implemented";
+        switch (id)
+        {
+        case _int:
+            return "int";
+            break;
+        case _float:
+            return "float";
+            break;
+
+        default:
+            std::cerr << "data Type not implemented" << std::endl;
+            break;
+        }
     };
     int getSize() const override
     {

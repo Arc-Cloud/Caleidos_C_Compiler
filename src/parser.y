@@ -34,7 +34,7 @@
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
 %type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer statement labeled_statement
-%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
+%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement 
 
 %type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list argument_expression_list
 
@@ -68,7 +68,7 @@ function_definition
 primary_expression
 	: IDENTIFIER {$$ = new Variable(*$1); delete $1;}
 	| INT_CONSTANT {$$ = new IntConstant($1);}
-    | FLOAT_CONSTANT
+    | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
 	| STRING_LITERAL
 	| '(' expression ')' {$$ = $2;}
 	;
@@ -85,7 +85,7 @@ postfix_expression
 	;
 
 argument_expression_list
-	: assignment_expression {$$ =  new NodeList($1);}
+	: assignment_expression {$$ =  new Argument($1);}
 	| argument_expression_list ',' assignment_expression {$1 -> PushBack($3); $$ = $1;}
 	;
 
@@ -223,7 +223,7 @@ type_specifier
 	| SHORT
 	| INT {$$ = new TypeSpecifier(_Types::_int);}
 	| LONG
-	| FLOAT
+	| FLOAT {$$ =  new TypeSpecifier(_Types:: _float);}
 	| DOUBLE
 	| SIGNED
 	| UNSIGNED
@@ -349,7 +349,7 @@ initializer_list
 
 statement
 	: labeled_statement
-	| compound_statement
+	| compound_statement {$$ = $1;}
 	| expression_statement {$$ = $1;}
 	| selection_statement
 	| iteration_statement
@@ -358,8 +358,8 @@ statement
 
 labeled_statement
 	: IDENTIFIER ':' statement
-	| CASE constant_expression ':' statement
-	| DEFAULT ':' statement
+	| CASE constant_expression ':' statement {$$ = new Case($2,$4);}
+	| DEFAULT ':' statement {$$ = new Default($3);}
 	;
 
 compound_statement
@@ -396,7 +396,7 @@ expression_statement
 selection_statement
 	: IF '(' expression ')' statement {$$ = new IfNoElse($3, $5);}
 	| IF '(' expression ')' statement ELSE statement {$$ = new IfElse($3, $5,$7);}
-	| SWITCH '(' expression ')' statement
+	| SWITCH '(' expression ')' statement {$$ = new Switch($3,$5);}
 	;
 
 iteration_statement
@@ -408,8 +408,8 @@ iteration_statement
 
 jump_statement
 	: GOTO IDENTIFIER ';'
-	| CONTINUE ';'
-	| BREAK ';'
+	| CONTINUE ';' {$$ = new Continue();}
+	| BREAK ';' {$$ = new Break();}
 	| RETURN ';' {$$ = new Return(nullptr);}
 	| RETURN expression ';' {$$ = new Return($2);}
 	;

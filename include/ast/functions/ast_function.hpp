@@ -35,6 +35,11 @@ class Function: public Node {
 
                 stream << "ret" << std::endl;
 
+                for (const auto& pair : context.FloatWords) {
+                    stream << pair.first << ":" << std::endl;
+                    stream << ".word " << pair.second << std::endl;
+                }
+                context.FloatWords.clear();
         }
 
         virtual void Print(std::ostream &stream) const override{};

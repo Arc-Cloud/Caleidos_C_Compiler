@@ -29,17 +29,34 @@ public:
 
         value_->EmitRISC(stream, context);
 
+        /*if(context.datatype[identifier_->getId()] == "float"){
+            context.WriteInstType("AssignFloat");
+            value_->EmitRISC(stream,context);
+            context.WriteInstType(" ");
+        }
+        else{
+            value_->EmitRISC(stream, context);
+        }*/
+
+
+
         if (identifier_->getType() == "array1")
         {
             mem = identifier_->getId() + std::to_string(identifier_->getSize());
         }
-       
+
         if (identifier_->getType() == "array"){
             context.WriteInstType("AssignArray");
             identifier_->EmitRISC(stream,context);
             context.WriteInstType(" ");
 
-        } else {
+        }
+        /*if(context.datatype[identifier_->getType()] == "float"){
+            stream << "fsw " << context.bindingsFloat[context.dst] << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;
+            context.DeallocFloatReg(context.dst);
+        }*/
+
+        else {
 
         stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;
         context.DeallocReg(context.dst);

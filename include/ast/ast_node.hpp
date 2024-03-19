@@ -53,7 +53,7 @@ public:
             node->EmitRISC(stream, context);
         }
     }
-    void PushBack(Node *item)
+    virtual void PushBack(Node *item)
     {
         nodes_.push_back(item);
     }

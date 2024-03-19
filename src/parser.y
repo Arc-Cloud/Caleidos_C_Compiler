@@ -34,7 +34,7 @@
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
 %type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer statement labeled_statement
-%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
+%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement 
 
 %type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list argument_expression_list
 
@@ -85,7 +85,7 @@ postfix_expression
 	;
 
 argument_expression_list
-	: assignment_expression {$$ =  new NodeList($1);}
+	: assignment_expression {$$ =  new Argument($1);}
 	| argument_expression_list ',' assignment_expression {$1 -> PushBack($3); $$ = $1;}
 	;
 
@@ -349,7 +349,7 @@ initializer_list
 
 statement
 	: labeled_statement
-	| compound_statement
+	| compound_statement {$$ = $1;}
 	| expression_statement {$$ = $1;}
 	| selection_statement
 	| iteration_statement

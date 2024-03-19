@@ -18,7 +18,7 @@ public:
         delete parameter;
     };
     void EmitRISC(std::ostream &stream, Context &context) const override
-    {
+    {   
         stream << ".globl " << identifier_->getId() << std::endl;
         stream << identifier_->getId() << ":" << std::endl;
         stream << "addi sp,sp,-" << context.memDef() << std::endl;

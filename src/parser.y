@@ -34,7 +34,7 @@
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
 %type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer statement labeled_statement
-%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement 
+%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
 %type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list argument_expression_list
 
@@ -264,19 +264,19 @@ struct_declarator
 	;
 
 enum_specifier
-	: ENUM '{' enumerator_list '}' {$$ = new Enumerator(NULL, $3);}
-	| ENUM IDENTIFIER '{' enumerator_list '}' {$$ = new Enumerator(Variable(*$2), $4);}
-	| ENUM IDENTIFIER {$$ = new Enumerator((new Variable(*$2)), NULL);}
+	: ENUM '{' enumerator_list '}'// {$$ = new Enumerator(NULL, $3);}
+	| ENUM IDENTIFIER '{' enumerator_list '}' //{$$ = new Enumerator(Variable(*$2), $4);}
+	| ENUM IDENTIFIER// {$$ = new Enumerator((new Variable(*$2)), NULL);}
 	;
 
 enumerator_list
-	: enumerator {$$ = new NodeList($1);}
-	| enumerator_list ',' enumerator {$1 -> PushBack($3); $$ = $1;}
+	: enumerator //{$$ = new NodeList($1);}
+	| enumerator_list ',' enumerator// {$1 -> PushBack($3); $$ = $1;}
 	;
 
 enumerator
-	: IDENTIFIER {$$ = new EnumDeclerator((new Variable(*$1)),NULL);}
-	| IDENTIFIER '=' constant_expression {$$ = new EnumDeclerator((new Variable(*$1)),$3);}
+	: IDENTIFIER //{$$ = new EnumDeclerator((new Variable(*$1)),NULL);}
+	| IDENTIFIER '=' constant_expression //{$$ = new EnumDeclerator((new Variable(*$1)),$3);}
 	;
 
 declarator

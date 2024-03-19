@@ -228,7 +228,7 @@ type_specifier
 	| SIGNED
 	| UNSIGNED
     | struct_specifier
-	| enum_specifier
+	| enum_specifier {$$ = $1;}
 	| TYPE_NAME
 	;
 
@@ -264,19 +264,19 @@ struct_declarator
 	;
 
 enum_specifier
-	: ENUM '{' enumerator_list '}'
-	| ENUM IDENTIFIER '{' enumerator_list '}'
-	| ENUM IDENTIFIER
+	: ENUM '{' enumerator_list '}' {$$ = new Enumerator(NULL, $3);}
+	| ENUM IDENTIFIER '{' enumerator_list '}' {$$ = new Enumerator(Variable(*$2), $4);}
+	| ENUM IDENTIFIER {$$ = new Enumerator((new Variable(*$2)), NULL);}
 	;
 
 enumerator_list
-	: enumerator
-	| enumerator_list ',' enumerator
+	: enumerator {$$ = new NodeList($1);}
+	| enumerator_list ',' enumerator {$1 -> PushBack($3); $$ = $1;}
 	;
 
 enumerator
-	: IDENTIFIER
-	| IDENTIFIER '=' constant_expression
+	: IDENTIFIER {$$ = new EnumDeclerator((new Variable(*$1)),NULL);}
+	| IDENTIFIER '=' constant_expression {$$ = new EnumDeclerator((new Variable(*$1)),$3);}
 	;
 
 declarator

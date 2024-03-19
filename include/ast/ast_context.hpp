@@ -15,7 +15,7 @@ protected:
         1,                            // x1         ra          return address
         1,                            // x2         sp          stack pointer
         1,                            // x3         gp          global pointer
-        1,                            // x4         tp          thread pointer
+        0,                            // x4         tp          thread pointer
         0, 0, 0,                      // x5 - x7    t0 - t2     temporary registers
         1,                            // x8         s0          frame pointer
         1,                            // x9         s1          saved register 1
@@ -63,17 +63,47 @@ public:
     return "." + base + std::to_string(makeNameUnq++);
     }
 
+    /// switch
+    std::vector<std::string> labels;
+    std::vector<int> case_num;
+    std::string switch_end_label;
+    ///
+
+    /// For
+    std::string contLabel;
+    ///
+
+    /// Float
+    std::unordered_map<std::string, unsigned int> FloatWords;
+    std::unordered_map<std::string, std::string> datatype;
+    ///
+
+    /// string
+    std::unordered_map<std::string, std::string> Strings;
+    ///
 
      /*
         -----------------------------Register Management-------------------------------
     */
-    std:: map<std:: string, std::string> bindings;
+    std:: map<std:: string, std::string> bindings ;
+    std:: map<std:: string, std::string> bindingsFloat ;
+
+
     std:: string AllocReg(std:: string var){
         for (int i = 4; i < 32; i++){
             if (Reg[i] == 0){
                 Reg[i] = 1;
                 bindings[var] = "x" + std::to_string(i);
                 return ("x" + std::to_string(i));
+            }
+        }
+    }
+    std:: string AllocFloatReg(std:: string float_var){
+        for (int i = 4; i < 32; i++){
+            if (FloatReg[i] == 0){
+                FloatReg[i] = 1;
+                bindingsFloat[float_var] = "f" + std::to_string(i);
+                return ("f" + std::to_string(i));
             }
         }
     }
@@ -88,6 +118,19 @@ public:
         else{
             Reg[location] = 0;
             bindings.erase(var);
+        }
+
+    }
+    void DeallocFloatReg(std:: string float_var){
+        std:: string float_reg = bindingsFloat[float_var].substr(1);
+        int location = stoi(float_reg);
+        if (FloatReg[location] == 0){
+            std:: cerr << "the register was never assigned";
+            exit(1);
+        }
+        else{
+            FloatReg[location] = 0;
+            bindingsFloat.erase(float_var);
         }
 
     }

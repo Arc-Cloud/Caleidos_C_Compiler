@@ -68,7 +68,7 @@ function_definition
 primary_expression
 	: IDENTIFIER {$$ = new Variable(*$1); delete $1;}
 	| INT_CONSTANT {$$ = new IntConstant($1);}
-    | FLOAT_CONSTANT
+    | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
 	| STRING_LITERAL
 	| '(' expression ')' {$$ = $2;}
 	;
@@ -223,7 +223,7 @@ type_specifier
 	| SHORT
 	| INT {$$ = new TypeSpecifier(_Types::_int);}
 	| LONG
-	| FLOAT
+	| FLOAT {$$ =  new TypeSpecifier(_Types:: _float);}
 	| DOUBLE
 	| SIGNED
 	| UNSIGNED
@@ -358,8 +358,8 @@ statement
 
 labeled_statement
 	: IDENTIFIER ':' statement
-	| CASE constant_expression ':' statement
-	| DEFAULT ':' statement
+	| CASE constant_expression ':' statement {$$ = new Case($2,$4);}
+	| DEFAULT ':' statement {$$ = new Default($3);}
 	;
 
 compound_statement
@@ -396,7 +396,7 @@ expression_statement
 selection_statement
 	: IF '(' expression ')' statement {$$ = new IfNoElse($3, $5);}
 	| IF '(' expression ')' statement ELSE statement {$$ = new IfElse($3, $5,$7);}
-	| SWITCH '(' expression ')' statement
+	| SWITCH '(' expression ')' statement {$$ = new Switch($3,$5);}
 	;
 
 iteration_statement
@@ -408,8 +408,8 @@ iteration_statement
 
 jump_statement
 	: GOTO IDENTIFIER ';'
-	| CONTINUE ';'
-	| BREAK ';'
+	| CONTINUE ';' {$$ = new Continue();}
+	| BREAK ';' {$$ = new Break();}
 	| RETURN ';' {$$ = new Return(nullptr);}
 	| RETURN expression ';' {$$ = new Return($2);}
 	;

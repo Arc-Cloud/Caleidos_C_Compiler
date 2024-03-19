@@ -10,6 +10,10 @@ protected:
 
 public:
     Return(Node *expr) : ret(expr){};
+    virtual ~Return()
+    {
+        delete ret;
+    }
 
     virtual void EmitRISC(std::ostream &stream, Context &context) const override
     {
@@ -35,11 +39,24 @@ public:
         //     ret -> EmitRISC(stream, context);
         // }
 
-        ret->EmitRISC(stream, context);
-        stream << "mv a0," << context.bindings[context.dst] << std::endl;
-        context.DeallocReg(context.dst);
-        context.return_ = true;
-        stream << "j " << context.EndLabel << std::endl;
+
+        if (context.ReadInstType() == "float"){
+            ret->EmitRISC(stream, context);
+            stream << "fmv.s fa0," << context.bindingsFloat[context.dst] << std::endl;
+            context.DeallocFloatReg(context.dst);
+            context.return_ = true;
+            stream << "j " << context.EndLabel << std::endl;
+        }
+        else{
+            ret->EmitRISC(stream, context);
+            stream << "mv a0," << context.bindings[context.dst] << std::endl;
+            context.DeallocReg(context.dst);
+            context.return_ = true;
+            stream << "j " << context.EndLabel << std::endl;
+
+        }
+
+
     }
     virtual void Print(std::ostream &stream) const override{};
 };

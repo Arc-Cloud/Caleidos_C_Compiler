@@ -6,6 +6,7 @@
 enum _Types
 {
     _int,
+    _float
 };
 class TypeSpecifier : public Node
 {
@@ -19,7 +20,19 @@ public:
     void Print(std::ostream &stream) const override{};
     std::string getType() const override
     {
-        return "not implemented";
+        switch (id)
+        {
+        case _int:
+            return "int";
+            break;
+        case _float:
+            return "float";
+            break;
+
+        default:
+            std::cerr << "data Type not implemented" << std::endl;
+            break;
+        }
     };
     int getSize() const override
     {
@@ -27,6 +40,9 @@ public:
         {
         case _int:
             return 1; //(requires 4 bytes or "1" word)
+            break;
+        case _float:
+            return 1; // 4 bytes
             break;
 
         default:

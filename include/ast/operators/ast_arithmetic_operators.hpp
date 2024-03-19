@@ -53,30 +53,25 @@ public:
                 rightOperand_->EmitRISC(stream, context);
                 right = context.dst;
             }
-            std::string op = context.makeName("O");
-            std::string res = context.AllocReg(op);
-            stream << "add " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
-            context.DeallocReg(left);
-            context.DeallocReg(right);
-            context.dst = op;
-            /*if(context.ReadInstType() == "AssignFloat"){
-                std:: string op = context.makeName("O");
-                std:: string res = context.AllocFloatReg(op);
-                stream << "fadd.s " << res << "," << context.bindingsFloat[left] << "," << context.bindingsFloat[right] << std::endl;
-                context.DeallocFloatReg(left);
-                context.DeallocFloatReg(right);
-                context.WriteInstType("float");
+
+            if (left[1] == 'F' && right[1] == 'F')
+            {
+                std::string op = context.makeName("F");
+                std::string res = context.AllocReg(op);
+                stream << "fadd.s " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                context.DeallocReg(left);
+                context.DeallocReg(right);
                 context.dst = op;
             }
-            else{
-                std:: string op = context.makeName("O");
-                std:: string res = context.AllocReg(op);
+            else
+            {
+                std::string op = context.makeName("O");
+                std::string res = context.AllocReg(op);
                 stream << "add " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
                 context.DeallocReg(left);
                 context.DeallocReg(right);
                 context.dst = op;
-            }*/
-
+            }
         }
     }
 };
@@ -191,12 +186,24 @@ public:
                 rightOperand_->EmitRISC(stream, context);
                 right = context.dst;
             }
-            std::string op = context.makeName("O");
-            std::string res = context.AllocReg(op);
-            stream << "mul " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
-            context.DeallocReg(left);
-            context.DeallocReg(right);
-            context.dst = op;
+            if (left[1] == 'F' && right[1] == 'F')
+            {
+                std::string op = context.makeName("F");
+                std::string res = context.AllocReg(op);
+                stream << "fmul.s " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                context.DeallocReg(left);
+                context.DeallocReg(right);
+                context.dst = op;
+            }
+            else
+            {
+                std::string op = context.makeName("O");
+                std::string res = context.AllocReg(op);
+                stream << "mul " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                context.DeallocReg(left);
+                context.DeallocReg(right);
+                context.dst = op;
+            }
         }
     }
 };

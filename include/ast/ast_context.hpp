@@ -79,8 +79,8 @@ public:
     ///
 
     /// Float
-    std::unordered_map<std::string, unsigned int> FloatWords;
-    std::unordered_map<std::string, std::string> datatype;
+    std::map<std::string, int> FloatWords;
+    std::map<std::string, std::string> datatype;
     ///
 
     /// string
@@ -91,54 +91,102 @@ public:
         -----------------------------Register Management-------------------------------
     */
     std:: map<std:: string, std::string> bindings ;
-    std:: map<std:: string, std::string> bindingsFloat ;
+    // std:: map<std:: string, std::string> bindingsFloat ;
 
+    std:: string getDataType(std:: string input){
+        return datatype[input];
+    }
+    void AssignType(std:: string input, std:: string type){
+        datatype[input] = type;
+    }
+    void deleteType(std:: string input){
+        datatype.erase(input);
+    }
 
-    std:: string AllocReg(std:: string var){
-        for (int i = 4; i < 32; i++){
-            if (Reg[i] == 0){
-                Reg[i] = 1;
-                bindings[var] = "x" + std::to_string(i);
-                return ("x" + std::to_string(i));
+    std::string AllocReg(std::string var)
+    {
+        if (var[1] == 'F')
+        {
+            for (int i = 4; i < 32; i++)
+            {
+                if (FloatReg[i] == 0)
+                {
+                    FloatReg[i] = 1;
+                    bindings[var] = "f" + std::to_string(i);
+                    return ("f" + std::to_string(i));
+                }
+            }
+        }
+        else
+        {
+            for (int i = 4; i < 32; i++)
+            {
+                if (Reg[i] == 0)
+                {
+                    Reg[i] = 1;
+                    bindings[var] = "x" + std::to_string(i);
+                    return ("x" + std::to_string(i));
+                }
             }
         }
     }
-    std:: string AllocFloatReg(std:: string float_var){
-        for (int i = 4; i < 32; i++){
-            if (FloatReg[i] == 0){
-                FloatReg[i] = 1;
-                bindingsFloat[float_var] = "f" + std::to_string(i);
-                return ("f" + std::to_string(i));
-            }
-        }
-    }
 
-    void DeallocReg(std:: string var){
-        std:: string reg = bindings[var].substr(1);
+    void DeallocReg(std::string var)
+    {
+        std::string reg = bindings[var].substr(1);
         int location = stoi(reg);
-        if (Reg[location] == 0){
-            std:: cerr << "the register was never assigned";
-            exit(1);
+        if (var[1] == 'F')
+        {
+            if (FloatReg[location] == 0)
+            {
+                std::cerr << "the register was never assigned";
+                exit(1);
+            }
+            else
+            {
+                FloatReg[location] = 0;
+                bindings.erase(var);
+            }
         }
-        else{
-            Reg[location] = 0;
-            bindings.erase(var);
+        else
+        {
+            if (Reg[location] == 0)
+            {
+                std::cerr << "the register was never assigned";
+                exit(1);
+            }
+            else
+            {
+                Reg[location] = 0;
+                bindings.erase(var);
+            }
         }
-
     }
-    void DeallocFloatReg(std:: string float_var){
-        std:: string float_reg = bindingsFloat[float_var].substr(1);
-        int location = stoi(float_reg);
-        if (FloatReg[location] == 0){
-            std:: cerr << "the register was never assigned";
-            exit(1);
-        }
-        else{
-            FloatReg[location] = 0;
-            bindingsFloat.erase(float_var);
-        }
+    // void DeallocFloatReg(std:: string float_var){
+    //     std:: string float_reg = bindingsFloat[float_var].substr(1);
+    //     int location = stoi(float_reg);
+    //     if (FloatReg[location] == 0){
+    //         std:: cerr << "the register was never assigned";
+    //         exit(1);
+    //     }
+    //     else{
+    //         FloatReg[location] = 0;
+    //         bindingsFloat.erase(float_var);
+    //     }
 
-    }
+    // }
+    // std::string AllocFloatReg(std::string float_var)
+    // {
+    //     for (int i = 4; i < 32; i++)
+    //     {
+    //         if (FloatReg[i] == 0)
+    //         {
+    //             FloatReg[i] = 1;
+    //             bindingsFloat[float_var] = "f" + std::to_string(i);
+    //             return ("f" + std::to_string(i));
+    //         }
+    //     }
+    // }
 
 
 

@@ -18,7 +18,7 @@ public:
         delete parameter;
     };
     void EmitRISC(std::ostream &stream, Context &context) const override
-    {   
+    {
         stream << ".globl " << identifier_->getId() << std::endl;
         stream << identifier_->getId() << ":" << std::endl;
         stream << "addi sp,sp,-" << context.memDef() << std::endl;
@@ -52,11 +52,11 @@ public:
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
         std::string var = init_->getId();
-        // context.AllocReg(var);
+        std::string type = Typespec_->getType();
         int datatype = Typespec_->getSize(); // will be useful later when we deal with numbers other than integer
-        std::string type = init_->getType();
-        context.datatype[var] = Typespec_->getType();
-        if (type == "array")
+        context.AssignType(var, type);
+        std::string Insttype = init_->getType();
+        if (Insttype == "array")
         {
             int size = init_->getSize();
             for (int i = 0; i < size; i++)
@@ -72,9 +72,16 @@ public:
 
         if (context.ReadInstType() == "params")
         {
-            stream << "sw a" << context.ParamCounter++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
+            if (context.getDataType(var) == "float")
+            {
+                stream << "fsw fa" << context.ParamCounter++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
+            }
+            else
+            {
+                stream << "sw a" << context.ParamCounter++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
+            }
         }
-        if (type != "variable")
+        if (Insttype != "variable")
         {
             init_->EmitRISC(stream, context);
         }
@@ -123,8 +130,8 @@ public:
         // }
         if(context.datatype[identifier_->getId()] == "float"){
             value->EmitRISC(stream, context);
-            stream << "fsw " << context.bindingsFloat[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
-            context.DeallocFloatReg(context.dst);
+            stream << "fsw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+            context.DeallocReg(context.dst);
         }
         else{
         value->EmitRISC(stream, context);

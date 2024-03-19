@@ -55,6 +55,7 @@ public:
         // context.AllocReg(var);
         int datatype = Typespec_->getSize(); // will be useful later when we deal with numbers other than integer
         std::string type = init_->getType();
+        context.datatype[var] = Typespec_->getType();
         if (type == "array")
         {
             int size = init_->getSize();
@@ -68,6 +69,7 @@ public:
         {
             context.AllocateStack(var);
         }
+
         if (context.ReadInstType() == "params")
         {
             stream << "sw a" << context.ParamCounter++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
@@ -119,10 +121,16 @@ public:
         //     stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
         //     context.DeallocReg(context.dst);
         // }
-
+        if(context.datatype[identifier_->getId()] == "float"){
+            value->EmitRISC(stream, context);
+            stream << "fsw " << context.bindingsFloat[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+            context.DeallocFloatReg(context.dst);
+        }
+        else{
         value->EmitRISC(stream, context);
         stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
         context.DeallocReg(context.dst);
+        }
     };
 
     void Print(std::ostream &stream) const override{};

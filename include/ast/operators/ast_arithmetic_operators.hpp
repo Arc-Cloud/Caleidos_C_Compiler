@@ -59,6 +59,24 @@ public:
             context.DeallocReg(left);
             context.DeallocReg(right);
             context.dst = op;
+            /*if(context.ReadInstType() == "AssignFloat"){
+                std:: string op = context.makeName("O");
+                std:: string res = context.AllocFloatReg(op);
+                stream << "fadd.s " << res << "," << context.bindingsFloat[left] << "," << context.bindingsFloat[right] << std::endl;
+                context.DeallocFloatReg(left);
+                context.DeallocFloatReg(right);
+                context.WriteInstType("float");
+                context.dst = op;
+            }
+            else{
+                std:: string op = context.makeName("O");
+                std:: string res = context.AllocReg(op);
+                stream << "add " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                context.DeallocReg(left);
+                context.DeallocReg(right);
+                context.dst = op;
+            }*/
+
         }
     }
 };

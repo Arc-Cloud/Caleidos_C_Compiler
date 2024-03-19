@@ -29,6 +29,8 @@ public:
     {
         std::string label1 = context.makeName("L");
         std::string label2 = context.makeName("L");
+        std::string labelCont = context.makeName("L");
+        context.contLabel = labelCont;
 
         initExpr->EmitRISC(stream, context);
 
@@ -40,6 +42,7 @@ public:
         statement->EmitRISC(stream, context);
 
         if (incrExpr != nullptr) {
+        stream << labelCont << ":" << std::endl;
         incrExpr->EmitRISC(stream, context);
         }
 
@@ -52,6 +55,18 @@ public:
 
 };
 
+class Continue : public Node
+{
+public:
+
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override
+    {
+
+        stream << "j " << context.contLabel << std::endl;
+
+    }
+    virtual void Print(std::ostream &stream) const override{};
+};
 
 
 #endif

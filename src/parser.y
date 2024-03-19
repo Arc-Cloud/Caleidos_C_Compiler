@@ -32,11 +32,11 @@
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
-%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
+%type <node> struct_declarator enum_specifier enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer statement labeled_statement
-%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement 
+%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list argument_expression_list
+%type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list argument_expression_list enumerator_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -68,7 +68,7 @@ function_definition
 primary_expression
 	: IDENTIFIER {$$ = new Variable(*$1); delete $1;}
 	| INT_CONSTANT {$$ = new IntConstant($1);}
-    | FLOAT_CONSTANT
+    | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
 	| STRING_LITERAL
 	| '(' expression ')' {$$ = $2;}
 	;
@@ -223,12 +223,12 @@ type_specifier
 	| SHORT
 	| INT {$$ = new TypeSpecifier(_Types::_int);}
 	| LONG
-	| FLOAT
+	| FLOAT {$$ =  new TypeSpecifier(_Types:: _float);}
 	| DOUBLE
 	| SIGNED
 	| UNSIGNED
     | struct_specifier
-	| enum_specifier
+	| enum_specifier {$$ = $1;}
 	| TYPE_NAME
 	;
 
@@ -264,19 +264,19 @@ struct_declarator
 	;
 
 enum_specifier
-	: ENUM '{' enumerator_list '}'
-	| ENUM IDENTIFIER '{' enumerator_list '}'
-	| ENUM IDENTIFIER
+	: ENUM '{' enumerator_list '}' {$$ = new EnumDeclerator(NULL,$3);}
+	| ENUM IDENTIFIER '{' enumerator_list '}' {$$ = new EnumDeclerator(new Variable(*$2), $4); delete $2;}
+	| ENUM IDENTIFIER {$$ = new EnumDeclerator(new Variable(*$2), NULL); delete $2;}
 	;
 
 enumerator_list
-	: enumerator
-	| enumerator_list ',' enumerator
+	: enumerator {$$ = new NodeList($1);}
+	| enumerator_list ',' enumerator {$1 -> PushBack($3); $$ = $1;}
 	;
 
 enumerator
-	: IDENTIFIER
-	| IDENTIFIER '=' constant_expression
+	: IDENTIFIER {$$ = new Enumerator(new Variable(*$1) , NULL); delete $1;}
+	| IDENTIFIER '=' constant_expression {$$ = new Enumerator(new Variable(*$1) , $3); delete $1;}
 	;
 
 declarator
@@ -358,8 +358,8 @@ statement
 
 labeled_statement
 	: IDENTIFIER ':' statement
-	| CASE constant_expression ':' statement
-	| DEFAULT ':' statement
+	| CASE constant_expression ':' statement {$$ = new Case($2,$4);}
+	| DEFAULT ':' statement {$$ = new Default($3);}
 	;
 
 compound_statement
@@ -396,7 +396,7 @@ expression_statement
 selection_statement
 	: IF '(' expression ')' statement {$$ = new IfNoElse($3, $5);}
 	| IF '(' expression ')' statement ELSE statement {$$ = new IfElse($3, $5,$7);}
-	| SWITCH '(' expression ')' statement
+	| SWITCH '(' expression ')' statement {$$ = new Switch($3,$5);}
 	;
 
 iteration_statement
@@ -408,8 +408,8 @@ iteration_statement
 
 jump_statement
 	: GOTO IDENTIFIER ';'
-	| CONTINUE ';'
-	| BREAK ';'
+	| CONTINUE ';' {$$ = new Continue();}
+	| BREAK ';' {$$ = new Break();}
 	| RETURN ';' {$$ = new Return(nullptr);}
 	| RETURN expression ';' {$$ = new Return($2);}
 	;

@@ -5,3 +5,4 @@ int f(int k) {
     return 0;
   }
 }
+

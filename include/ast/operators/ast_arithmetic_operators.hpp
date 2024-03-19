@@ -37,12 +37,24 @@ public:
         }
         else
         {
-            leftOperand_->EmitRISC(stream, context);
-            std:: string left = context.dst;
-            rightOperand_->EmitRISC(stream, context);
-            std:: string right= context.dst;
-            std:: string op = context.makeName("O");
-            std:: string res = context.AllocReg(op);
+            std::string left;
+            std::string right;
+            if (rightOperand_->getType() == "call")
+            {
+                rightOperand_->EmitRISC(stream, context);
+                right = context.dst;
+                leftOperand_->EmitRISC(stream, context);
+                left = context.dst;
+            }
+            else
+            {
+                leftOperand_->EmitRISC(stream, context);
+                left = context.dst;
+                rightOperand_->EmitRISC(stream, context);
+                right = context.dst;
+            }
+            std::string op = context.makeName("O");
+            std::string res = context.AllocReg(op);
             stream << "add " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
             context.DeallocReg(left);
             context.DeallocReg(right);
@@ -67,10 +79,7 @@ public:
 
         }
     }
-
-
 };
-
 
 class SubOp : public Node
 {
@@ -106,22 +115,31 @@ public:
         }
         else
         {
-            leftOperand_->EmitRISC(stream, context);
-            std:: string left = context.dst;
-            rightOperand_->EmitRISC(stream, context);
-            std:: string right= context.dst;
-            std:: string op = context.makeName("O");
-            std:: string res = context.AllocReg(op);
+            std::string left;
+            std::string right;
+            if (rightOperand_->getType() == "call")
+            {
+                rightOperand_->EmitRISC(stream, context);
+                right = context.dst;
+                leftOperand_->EmitRISC(stream, context);
+                left = context.dst;
+            }
+            else
+            {
+                leftOperand_->EmitRISC(stream, context);
+                left = context.dst;
+                rightOperand_->EmitRISC(stream, context);
+                right = context.dst;
+            }
+            std::string op = context.makeName("O");
+            std::string res = context.AllocReg(op);
             stream << "sub " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
             context.DeallocReg(left);
             context.DeallocReg(right);
             context.dst = op;
         }
     }
-
-
 };
-
 
 class MulOp : public Node
 {
@@ -157,22 +175,31 @@ public:
         }
         else
         {
-            leftOperand_->EmitRISC(stream, context);
-            std:: string left = context.dst;
-            rightOperand_->EmitRISC(stream, context);
-            std:: string right= context.dst;
-            std:: string op = context.makeName("O");
-            std:: string res = context.AllocReg(op);
+            std::string left;
+            std::string right;
+            if (rightOperand_->getType() == "call")
+            {
+                rightOperand_->EmitRISC(stream, context);
+                right = context.dst;
+                leftOperand_->EmitRISC(stream, context);
+                left = context.dst;
+            }
+            else
+            {
+                leftOperand_->EmitRISC(stream, context);
+                left = context.dst;
+                rightOperand_->EmitRISC(stream, context);
+                right = context.dst;
+            }
+            std::string op = context.makeName("O");
+            std::string res = context.AllocReg(op);
             stream << "mul " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
             context.DeallocReg(left);
             context.DeallocReg(right);
             context.dst = op;
         }
     }
-
-
 };
-
 
 class DivOp : public Node
 {
@@ -208,20 +235,30 @@ public:
         }
         else
         {
-            leftOperand_->EmitRISC(stream, context);
-            std:: string left = context.dst;
-            rightOperand_->EmitRISC(stream, context);
-            std:: string right = context.dst;
-            std:: string op = context.makeName("O");
-            std:: string res = context.AllocReg(op);
+            std::string left;
+            std::string right;
+            if (rightOperand_->getType() == "call")
+            {
+                rightOperand_->EmitRISC(stream, context);
+                right = context.dst;
+                leftOperand_->EmitRISC(stream, context);
+                left = context.dst;
+            }
+            else
+            {
+                leftOperand_->EmitRISC(stream, context);
+                left = context.dst;
+                rightOperand_->EmitRISC(stream, context);
+                right = context.dst;
+            }
+            std::string op = context.makeName("O");
+            std::string res = context.AllocReg(op);
             stream << "div " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
             context.DeallocReg(left);
             context.DeallocReg(right);
             context.dst = op;
         }
     }
-
-
 };
 
 class ModOp : public Node
@@ -258,23 +295,30 @@ public:
         }
         else
         {
-            leftOperand_->EmitRISC(stream, context);
-            std:: string left = context.dst;
-            rightOperand_->EmitRISC(stream, context);
-            std:: string right= context.dst;
-            std:: string op = context.makeName("O");
-            std:: string res = context.AllocReg(op);
+            std::string left;
+            std::string right;
+            if (rightOperand_->getType() == "call")
+            {
+                rightOperand_->EmitRISC(stream, context);
+                right = context.dst;
+                leftOperand_->EmitRISC(stream, context);
+                left = context.dst;
+            }
+            else
+            {
+                leftOperand_->EmitRISC(stream, context);
+                left = context.dst;
+                rightOperand_->EmitRISC(stream, context);
+                right = context.dst;
+            }
+            std::string op = context.makeName("O");
+            std::string res = context.AllocReg(op);
             stream << "rem " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
             context.DeallocReg(left);
             context.DeallocReg(right);
             context.dst = op;
         }
     }
-
-
 };
-
-
-
 
 #endif

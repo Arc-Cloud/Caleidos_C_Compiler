@@ -69,6 +69,11 @@ public:
     std::string switch_end_label;
     ///
 
+    /// Enum
+    std::unordered_map<std::string, int> enums;
+    int enumcounter = 0;
+    ///
+
     /// For
     std::string contLabel;
     ///

@@ -21,6 +21,7 @@
 
 // functions
 #include "ast/functions/ast_function.hpp"
+#include "ast/functions/ast_argument.hpp"
 
 // keywords
 #include "ast/keywords/ast_return.hpp"

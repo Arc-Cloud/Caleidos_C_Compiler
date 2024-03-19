@@ -41,8 +41,13 @@ public:
             std:: string left = context.dst;
             rightOperand_->EmitRISC(stream, context);
             std:: string right= context.dst;
-            stream << context.ReadInstType() << std::endl;
-            if(context.ReadInstType() == "AssignFloat"){
+            std:: string op = context.makeName("O");
+            std:: string res = context.AllocReg(op);
+            stream << "add " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+            context.DeallocReg(left);
+            context.DeallocReg(right);
+            context.dst = op;
+            /*if(context.ReadInstType() == "AssignFloat"){
                 std:: string op = context.makeName("O");
                 std:: string res = context.AllocFloatReg(op);
                 stream << "fadd.s " << res << "," << context.bindingsFloat[left] << "," << context.bindingsFloat[right] << std::endl;
@@ -58,7 +63,7 @@ public:
                 context.DeallocReg(left);
                 context.DeallocReg(right);
                 context.dst = op;
-            }
+            }*/
 
         }
     }

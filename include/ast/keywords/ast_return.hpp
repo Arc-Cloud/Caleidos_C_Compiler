@@ -40,21 +40,27 @@ public:
         // }
 
 
-        if (context.ReadInstType() == "float"){
+        // if (context.ReadInstType() == "float"){
+        //     ret->EmitRISC(stream, context);
+        //     stream << "fmv.s fa0," << context.bindingsFloat[context.dst] << std::endl;
+        //     context.DeallocFloatReg(context.dst);
+        //     context.return_ = true;
+        //     stream << "j " << context.EndLabel << std::endl;
+        // }
+        // else{
             ret->EmitRISC(stream, context);
-            stream << "fmv.s fa0," << context.bindingsFloat[context.dst] << std::endl;
-            context.DeallocFloatReg(context.dst);
-            context.return_ = true;
-            stream << "j " << context.EndLabel << std::endl;
-        }
-        else{
-            ret->EmitRISC(stream, context);
-            stream << "mv a0," << context.bindings[context.dst] << std::endl;
-            context.DeallocReg(context.dst);
+            std:: string holder = context.dst;
+            if (holder[1] == 'F'){
+                stream << "fmv.s fa0," << context.bindings[holder] << std::endl;
+            }
+            else{
+            stream << "mv a0," << context.bindings[holder] << std::endl;
+            }
+            context.DeallocReg(holder);
             context.return_ = true;
             stream << "j " << context.EndLabel << std::endl;
 
-        }
+        // }
 
 
     }

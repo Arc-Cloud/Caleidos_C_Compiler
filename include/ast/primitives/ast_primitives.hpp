@@ -32,8 +32,8 @@ public:
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
         if(context.datatype[id] == "float"){
-            std:: string variable_float = context.makeName("V");
-            std:: string float_res = context.AllocFloatReg(variable_float);
+            std:: string variable_float = context.makeName("F");
+            std:: string float_res = context.AllocReg(variable_float);
             stream << "flw " <<  float_res  << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
             // if function is of return type (belongs elsewhere): int stream << "fcvt.w.s " << res << "," << float_res << ",rtz" << std::endl;
             context.dst = variable_float;
@@ -47,6 +47,7 @@ public:
         }
         else{
             std:: string variable_ = context.makeName("V");
+            context.AssignType(variable_, context.getDataType(id));
             std:: string res = context.AllocReg(variable_);
             stream << "lw " <<  res  << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
             context.dst = variable_;
@@ -111,7 +112,7 @@ public:
                 std:: string float_lo = context.makeName("FL");
 
                 std:: string high = context.AllocReg(constant_hi);
-                std:: string low = context.AllocFloatReg(float_lo);
+                std:: string low = context.AllocReg(float_lo);
                 stream << "lui " << high << ",\%hi" << "("  << label << ")" << std::endl;
                 stream << "flw " << low << ",\%lo" << "("  << label << ")" << "(" << high << ")" <<std::endl;
                 context.DeallocReg(constant_hi);

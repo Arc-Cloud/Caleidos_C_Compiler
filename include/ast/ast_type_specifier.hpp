@@ -8,6 +8,7 @@ enum _Types
     _int,
     _float
 };
+
 class TypeSpecifier : public Node
 {
 private:
@@ -33,7 +34,7 @@ public:
             std::cerr << "data Type not implemented" << std::endl;
             break;
         }
-    };
+    }
     int getSize() const override
     {
         switch (id)

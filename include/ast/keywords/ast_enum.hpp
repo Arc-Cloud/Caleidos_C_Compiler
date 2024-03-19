@@ -1,44 +1,56 @@
-#ifndef AST_CALL_HPP
-#define AST_CALL_HPP
+#ifndef AST_ENUM_HPP
+#define AST_ENUM_HPP
 
 #include "../ast_node.hpp"
 
-class Enumerator {
+class EnumDeclerator: public Node {
     protected:
         Node*  id;
         NodeList* enumerators;
     public:
-        Enumerator(Node* id_, NodeList* enumerators_): id(id_), enumerators(enumerators_){};
-        ~Enumerator(){
+        EnumDeclerator(Node* id_, NodeList* enumerators_): id(id_), enumerators(enumerators_){};
+        ~EnumDeclerator(){
             delete id;
             delete enumerators;
         }
 
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
-            for (const auto& pair : context.enums) {
-                    stream << pair.first << ":" << std::endl;
-                    stream << ".word " << pair.second << std::endl;
-                }
-                context.enums.clear();
+
+            enumerators->EmitRISC(stream,context);
+            context.enumcounter = 0;
+
         }
 
         virtual void Print(std::ostream &stream) const override{};
+
+        std::string getType() const override{
+        return "enumerator";
+        }
+
+
 };
 
 
-class EnumDeclerator: public Node {
+class Enumerator: public Node {
     protected:
         Node* id;
         Node* value;
     public:
-        EnumDeclerator(Node* id_, Node* value_): id(id_), value(value_){};
-        ~EnumDeclerator(){
+        Enumerator(Node* id_, Node* value_): id(id_), value(value_){};
+        ~Enumerator(){
             delete id;
             delete value;
         }
 
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
-            context.enums[id->getId()] = value->getValue();
+            //value->EmitRISC(stream,context); need to implement to handle operations e.g a = 4 * 5
+            //std::string val = context.dst;
+            if (value!=NULL){
+            context.enums[id->getId()] = value->getVal();
+            }
+            else{
+                context.enums[id->getId()] = context.enumcounter++;
+            }
         }
 
         virtual void Print(std::ostream &stream) const override{};

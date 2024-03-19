@@ -38,11 +38,18 @@ public:
             // if function is of return type (belongs elsewhere): int stream << "fcvt.w.s " << res << "," << float_res << ",rtz" << std::endl;
             context.dst = variable_float;
         }
+        else if (context.enums.count(id)){
+            std:: string variable_ = context.makeName("V");
+            std:: string res = context.AllocReg(variable_);
+            stream << "li " << res << "," << context.enums[id] << std::endl;
+            context.enums.erase(id);
+            context.dst = variable_;
+        }
         else{
-        std:: string variable_ = context.makeName("V");
-        std:: string res = context.AllocReg(variable_);
-        stream << "lw " <<  res  << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
-        context.dst = variable_;
+            std:: string variable_ = context.makeName("V");
+            std:: string res = context.AllocReg(variable_);
+            stream << "lw " <<  res  << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
+            context.dst = variable_;
         }
     }
 

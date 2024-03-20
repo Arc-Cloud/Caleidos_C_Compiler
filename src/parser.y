@@ -58,7 +58,7 @@ translation_unit
 
 external_declaration
 	: function_definition { $$ = $1; }
-	| declaration
+	| declaration {$$ = new Global($1);}
 	;
 
 function_definition
@@ -194,7 +194,7 @@ constant_expression
 	: conditional_expression {$$ = $1;}
 	;
 declaration
-	: declaration_specifiers ';'
+	: declaration_specifiers ';' {$$ = $1;}
 	| declaration_specifiers init_declarator ';' {$$ = new Declaration($1, $2);}
 	;
 declaration_specifiers
@@ -389,7 +389,7 @@ statement_list
 	;
 
 expression_statement
-	: ';'
+	: ';' {$$ = NULL;}
 	| expression ';' { $$ = $1; }
 	;
 

@@ -17,20 +17,28 @@ public:
         delete identifier_;
         delete parameter;
     };
+    std:: string getType()const override{
+        return "funcdec";
+    }
     void EmitRISC(std::ostream &stream, Context &context) const override
-    {
-        stream << ".globl " << identifier_->getId() << std::endl;
-        stream << identifier_->getId() << ":" << std::endl;
-        stream << "addi sp,sp,-" << context.memDef() << std::endl;
-        stream << "sw ra," << std::to_string(context.AllocateStack("ra")) << "(sp)" << std::endl;
-        stream << "sw s0," << std::to_string(context.AllocateStack("s0")) << "(sp)" << std::endl;
-        stream << "addi s0,sp," << context.default_mem << std::endl;
-        if (parameter != NULL && parameter->getSize() < 9)
-        {
-            context.WriteInstType("params");
-            parameter->EmitRISC(stream, context);
-            context.ParamCounter = 0; // pay attention to this;
-        }
+    {       if (context.is_global != true){
+            // stream << context.ReadInstType();
+            stream << ".globl " << identifier_->getId() << std::endl;
+            stream << identifier_->getId() << ":" << std::endl;
+            stream << "addi sp,sp,-" << context.memDef() << std::endl;
+            stream << "sw ra," << std::to_string(context.AllocateStack("ra")) << "(sp)" << std::endl;
+            stream << "sw s0," << std::to_string(context.AllocateStack("s0")) << "(sp)" << std::endl;
+            stream << "addi s0,sp," << context.default_mem << std::endl;
+            if (parameter != NULL && parameter->getSize() < 9)
+            {
+                context.WriteInstType("params");
+                parameter->EmitRISC(stream, context);
+                context.ParamCounter = 0; // pay attention to this;
+            }
+            }
+            context.is_global = false;
+            
+        
     };
     void Print(std::ostream &stream) const override{};
 };

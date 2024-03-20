@@ -15,7 +15,9 @@ public:
     virtual void Print(std::ostream &stream) const = 0;
     virtual ~Node(){};
     // helper fuction for child functions
-    virtual std::string getType() const {}
+    virtual std::string getType() const {
+        return "zonk";
+    }
     virtual std::string getId() const {
         return "why am i here";
     }

@@ -24,6 +24,10 @@ public:
         return id;
     }
 
+    void updateId(std:: string input) override{
+        id = input;
+    }
+
     std::string getType() const override
     {
         return "variable";

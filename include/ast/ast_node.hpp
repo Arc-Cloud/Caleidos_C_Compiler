@@ -22,6 +22,7 @@ public:
     virtual int getSize() const {}
     virtual int getVal() const {}
     virtual void memAlloc(Context &context) const {}
+    virtual void updateId(std::string input) {}
 };
 
 // Represents a list of nodes.

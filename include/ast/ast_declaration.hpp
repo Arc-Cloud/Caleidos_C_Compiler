@@ -66,8 +66,19 @@ public:
             }
         }
         else
-        {
-            context.AllocateStack(var);
+        {   
+            if (context.inFunc){
+                if (context.MemoryMapping.count(var)){
+                   context.scope.push_back(context.MemoryMapping[var]);
+                   context.varscope.push_back(var);
+                   context.MemoryMapping.erase(var);
+                   context.scopecount++;
+                   context.scopeflag = true;
+                   //what is this fuckery?? het at least it works
+                }
+            }
+                context.AllocateStack(var);
+
         }
 
         if (context.ReadInstType() == "params")
@@ -114,6 +125,10 @@ public:
     std::string getId() const override
     {
         return identifier_->getId();
+    }
+
+    void updateId(std:: string input) override{
+        identifier_->updateId(input);
     }
 
     void EmitRISC(std::ostream &stream, Context &context) const override

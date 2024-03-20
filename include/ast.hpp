@@ -19,6 +19,7 @@
 #include "ast/blocks/ast_while.hpp"
 #include "ast/blocks/ast_for.hpp"
 #include "ast/blocks/ast_switch.hpp"
+#include "ast/blocks/ast_global.hpp"
 
 // functions
 #include "ast/functions/ast_function.hpp"

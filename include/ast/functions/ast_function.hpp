@@ -21,6 +21,9 @@ class Function: public Node {
 
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
                 context.newFrame(context);
+                if (compound_statement_ != NULL){
+                    context.is_global = false;
+                }
                 id ->EmitRISC(stream, context);
                 std:: string end = context.makeName("end");
                 context.EndLabel = end;

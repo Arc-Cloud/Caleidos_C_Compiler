@@ -70,6 +70,9 @@ public:
     std::string switch_end_label;
     ///
 
+    ///global
+    bool is_global = false;
+
     /// Enum
     std::unordered_map<std::string, int> enums;
     int enumcounter = 0;

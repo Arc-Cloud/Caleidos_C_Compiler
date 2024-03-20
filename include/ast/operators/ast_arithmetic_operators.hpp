@@ -63,6 +63,14 @@ public:
                 context.DeallocReg(right);
                 context.dst = op;
             }
+            else if (left[1] == 'D' && right[1] == 'D'){
+                std:: string op = context.makeName("D");
+                std:: string res = context.AllocReg(op);
+                stream << "fadd.d " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                context.DeallocReg(left);
+                context.DeallocReg(right);
+                context.dst = op;
+            }
             else
             {
                 std::string op = context.makeName("O");
@@ -132,6 +140,14 @@ public:
                 std::string op = context.makeName("F");
                 std::string res = context.AllocReg(op);
                 stream << "fsub.s " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                context.DeallocReg(left);
+                context.DeallocReg(right);
+                context.dst = op;
+            }
+            else if (left[1] == 'D' && right[1] == 'D'){
+                std::string op = context.makeName("F");
+                std::string res = context.AllocReg(op);
+                stream << "fsub.d " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
                 context.DeallocReg(left);
                 context.DeallocReg(right);
                 context.dst = op;
@@ -208,6 +224,14 @@ public:
                 context.DeallocReg(right);
                 context.dst = op;
             }
+            else if (left[1] == 'D' && right[1] == 'D'){
+                std::string op = context.makeName("D");
+                std::string res = context.AllocReg(op);
+                stream << "fmul.d " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                context.DeallocReg(left);
+                context.DeallocReg(right);
+                context.dst = op;
+            }
             else
             {
                 std::string op = context.makeName("O");
@@ -276,6 +300,14 @@ public:
                 std::string op = context.makeName("F");
                 std::string res = context.AllocReg(op);
                 stream << "fdiv.s " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                context.DeallocReg(left);
+                context.DeallocReg(right);
+                context.dst = op;
+            }
+            else if (left[1] == 'F' && right[1] == 'F'){
+                std::string op = context.makeName("D");
+                std::string res = context.AllocReg(op);
+                stream << "fdiv.d " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
                 context.DeallocReg(left);
                 context.DeallocReg(right);
                 context.dst = op;

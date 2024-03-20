@@ -106,7 +106,7 @@ public:
 
     std::string AllocReg(std::string var)
     {
-        if (var[1] == 'F')
+        if (var[1] == 'F'|| var[1] == 'D')
         {
             for (int i = 4; i < 32; i++)
             {
@@ -136,7 +136,7 @@ public:
     {
         std::string reg = bindings[var].substr(1);
         int location = stoi(reg);
-        if (var[1] == 'F')
+        if (var[1] == 'F' || var[1] == 'D')
         {
             if (FloatReg[location] == 0)
             {

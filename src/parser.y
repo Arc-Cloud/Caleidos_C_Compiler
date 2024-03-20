@@ -19,7 +19,7 @@
   yytokentype  token;
 }
 
-%token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL
+%token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL CHAR_LITERAL
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP AND_OP OR_OP
 %token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN
 %token TYPE_NAME TYPEDEF EXTERN STATIC AUTO REGISTER SIZEOF
@@ -40,9 +40,9 @@
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
-%type <number_int> INT_CONSTANT STRING_LITERAL
+%type <number_int> INT_CONSTANT
 %type <number_float> FLOAT_CONSTANT
-%type <string> IDENTIFIER
+%type <string> IDENTIFIER CHAR_LITERAL STRING_LITERAL
 
 
 %start ROOT
@@ -70,6 +70,7 @@ primary_expression
 	| INT_CONSTANT {$$ = new IntConstant($1);}
     | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
 	| STRING_LITERAL
+	| CHAR_LITERAL {$$ = new Char(*$1); delete $1;}
 	| '(' expression ')' {$$ = $2;}
 	;
 
@@ -78,7 +79,7 @@ postfix_expression
 	| postfix_expression '[' expression ']' {$$ = new ArrayIndex($1,$3);}
 	| postfix_expression '(' ')' {$$ = new Call($1, NULL);}
 	| postfix_expression '(' argument_expression_list ')' {$$ = new Call($1, $3);}
-	| postfix_expression '.' IDENTIFIER
+	| postfix_expression '.' IDENTIFIER {$$ = new StructMemberAccess($1,$3);}
 	| postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression INC_OP {$$ = new UnaryIncrOp($1);}
 	| postfix_expression DEC_OP {$$ = new UnaryDecrOp($1);}
@@ -218,49 +219,49 @@ storage_class_specifier
 	;
 
 type_specifier
-	: VOID
-	| CHAR
-	| SHORT
+	: VOID {$$ = new TypeSpecifier(_Types::_void);}
+	| CHAR {$$ = new TypeSpecifier(_Types::_char);}
+	| SHORT // not required
 	| INT {$$ = new TypeSpecifier(_Types::_int);}
-	| LONG
-	| FLOAT {$$ =  new TypeSpecifier(_Types:: _float);}
-	| DOUBLE {$$ = new TypeSpecifier(_Types:: _double);}
-	| SIGNED
-	| UNSIGNED
-    | struct_specifier
+	| LONG // not required
+	| FLOAT {$$ = new TypeSpecifier(_Types::_float);}
+	| DOUBLE {$$ = new TypeSpecifier(_Types::_double);}
+	| SIGNED {$$ = new TypeSpecifier(_Types::_signed);}
+	| UNSIGNED {$$ = new TypeSpecifier(_Types::_unsigned);}
+    | struct_specifier {$$ = $1;}
 	| enum_specifier {$$ = $1;}
 	| TYPE_NAME
 	;
 
 struct_specifier
-	: STRUCT IDENTIFIER '{' struct_declaration_list '}'
-	| STRUCT '{' struct_declaration_list '}'
-	| STRUCT IDENTIFIER
+	: STRUCT IDENTIFIER '{' struct_declaration_list '}' {$$ = new StructSpec(new Variable(*$2), $4); delete $2;}
+	| STRUCT '{' struct_declaration_list '}' {$$ = new StructSpec(NULL,$3);}
+	| STRUCT IDENTIFIER {$$ = new StructSpec(new Variable(*$2), NULL); delete $2;}
 	;
 
 struct_declaration_list
-	: struct_declaration
-	| struct_declaration_list struct_declaration
+	: struct_declaration {$$ = new NodeList($1);}
+	| struct_declaration_list struct_declaration {$1 -> PushBack($2); $$ = $1;}
 	;
 
 struct_declaration
-	: specifier_qualifier_list struct_declarator_list ';'
+	: specifier_qualifier_list struct_declarator_list ';' {$$ = new StructMemberDeclaration($1,$2)}
 	;
 
 specifier_qualifier_list
-	: type_specifier specifier_qualifier_list
-	| type_specifier
+	: type_specifier specifier_qualifier_list {$1 -> PushBack($2); $$ = $1;}
+	| type_specifier {$$ = new NodeList($1);}
 	;
 
 struct_declarator_list
-	: struct_declarator
-	| struct_declarator_list ',' struct_declarator
+	: struct_declarator {$$ = new NodeList($1);}
+	| struct_declarator_list ',' struct_declarator {$1 -> PushBack($3); $$ = $1;}
 	;
 
 struct_declarator
-	: declarator {$$ = $1;}
-	| ':' constant_expression // not needed
-	| declarator ':' constant_expression //not needed
+	: declarator {$$ = new Variable(*$1); delete $1;}
+	| ':' constant_expression
+	| declarator ':' constant_expression
 	;
 
 enum_specifier
@@ -348,11 +349,11 @@ initializer_list
 	;
 
 statement
-	: labeled_statement
+	: labeled_statement {$$ = $1;}
 	| compound_statement {$$ = $1;}
 	| expression_statement {$$ = $1;}
-	| selection_statement
-	| iteration_statement
+	| selection_statement {$$ = $1;}
+	| iteration_statement {$$ = $1;}
 	| jump_statement { $$ = $1; }
 	;
 

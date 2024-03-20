@@ -3,7 +3,6 @@
 #include <string>
 #include <unordered_map>
 #include <map>
-
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being
 // compiled (e.g. function scope and variable names).
@@ -82,11 +81,17 @@ public:
     /// Float
     std::map<std::string, int> FloatWords;
     std::map<std::string, std::string> datatype;
+    std::map<std::string, int> DoubleWords;
+    ///
+
+    /// Struct
+    int CurrentOffset = 0;
+    std::map<std::string, std::pair<std::string, int>> structMap;
     ///
 
     /// string
     std::unordered_map<std::string, std::string> Strings;
-
+    ///
 
     /// frame
     bool inFunc = false;
@@ -202,7 +207,7 @@ public:
     /*
         -----------------------------FRAME MANAGEMENT-------------------------------
 
-    */  
+    */
 
     int framecount = 0;
     void newFrame(Context &current){
@@ -216,7 +221,7 @@ public:
          current.MemoryMapping = new_MemoryMapping;
          current.datatype = new_datatype;
          framecount++;
-        
+
     }
 
     void ExitFrame(Context &current){
@@ -253,6 +258,37 @@ public:
         return default_mem;
     }
 
+ /*
+        -----------------------------Data size-------------------------------
+    */
+
+   int data_size(std::string type){
+    if(type == "void"){
+        return 1;
+    }
+    else if(type == "char"){
+        return 1;
+    }
+    else if(type == "int"){
+        return 4;
+    }
+    else if(type == "float"){
+        return 4;
+    }
+    else if(type == "double"){
+        return 8;
+    }
+    else if(type == "unsigned"){
+        return 4;
+    }
+    else if(type == "signed"){
+        return 4;
+    }
+    else{
+        return 0;
+    }
+
+   }
 
 };
 

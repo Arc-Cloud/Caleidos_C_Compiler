@@ -62,6 +62,9 @@ public:
     int getSize() const override {
         return nodes_.size();
     }
+
+    auto begin() const -> decltype(nodes_.begin()) { return nodes_.begin(); }
+    auto end() const -> decltype(nodes_.end()) { return nodes_.end(); }
 };
 
 #endif

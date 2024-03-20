@@ -89,7 +89,7 @@ public:
 
     std::string getType() const override
     {
-        return "constant";
+        return "int";
     }
 
     int getVal() const override
@@ -142,5 +142,38 @@ public:
         return value_;
     }
 };
+
+
+class Char : public Node
+{
+private:
+    int id;
+
+public:
+    Char(std::string value){
+        char val = value[1];
+        id = static_cast<int>(val);
+    };
+
+    void EmitRISC(std::ostream &stream, Context &context) const override{
+
+        std:: string constant = context.makeName("I");
+        std:: string res = context.AllocReg(constant);
+        stream << "li " << res << "," << id << std::endl;
+        context.dst = constant;
+    }
+    void Print(std::ostream &stream) const override{};
+
+    std::string getType() const override
+    {
+        return "char";
+    }
+
+    int getVal() const override
+    {
+        return id;
+    }
+};
+
 
 #endif

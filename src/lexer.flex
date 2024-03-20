@@ -57,12 +57,12 @@ IS  (u|U|l|L)*
 0[xX]{H}+{IS}?		{yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_CONSTANT);}
 0{D}+{IS}?		    {yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_CONSTANT);}
 {D}+{IS}?		      {yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_CONSTANT);}
-L?'(\\.|[^\\'])+'	{yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_CONSTANT);}
 
 {D}+{E}{FS}?		        {yylval.number_float = strtod(yytext, NULL); return(FLOAT_CONSTANT);}
 {D}*"."{D}+({E})?{FS}?	{yylval.number_float = strtod(yytext, NULL); return(FLOAT_CONSTANT);}
 {D}+"."{D}*({E})?{FS}?	{yylval.number_float = strtod(yytext, NULL); return(FLOAT_CONSTANT);}
 
+L?'(\\.|[^\\'])+'			{ yylval.string=new std::string(yytext); return (CHAR_LITERAL); }
 L?\"(\\.|[^\\"])*\"	{/* TODO process string literal */; return(STRING_LITERAL);}
 
 "..."      {return(ELLIPSIS);}

@@ -74,7 +74,7 @@ public:
         {
             if (context.getDataType(var) == "float")
             {
-                stream << "fsw fa" << context.ParamCounter++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
+                stream << "fsw fa" << context.ParamCounterF++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
             }
             else
             {

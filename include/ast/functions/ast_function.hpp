@@ -20,6 +20,7 @@ class Function: public Node {
         }
 
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
+                context.newFrame(context);
                 id ->EmitRISC(stream, context);
                 std:: string end = context.makeName("end");
                 context.EndLabel = end;
@@ -40,34 +41,49 @@ class Function: public Node {
                     stream << ".word " << pair.second << std::endl;
                 }
                 context.FloatWords.clear();
+                context.ExitFrame(context);
         }
 
         virtual void Print(std::ostream &stream) const override{};
 };
 
-class CompoundStat : public Node {
-    private:
-    Node* declarations;
-    Node* statements;
-    public:
-    CompoundStat(Node* declare, Node* state): declarations(declare), statements(state){};
-    virtual ~CompoundStat(){
+class CompoundStat : public Node
+{
+private:
+    Node *declarations;
+    Node *statements;
+
+public:
+    CompoundStat(Node *declare, Node *state) : declarations(declare), statements(state){};
+    virtual ~CompoundStat()
+    {
         delete declarations;
         delete statements;
     }
 
     void Print(std::ostream &stream) const override{};
-    virtual void EmitRISC(std::ostream &stream, Context &context) const override{
-            context.WriteInstType(" ");
-            if (declarations != NULL){
-                // int decnum = declarations ->getSize(); this code can be exploited for memory management but im lazy now
-                declarations -> EmitRISC(stream, context);
-            }
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override
+    {
+        context.WriteInstType(" ");
+        if (declarations != NULL)
+        {   
+            // int decnum = declarations ->getSize(); this code can be exploited for memory management but im lazy now
+            context.inFunc = true;
+            declarations->EmitRISC(stream, context);
+            context.inFunc = false;
+        }
 
-            if (statements != NULL){
-                statements -> EmitRISC(stream, context);
-            }
+        if (statements != NULL)
+        {   
+            statements->EmitRISC(stream, context);
+        }
 
+        if (context.scopeflag){
+            context.scopeflag = false;
+            int count = context.scopecount - 1;
+            context.MemoryMapping[context.varscope[count]] = context.scope[count];
+            //this is so fucked lol but it works
+        }
     }
 };
 

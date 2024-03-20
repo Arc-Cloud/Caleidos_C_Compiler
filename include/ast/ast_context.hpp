@@ -86,7 +86,17 @@ public:
 
     /// string
     std::unordered_map<std::string, std::string> Strings;
-    ///
+
+
+    /// frame
+    bool inFunc = false;
+    bool scopeflag = false;
+    int scopecount = 0;
+    std:: vector <std:: string> varscope;
+    std:: vector <int> scope;
+    std:: vector <std:: map<std:: string, std::string>> frame_bind;
+    std:: vector <std:: map<std:: string, int>> frame_mems;
+    std:: vector <std:: map<std:: string, std::string>> frame_data;
 
      /*
         -----------------------------Register Management-------------------------------
@@ -189,9 +199,32 @@ public:
     //     }
     // }
 
+    /*
+        -----------------------------FRAME MANAGEMENT-------------------------------
 
+    */  
 
+    int framecount = 0;
+    void newFrame(Context &current){
+         std::map<std::string, std::string> new_datatype;
+         std:: map<std:: string, std::string> new_bindings;
+         std::map<std::string, int> new_MemoryMapping;
+         frame_bind.push_back(current.bindings);
+         frame_mems.push_back(current.MemoryMapping);
+         frame_data.push_back(current.datatype);
+         current.bindings = new_bindings;
+         current.MemoryMapping = new_MemoryMapping;
+         current.datatype = new_datatype;
+         framecount++;
+        
+    }
 
+    void ExitFrame(Context &current){
+        framecount--;
+        current.bindings = frame_bind[framecount];
+        current.MemoryMapping = frame_mems[framecount];
+        current.datatype = frame_data[framecount];
+    }
 
      /*
         -----------------------------MEMORY MANAGEMENT-------------------------------

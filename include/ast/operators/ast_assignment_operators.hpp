@@ -27,8 +27,9 @@ public:
     {
         std::string mem = identifier_->getId();
 
-        value_->EmitRISC(stream, context);
 
+        value_->EmitRISC(stream, context);
+        std::string name = context.dst;
         /*if(context.datatype[identifier_->getId()] == "float"){
             context.WriteInstType("AssignFloat");
             value_->EmitRISC(stream,context);
@@ -37,7 +38,6 @@ public:
         else{
             value_->EmitRISC(stream, context);
         }*/
-
 
 
         if (identifier_->getType() == "array1")
@@ -51,13 +51,11 @@ public:
             context.WriteInstType(" ");
 
         }
-        /*if(context.datatype[identifier_->getType()] == "float"){
-            stream << "fsw " << context.bindingsFloat[context.dst] << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;
-            context.DeallocFloatReg(context.dst);
-        }*/
-
+        if((name[1] == 'F')){
+            stream << "fsw " << context.bindings[context.dst] << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;
+            context.DeallocReg(context.dst);
+        }
         else {
-
         stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;
         context.DeallocReg(context.dst);
         }

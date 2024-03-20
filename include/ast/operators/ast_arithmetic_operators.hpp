@@ -72,6 +72,7 @@ public:
                 context.DeallocReg(right);
                 context.dst = op;
             }
+
         }
     }
 };
@@ -126,12 +127,24 @@ public:
                 rightOperand_->EmitRISC(stream, context);
                 right = context.dst;
             }
+            if (left[1] == 'F' && right[1] == 'F')
+            {
+                std::string op = context.makeName("F");
+                std::string res = context.AllocReg(op);
+                stream << "fsub.s " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                context.DeallocReg(left);
+                context.DeallocReg(right);
+                context.dst = op;
+            }
+            else
+            {
             std::string op = context.makeName("O");
             std::string res = context.AllocReg(op);
             stream << "sub " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
             context.DeallocReg(left);
             context.DeallocReg(right);
             context.dst = op;
+            }
         }
     }
 };
@@ -258,12 +271,24 @@ public:
                 rightOperand_->EmitRISC(stream, context);
                 right = context.dst;
             }
+            if (left[1] == 'F' && right[1] == 'F')
+            {
+                std::string op = context.makeName("F");
+                std::string res = context.AllocReg(op);
+                stream << "fdiv.s " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                context.DeallocReg(left);
+                context.DeallocReg(right);
+                context.dst = op;
+            }
+            else
+            {
             std::string op = context.makeName("O");
             std::string res = context.AllocReg(op);
             stream << "div " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
             context.DeallocReg(left);
             context.DeallocReg(right);
             context.dst = op;
+            }
         }
     }
 };

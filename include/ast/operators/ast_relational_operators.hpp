@@ -147,6 +147,7 @@ public:
             std:: string op = context.makeName("O");
             std:: string res = context.AllocReg(op);
             stream << "slt " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+            stream << context.bindings[res] << std::endl;
             context.DeallocReg(left);
             context.DeallocReg(right);
             context.dst = op;

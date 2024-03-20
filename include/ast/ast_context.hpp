@@ -46,6 +46,7 @@ public:
     std:: string dst;
     std:: string EndLabel;
     int ParamCounter = 0;
+    int ParamCounterF = 0;
     bool return_ = false;
     Context(){}
     void WriteInstType(std::string input)

@@ -76,6 +76,9 @@ public:
             {
                 stream << "fsw fa" << context.ParamCounterF++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
             }
+            else if (context.getDataType(var) == "double"){
+                stream << "fsd fa" << context.ParamCounterF++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;
+            }
             else
             {
                 stream << "sw a" << context.ParamCounter++ << "," << context.MemoryMapping[var] << "(sp)" << std::endl;

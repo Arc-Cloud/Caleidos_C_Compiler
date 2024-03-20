@@ -53,6 +53,9 @@ public:
             if (holder[1] == 'F'){
                 stream << "fmv.s fa0," << context.bindings[holder] << std::endl;
             }
+            else if (holder[1] == 'D'){
+                stream << "fmv.d fa0," << context.bindings[holder] << std::endl;
+            }
             else{
             stream << "mv a0," << context.bindings[holder] << std::endl;
             }

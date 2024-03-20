@@ -224,7 +224,7 @@ type_specifier
 	| INT {$$ = new TypeSpecifier(_Types::_int);}
 	| LONG
 	| FLOAT {$$ =  new TypeSpecifier(_Types:: _float);}
-	| DOUBLE
+	| DOUBLE {$$ = new TypeSpecifier(_Types:: _double);}
 	| SIGNED
 	| UNSIGNED
     | struct_specifier

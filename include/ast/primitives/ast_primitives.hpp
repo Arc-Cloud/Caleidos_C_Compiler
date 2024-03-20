@@ -38,6 +38,12 @@ public:
             // if function is of return type (belongs elsewhere): int stream << "fcvt.w.s " << res << "," << float_res << ",rtz" << std::endl;
             context.dst = variable_float;
         }
+        else if (context.datatype[id] == "double"){
+            std:: string variable = context.makeName("D");
+            std:: string res = context.AllocReg(variable);
+            stream << "fld " << res << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
+            context.dst = variable;
+        }
         else if (context.enums.count(id)){
             std:: string variable_ = context.makeName("V");
             std:: string res = context.AllocReg(variable_);

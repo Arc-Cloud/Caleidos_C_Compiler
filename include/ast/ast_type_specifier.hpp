@@ -6,7 +6,8 @@
 enum _Types
 {
     _int,
-    _float
+    _float,
+    _double
 };
 
 class TypeSpecifier : public Node
@@ -29,6 +30,9 @@ public:
         case _float:
             return "float";
             break;
+        case _double:
+            return "double";
+            break;
 
         default:
             std::cerr << "data Type not implemented" << std::endl;
@@ -44,6 +48,9 @@ public:
             break;
         case _float:
             return 1; // 4 bytes
+            break;
+        case _double:
+            return 1;
             break;
 
         default:

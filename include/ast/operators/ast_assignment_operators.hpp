@@ -56,6 +56,10 @@ public:
             stream << "fsw " << context.bindings[context.dst] << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;
             context.DeallocReg(context.dst);
         }
+        else if (name[1] == 'D'){
+            stream << "fsd " << context.bindings[context.dst] << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;
+            context.DeallocReg(context.dst);
+        }
         else
         {
             stream << "sw " << context.bindings[name] << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;

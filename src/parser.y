@@ -34,10 +34,10 @@
 %type <node> init_declarator type_specifier struct_specifier struct_declaration
 %type <node> struct_declarator enum_specifier enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer statement labeled_statement
-%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
+%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement specifier_qualifier_list
 
 %type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list argument_expression_list
-%type <nodes> enumerator_list struct_declaration_list specifier_qualifier_list struct_declarator_list
+%type <nodes> enumerator_list struct_declaration_list struct_declarator_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -71,7 +71,7 @@ primary_expression
 	| INT_CONSTANT {$$ = new IntConstant($1);}
     | FLOAT_CONSTANT {$$ = new FloatLiteral($1);}
 	| DOUBLE_CONSTANT {$$ = new DoubleLiteral($1);}
-	| STRING_LITERAL
+	| STRING_LITERAL {$$ = new String(*$1); delete $1;}
 	| CHAR_LITERAL {$$ = new Char(*$1); delete $1;}
 	| '(' expression ')' {$$ = $2;}
 	;
@@ -213,7 +213,7 @@ init_declarator
 	;
 
 storage_class_specifier
-	: TYPEDEF
+	: TYPEDEF 
 	| EXTERN
 	| STATIC
 	| AUTO
@@ -247,12 +247,12 @@ struct_declaration_list
 	;
 
 struct_declaration
-	: specifier_qualifier_list struct_declarator_list ';' {$$ = new StructBuildMap($1,$2);}
+	: specifier_qualifier_list struct_declarator_list ';'
 	;
 
 specifier_qualifier_list
-	: type_specifier specifier_qualifier_list {$2 -> PushBack($1); $$ = $2;}
-	| type_specifier {$$ = new NodeList($1);}
+	: type_specifier specifier_qualifier_list 
+	| type_specifier {$$ = $1;}
 	;
 
 struct_declarator_list

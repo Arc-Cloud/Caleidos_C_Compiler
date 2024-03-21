@@ -258,5 +258,27 @@ public:
     }
 };
 
+class String: public Node{
+    private:
+    std:: string content;
+    public:
+    String(std:: string in): content(in){};
+    virtual ~String(){};
+    void EmitRISC(std::ostream &stream, Context &context) const override{
+
+    }
+    void Print(std::ostream &stream) const override{};
+
+    std::string getType() const override
+    {
+        return "string";
+    }
+
+    std:: string getId(){
+        return content;
+    }
+
+};
+
 
 #endif

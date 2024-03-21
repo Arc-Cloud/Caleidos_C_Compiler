@@ -60,6 +60,9 @@ public:
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
         std::string var = init_->getId();
+        if(init_ -> getType() == "pointer"){
+            context.pointerlist.insert(var);
+        }
         std::string type = Typespec_->getType();
         int datatype = Typespec_->getSize(); // will be useful later when we deal with numbers other than integer
         context.AssignType(var, type);
@@ -127,7 +130,13 @@ public:
     }
     std::string getType() const override
     {
-        return "InitDeclarator";
+        std:: string res = identifier_->getType();
+        if (res == "pointer"){
+            return res;
+        }
+        else{
+            return "None";
+        }
     }
 
     std::string getId() const override
@@ -135,35 +144,27 @@ public:
         return identifier_->getId();
     }
 
-    void updateId(std:: string input) override{
+    void updateId(std::string input) override
+    {
         identifier_->updateId(input);
     }
 
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
-        // if (value->getType() == "constant")
-        // {
-        //     std::string dst = context.AllocReg(identifier_->getId());
-        //     context.DeallocReg(identifier_->getId());
-        //     stream << "li " << dst << "," << value->getVal() << std::endl;
-        //     stream << "sw " << dst << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
-        // }
-        // else if (value->getType() == "operator")
-        // {
-        //     value->EmitRISC(stream, context);
-        //     stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
-        //     context.DeallocReg(context.dst);
-        // }
-        if(context.datatype[identifier_->getId()] == "float"){
-            value->EmitRISC(stream, context);
-            stream << "fsw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
-            context.DeallocReg(context.dst);
-        }
-        else{
-        value->EmitRISC(stream, context);
-        stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
-        context.DeallocReg(context.dst);
-        }
+        
+            if (context.datatype[identifier_->getId()] == "float")
+            {
+                value->EmitRISC(stream, context);
+                stream << "fsw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+                context.DeallocReg(context.dst);
+            }
+            else
+            {
+                value->EmitRISC(stream, context);
+                stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+                context.DeallocReg(context.dst);
+            }
+        
     };
 
     void Print(std::ostream &stream) const override{};

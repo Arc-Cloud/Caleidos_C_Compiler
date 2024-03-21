@@ -50,6 +50,14 @@ public:
             identifier_->EmitRISC(stream, context);
             context.WriteInstType(" ");
         }
+        else if (identifier_->getType() == "pointer"){
+            std:: string res = context.makeName("P");
+            std:: string reg = context.AllocReg(res);
+            stream << "lw " << reg << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;
+            stream << "sw " << context.bindings[context.dst] << ",0" << "(" << reg <<")" << std::endl;
+            context.DeallocReg(res);
+            context.DeallocReg(context.dst); 
+        }
 
         else if ((name[1] == 'F'))
         {

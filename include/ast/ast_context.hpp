@@ -3,10 +3,9 @@
 #include <string>
 #include <unordered_map>
 #include <map>
+#include <set>
 
-// An object of class Context is passed between AST nodes during compilation.
-// This can be used to pass around information about what's currently being
-// compiled (e.g. function scope and variable names).
+//this thing is so messy but hey it works hehe would probably clean it up if we had time
 class Context
 {
 protected:
@@ -43,10 +42,6 @@ protected:
     std::string InstType; // to inform the next node the type of operation currently doing
     int makeNameUnq = 0;
 public:
-    std:: string dst;
-    std:: string EndLabel;
-    int ParamCounter = 0;
-    int ParamCounterF = 0;
     bool return_ = false;
     Context(){}
     void WriteInstType(std::string input)
@@ -90,8 +85,14 @@ public:
     /// string
     std::unordered_map<std::string, std::string> Strings;
 
+    ///pointer
+    std:: set <std:: string> pointerlist;
+
 
     /// frame
+    int ParamCounter = 0;
+    std:: string EndLabel;
+    int ParamCounterF = 0;
     bool inFunc = false;
     bool scopeflag = false;
     int scopecount = 0;
@@ -100,6 +101,9 @@ public:
     std:: vector <std:: map<std:: string, std::string>> frame_bind;
     std:: vector <std:: map<std:: string, int>> frame_mems;
     std:: vector <std:: map<std:: string, std::string>> frame_data;
+
+    //register holder
+    std:: string dst;
 
      /*
         -----------------------------Register Management-------------------------------

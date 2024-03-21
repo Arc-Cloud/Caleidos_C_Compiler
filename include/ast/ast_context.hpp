@@ -45,9 +45,6 @@ protected:
     std::string InstType; // to inform the next node the type of operation currently doing
     int makeNameUnq = 0;
 public:
-    std:: string EndLabel;
-    int ParamCounter = 0;
-    int ParamCounterF = 0;
     bool return_ = false;
     Context(){}
     void WriteInstType(std::string input)
@@ -88,7 +85,6 @@ public:
     std::map<std::string, std::string> datatype;
 
     std::unordered_map<std::string, std::pair<unsigned int, unsigned int>> DoubleWords;
-    std::map<std::string, int> DoubleWords;
     ///
 
     /// Struct

@@ -167,6 +167,7 @@ public:
         }
         else{
             std::string resultReg = context.AllocReg("result");
+            stream<< Operand->getId() << std::endl;
             int result = context.data_size(Operand->getType());
             stream << "li " << resultReg << "," << result << std::endl;
             context.dst = "result";

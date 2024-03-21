@@ -213,31 +213,6 @@ public:
             }
         }
     }
-    // void DeallocFloatReg(std:: string float_var){
-    //     std:: string float_reg = bindingsFloat[float_var].substr(1);
-    //     int location = stoi(float_reg);
-    //     if (FloatReg[location] == 0){
-    //         std:: cerr << "the register was never assigned";
-    //         exit(1);
-    //     }
-    //     else{
-    //         FloatReg[location] = 0;
-    //         bindingsFloat.erase(float_var);
-    //     }
-
-    // }
-    // std::string AllocFloatReg(std::string float_var)
-    // {
-    //     for (int i = 4; i < 32; i++)
-    //     {
-    //         if (FloatReg[i] == 0)
-    //         {
-    //             FloatReg[i] = 1;
-    //             bindingsFloat[float_var] = "f" + std::to_string(i);
-    //             return ("f" + std::to_string(i));
-    //         }
-    //     }
-    // }
 
     /*
         -----------------------------FRAME MANAGEMENT-------------------------------

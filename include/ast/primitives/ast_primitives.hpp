@@ -134,7 +134,7 @@ public:
 
     std::string getType() const override
     {
-        return "int";
+        return "constant";
     }
 
     int getVal() const override

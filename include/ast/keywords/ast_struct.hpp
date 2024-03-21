@@ -16,6 +16,8 @@ class StructSpec: public Node {
 
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
 
+
+            context.currentStructName = id->getId();
             structs->EmitRISC(stream,context);
 
         }
@@ -23,43 +25,54 @@ class StructSpec: public Node {
         virtual void Print(std::ostream &stream) const override{};
 
         std::string getType() const override{
-        return "struct";
+        return "struc build";
         }
 
 
 };
 
 
-class StructMemberDeclaration: public Node {
+class StructBuildMap: public Node {
     protected:
-        Node* typeSpecifier;
+        NodeList* typeSpecifiers;
         NodeList* declarators;
 
     public:
-        StructMemberDeclaration(Node* typeSpecifier_, NodeList* declarators_): typeSpecifier(typeSpecifier_), declarators(declarators_){};
-        ~StructMemberDeclaration(){
-            delete typeSpecifier;
+        StructBuildMap(NodeList* typeSpecifiers_, NodeList* declarators_): typeSpecifiers(typeSpecifiers_), declarators(declarators_){};
+        ~StructBuildMap(){
+            delete typeSpecifiers;
             delete declarators;
         }
 
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
 
-            for (auto& declarator : *declarators) {
 
-                std::string name = declarator->getId();
-                std::string type = typeSpecifier->getType();
+            std::string type;
 
-                context.structMap[name] = std::pair(type, context.CurrentOffset);
-
-                context.CurrentOffset += 4;
+            if (auto typeSpecNode = typeSpecifiers->getFirstNode()) {
+                type = typeSpecNode->getType();
             }
+
+            for (auto& declarator : *declarators) {
+                std::string name = declarator->getId();
+                context.structMap[context.currentStructName][name] = std::pair(type, context.CurrentOffset);
+                context.CurrentOffset += 4;
+                context.StructMem[name] = context.default_mem - context.CurrentOffset;
+            }
+
 
 
         }
 
         virtual void Print(std::ostream &stream) const override{};
 
+        std::string getType() const override{
+        return "struct_map_build";
+        }
+
 };
+
+
 
 class StructMemberAccess : public Node {
 protected:
@@ -67,23 +80,34 @@ protected:
     std::string name;
 
 public:
-    StructMemberAccess(Node* struct_instance_, const std::string& name_): struct_instance(struct_instance_), name(name_){}
+    StructMemberAccess(Node* struct_instance_, std::string name_): struct_instance(struct_instance_), name(name_){}
 
     virtual void EmitRISC(std::ostream &stream, Context &context) const override {
 
         struct_instance->EmitRISC(stream, context);
 
-        auto memberInfo = context.structMap[name];
+        auto& memberInfo = context.structMap[struct_instance->getId()][name];
         std::string type = memberInfo.first;
         int offset = memberInfo.second;
 
-        stream << "// Load the address of the struct instance into a register (done in instance->EmitRISC)\n";
-        stream << "// Add the offset of the member (" << offset << ") to the base address\n";
-        stream << "// Depending on the type (" << type << "), use the appropriate load instruction\n";
+        /*std:: string variable_ = context.makeName("V");
+        context.AssignType(variable_, context.getDataType(name));
+        std:: string res = context.AllocReg(variable_);
+        stream << "lw " <<  res  << "," << context.StructMem[name] << "(sp)" << std::endl;
+        context.dst = variable_;*/
+
     }
 
     virtual void Print(std::ostream &stream) const override {
     }
+
+    std::string getType() const override{
+        return "struct";
+        }
+
+    std::string getId() const override{
+        return name;
+        }
 };
 
 

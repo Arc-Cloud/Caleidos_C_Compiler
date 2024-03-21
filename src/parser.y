@@ -31,12 +31,13 @@
 %type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
-%type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
+%type <node> init_declarator type_specifier struct_specifier struct_declaration
 %type <node> struct_declarator enum_specifier enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list argument_expression_list enumerator_list
+%type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list argument_expression_list
+%type <nodes> enumerator_list struct_declaration_list specifier_qualifier_list struct_declarator_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -79,7 +80,7 @@ postfix_expression
 	| postfix_expression '[' expression ']' {$$ = new ArrayIndex($1,$3);}
 	| postfix_expression '(' ')' {$$ = new Call($1, NULL);}
 	| postfix_expression '(' argument_expression_list ')' {$$ = new Call($1, $3);}
-	| postfix_expression '.' IDENTIFIER {$$ = new StructMemberAccess($1,$3);}
+	| postfix_expression '.' IDENTIFIER {$$ = new StructMemberAccess($1, *$3); delete $3;}
 	| postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression INC_OP {$$ = new UnaryIncrOp($1);}
 	| postfix_expression DEC_OP {$$ = new UnaryDecrOp($1);}
@@ -245,11 +246,11 @@ struct_declaration_list
 	;
 
 struct_declaration
-	: specifier_qualifier_list struct_declarator_list ';' {$$ = new StructMemberDeclaration($1,$2)}
+	: specifier_qualifier_list struct_declarator_list ';' {$$ = new StructBuildMap($1,$2);}
 	;
 
 specifier_qualifier_list
-	: type_specifier specifier_qualifier_list {$1 -> PushBack($2); $$ = $1;}
+	: type_specifier specifier_qualifier_list {$2 -> PushBack($1); $$ = $2;}
 	| type_specifier {$$ = new NodeList($1);}
 	;
 
@@ -259,7 +260,7 @@ struct_declarator_list
 	;
 
 struct_declarator
-	: declarator {$$ = new Variable(*$1); delete $1;}
+	: declarator {$$ = $1;}
 	| ':' constant_expression
 	| declarator ':' constant_expression
 	;
@@ -286,7 +287,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER {$$ = new Variable(*$1);delete $1;}
+	: IDENTIFIER {$$ = new Variable(*$1); delete $1;}
 	| '(' declarator ')' {$$ = $2;}
 	| direct_declarator '[' constant_expression ']' {$$ = new DeclareArray($1, $3);}
 	| direct_declarator '[' ']'

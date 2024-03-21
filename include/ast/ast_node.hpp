@@ -65,6 +65,13 @@ public:
 
     auto begin() const -> decltype(nodes_.begin()) { return nodes_.begin(); }
     auto end() const -> decltype(nodes_.end()) { return nodes_.end(); }
+
+    Node* getFirstNode() const {
+        if (!nodes_.empty()) {
+            return nodes_.front();
+        }
+        return nullptr;
+    }
 };
 
 #endif

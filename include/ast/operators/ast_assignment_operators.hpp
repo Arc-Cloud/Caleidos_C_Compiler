@@ -50,6 +50,11 @@ public:
             identifier_->EmitRISC(stream, context);
             context.WriteInstType(" ");
         }
+        else if (identifier_->getType() == "struct"){
+            std::string name = identifier_->getId();
+            stream << "sw " << context.bindings[context.dst] << "," << context.StructMem[name] << "(sp)" << std::endl;
+            context.DeallocReg(context.dst);
+        }
 
         else if ((name[1] == 'F'))
         {

@@ -66,7 +66,7 @@ public:
     {
         context.WriteInstType(" ");
         if (declarations != NULL)
-        {   
+        {
             // int decnum = declarations ->getSize(); this code can be exploited for memory management but im lazy now
             context.inFunc = true;
             declarations->EmitRISC(stream, context);
@@ -74,7 +74,7 @@ public:
         }
 
         if (statements != NULL)
-        {   
+        {
             statements->EmitRISC(stream, context);
         }
 

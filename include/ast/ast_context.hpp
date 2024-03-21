@@ -86,7 +86,29 @@ public:
 
     /// Struct
     int CurrentOffset = 0;
-    std::map<std::string, std::pair<std::string, int>> structMap;
+    std::string currentStructName;
+    std::map<std::string, std::map<std::string, std::pair<std::string, int>>> structMap;
+    std::map<std::string, int> StructMem;
+
+    void printStructMap(const std::map<std::string, std::map<std::string, std::pair<std::string, int>>>& structMap, std::ostream& stream) {
+        for (const auto& structEntry : structMap) {
+            const std::string& structName = structEntry.first;
+            const auto& members = structEntry.second;
+
+            stream << "Struct: " << structName << std::endl;
+
+            for (const auto& memberEntry : members) {
+                const std::string& memberName = memberEntry.first;
+                const std::string& memberType = memberEntry.second.first;
+                int memberOffset = memberEntry.second.second;
+
+                stream << "  Member: " << memberName << ", Type: " << memberType << ", Offset: " << memberOffset << std::endl;
+            }
+
+            stream << std::endl; // Add an extra newline for readability
+        }
+    }
+
     ///
 
     /// string
@@ -234,9 +256,8 @@ public:
      /*
         -----------------------------MEMORY MANAGEMENT-------------------------------
     */
-    //probably not enough lmao
-    int default_mem = 64;
-    int LastStack = 64;
+    int default_mem = 128;
+    int LastStack = 128;
     std::map<std::string, int> MemoryMapping; // to track where the value of a varibale is stored in mem.for riscv all local variables are always stored in mem
 
 

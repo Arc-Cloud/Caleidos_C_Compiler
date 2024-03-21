@@ -28,7 +28,7 @@
 #include "ast/keywords/ast_return.hpp"
 #include "ast/keywords/ast_call.hpp"
 #include "ast/keywords/ast_enum.hpp"
-
+#include "ast/keywords/ast_struct.hpp"
 
 
 // operators

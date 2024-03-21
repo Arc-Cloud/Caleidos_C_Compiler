@@ -19,6 +19,7 @@
 #include "ast/blocks/ast_while.hpp"
 #include "ast/blocks/ast_for.hpp"
 #include "ast/blocks/ast_switch.hpp"
+#include "ast/blocks/ast_global.hpp"
 
 // functions
 #include "ast/functions/ast_function.hpp"
@@ -29,6 +30,10 @@
 #include "ast/keywords/ast_call.hpp"
 #include "ast/keywords/ast_enum.hpp"
 #include "ast/keywords/ast_struct.hpp"
+
+//pointers
+#include "ast/pointers/ast_pointer.hpp"
+#include "ast/pointers/ast_Dereference.hpp"
 
 
 // operators

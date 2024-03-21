@@ -19,7 +19,7 @@
   yytokentype  token;
 }
 
-%token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL CHAR_LITERAL
+%token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL DOUBLE_CONSTANT CHAR_LITERAL
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP AND_OP OR_OP
 %token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN
 %token TYPE_NAME TYPEDEF EXTERN STATIC AUTO REGISTER SIZEOF
@@ -42,7 +42,7 @@
 %type <string> unary_operator assignment_operator storage_class_specifier
 
 %type <number_int> INT_CONSTANT
-%type <number_float> FLOAT_CONSTANT
+%type <number_float> FLOAT_CONSTANT DOUBLE_CONSTANT
 %type <string> IDENTIFIER CHAR_LITERAL STRING_LITERAL
 
 
@@ -59,7 +59,7 @@ translation_unit
 
 external_declaration
 	: function_definition { $$ = $1; }
-	| declaration
+	| declaration {$$ = new Global($1);}
 	;
 
 function_definition
@@ -69,7 +69,8 @@ function_definition
 primary_expression
 	: IDENTIFIER {$$ = new Variable(*$1); delete $1;}
 	| INT_CONSTANT {$$ = new IntConstant($1);}
-    | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
+    | FLOAT_CONSTANT {$$ = new FloatLiteral($1);}
+	| DOUBLE_CONSTANT {$$ = new DoubleLiteral($1);}
 	| STRING_LITERAL
 	| CHAR_LITERAL {$$ = new Char(*$1); delete $1;}
 	| '(' expression ')' {$$ = $2;}
@@ -95,8 +96,8 @@ unary_expression
 	: postfix_expression {$$ = $1;}
 	| INC_OP unary_expression //{$$ = new ($2);}
 	| DEC_OP unary_expression //{$$ = new ($2);}
-	| '&' unary_expression
-	| '*' unary_expression
+	| '&' unary_expression {$$ = new Dereference($2);}
+	| '*' unary_expression {$$ = new Pointer($2);}
   	| '+' unary_expression {$$ = $2;}
 	| '-' unary_expression {$$ = new UnaryMinusOp($2);}
 	| '~' unary_expression {$$ = new UnaryBitwiseNotOp($2);}
@@ -196,7 +197,7 @@ constant_expression
 	: conditional_expression {$$ = $1;}
 	;
 declaration
-	: declaration_specifiers ';'
+	: declaration_specifiers ';' {$$ = $1;}
 	| declaration_specifiers init_declarator ';' {$$ = new Declaration($1, $2);}
 	;
 declaration_specifiers
@@ -282,7 +283,7 @@ enumerator
 	;
 
 declarator
-	: pointer direct_declarator
+	: pointer direct_declarator {$$ = new PointerDeclarator($2);}
 	| direct_declarator { $$ = $1; }
 	;
 
@@ -297,8 +298,8 @@ direct_declarator
 	;
 
 pointer
-	: '*'
-	| '*' pointer
+	: '*' {}
+	| '*' pointer {}
 	;
 
 parameter_list
@@ -391,7 +392,7 @@ statement_list
 	;
 
 expression_statement
-	: ';'
+	: ';' {$$ = NULL;}
 	| expression ';' { $$ = $1; }
 	;
 

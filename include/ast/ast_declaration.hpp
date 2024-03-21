@@ -17,20 +17,28 @@ public:
         delete identifier_;
         delete parameter;
     };
+    std:: string getType()const override{
+        return "funcdec";
+    }
     void EmitRISC(std::ostream &stream, Context &context) const override
-    {
-        stream << ".globl " << identifier_->getId() << std::endl;
-        stream << identifier_->getId() << ":" << std::endl;
-        stream << "addi sp,sp,-" << context.memDef() << std::endl;
-        stream << "sw ra," << std::to_string(context.AllocateStack("ra")) << "(sp)" << std::endl;
-        stream << "sw s0," << std::to_string(context.AllocateStack("s0")) << "(sp)" << std::endl;
-        stream << "addi s0,sp," << context.default_mem << std::endl;
-        if (parameter != NULL && parameter->getSize() < 9)
-        {
-            context.WriteInstType("params");
-            parameter->EmitRISC(stream, context);
-            context.ParamCounter = 0; // pay attention to this;
-        }
+    {       if (context.is_global != true){
+            // stream << context.ReadInstType();
+            stream << ".globl " << identifier_->getId() << std::endl;
+            stream << identifier_->getId() << ":" << std::endl;
+            stream << "addi sp,sp,-" << context.memDef() << std::endl;
+            stream << "sw ra," << std::to_string(context.AllocateStack("ra")) << "(sp)" << std::endl;
+            stream << "sw s0," << std::to_string(context.AllocateStack("s0")) << "(sp)" << std::endl;
+            stream << "addi s0,sp," << context.default_mem << std::endl;
+            if (parameter != NULL && parameter->getSize() < 9)
+            {
+                context.WriteInstType("params");
+                parameter->EmitRISC(stream, context);
+                context.ParamCounter = 0; // pay attention to this;
+            }
+            }
+            context.is_global = false;
+
+
     };
     void Print(std::ostream &stream) const override{};
 };
@@ -52,6 +60,9 @@ public:
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
         std::string var = init_->getId();
+        if(init_ -> getType() == "pointer"){
+            context.pointerlist.insert(var);
+        }
         std::string type = Typespec_->getType();
         int datatype = Typespec_->getSize(); // will be useful later when we deal with numbers other than integer
         context.AssignType(var, type);
@@ -66,7 +77,7 @@ public:
             }
         }
         else
-        {   
+        {
             if (context.inFunc){
                 if (context.MemoryMapping.count(var)){
                    context.scope.push_back(context.MemoryMapping[var]);
@@ -119,7 +130,13 @@ public:
     }
     std::string getType() const override
     {
-        return "InitDeclarator";
+        std:: string res = identifier_->getType();
+        if (res == "pointer"){
+            return res;
+        }
+        else{
+            return "None";
+        }
     }
 
     std::string getId() const override
@@ -127,7 +144,8 @@ public:
         return identifier_->getId();
     }
 
-    void updateId(std:: string input) override{
+    void updateId(std::string input) override
+    {
         identifier_->updateId(input);
     }
 
@@ -149,6 +167,11 @@ public:
         if(context.datatype[identifier_->getId()] == "float"){
             value->EmitRISC(stream, context);
             stream << "fsw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+            context.DeallocReg(context.dst);
+        }
+        else if(context.datatype[identifier_->getId()] == "double"){
+            value->EmitRISC(stream, context);
+            stream << "fsd " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
             context.DeallocReg(context.dst);
         }
         else{

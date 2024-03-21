@@ -71,6 +71,28 @@ public:
                 context.DeallocReg(right);
                 context.dst = op;
             }
+            else if (left[1] == 'P' || right[1] == 'P')
+            {
+                if (left[1] == 'P')
+                {
+                    std::string op = context.makeName("P");
+                    std::string res = context.AllocReg(op);
+                    stream << "slli " << context.bindings[right] << "," << context.bindings[right] << ",2" << std::endl;
+                    stream << "add " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                    context.DeallocReg(left);
+                    context.DeallocReg(right);
+                    context.dst = op;
+                }
+                else{
+                    std::string op = context.makeName("P");
+                    std::string res = context.AllocReg(op);
+                    stream << "slli " << context.bindings[left] << "," << context.bindings[left] << ",2" << std::endl;
+                    stream << "add " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                    context.DeallocReg(left);
+                    context.DeallocReg(right);
+                    context.dst = op;
+                }
+            }
             else
             {
                 std::string op = context.makeName("O");
@@ -151,6 +173,28 @@ public:
                 context.DeallocReg(left);
                 context.DeallocReg(right);
                 context.dst = op;
+            }
+            else if (left[1] == 'P' || right[1] == 'P')
+            {
+                if (left[1] == 'P')
+                {
+                    std::string op = context.makeName("P");
+                    std::string res = context.AllocReg(op);
+                    stream << "slli " << context.bindings[right] << "," << context.bindings[right] << ",2" << std::endl;
+                    stream << "sub " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                    context.DeallocReg(left);
+                    context.DeallocReg(right);
+                    context.dst = op;
+                }
+                else{
+                    std::string op = context.makeName("P");
+                    std::string res = context.AllocReg(op);
+                    stream << "slli " << context.bindings[left] << "," << context.bindings[left] << ",2" << std::endl;
+                    stream << "sub " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
+                    context.DeallocReg(left);
+                    context.DeallocReg(right);
+                    context.dst = op;
+                }
             }
             else
             {

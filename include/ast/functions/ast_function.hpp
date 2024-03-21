@@ -21,6 +21,9 @@ class Function: public Node {
 
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
                 context.newFrame(context);
+                if (compound_statement_ != NULL){
+                    context.is_global = false;
+                }
                 id ->EmitRISC(stream, context);
                 std:: string end = context.makeName("end");
                 context.EndLabel = end;
@@ -41,6 +44,12 @@ class Function: public Node {
                     stream << ".word " << pair.second << std::endl;
                 }
                 context.FloatWords.clear();
+                for (const auto& [label, parts] : context.DoubleWords) {
+                    stream << label << ":" << std::endl;
+                    stream << ".word   " << parts.second << std::endl;
+                    stream << ".word   " << parts.first << std::endl;
+                }
+                context.DoubleWords.clear();
                 context.ExitFrame(context);
         }
 

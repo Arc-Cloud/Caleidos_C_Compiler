@@ -6,6 +6,9 @@
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being
 // compiled (e.g. function scope and variable names).
+#include <set>
+
+//this thing is so messy but hey it works hehe would probably clean it up if we had time
 class Context
 {
 protected:
@@ -42,7 +45,6 @@ protected:
     std::string InstType; // to inform the next node the type of operation currently doing
     int makeNameUnq = 0;
 public:
-    std:: string dst;
     std:: string EndLabel;
     int ParamCounter = 0;
     int ParamCounterF = 0;
@@ -69,6 +71,9 @@ public:
     std::string switch_end_label;
     ///
 
+    ///global
+    bool is_global = false;
+
     /// Enum
     std::unordered_map<std::string, int> enums;
     int enumcounter = 0;
@@ -81,6 +86,8 @@ public:
     /// Float
     std::map<std::string, int> FloatWords;
     std::map<std::string, std::string> datatype;
+
+    std::unordered_map<std::string, std::pair<unsigned int, unsigned int>> DoubleWords;
     std::map<std::string, int> DoubleWords;
     ///
 
@@ -115,7 +122,14 @@ public:
     std::unordered_map<std::string, std::string> Strings;
     ///
 
+    ///pointer
+    std:: set <std:: string> pointerlist;
+
+
     /// frame
+    int ParamCounter = 0;
+    std:: string EndLabel;
+    int ParamCounterF = 0;
     bool inFunc = false;
     bool scopeflag = false;
     int scopecount = 0;
@@ -124,6 +138,9 @@ public:
     std:: vector <std:: map<std:: string, std::string>> frame_bind;
     std:: vector <std:: map<std:: string, int>> frame_mems;
     std:: vector <std:: map<std:: string, std::string>> frame_data;
+
+    //register holder
+    std:: string dst;
 
      /*
         -----------------------------Register Management-------------------------------
@@ -256,8 +273,9 @@ public:
      /*
         -----------------------------MEMORY MANAGEMENT-------------------------------
     */
-    int default_mem = 128;
-    int LastStack = 128;
+    //probably not enough lmao
+    int default_mem = 64;
+    int LastStack = 64;
     std::map<std::string, int> MemoryMapping; // to track where the value of a varibale is stored in mem.for riscv all local variables are always stored in mem
 
 

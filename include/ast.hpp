@@ -30,6 +30,9 @@
 #include "ast/keywords/ast_call.hpp"
 #include "ast/keywords/ast_enum.hpp"
 
+//pointers
+#include "ast/pointers/ast_pointer.hpp"
+#include "ast/pointers/ast_Dereference.hpp"
 
 
 // operators

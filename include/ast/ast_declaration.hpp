@@ -60,6 +60,9 @@ public:
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
         std::string var = init_->getId();
+        if(init_ -> getType() == "pointer"){
+            context.pointerlist.insert(var);
+        }
         std::string type = Typespec_->getType();
         int datatype = Typespec_->getSize(); // will be useful later when we deal with numbers other than integer
         context.AssignType(var, type);
@@ -127,7 +130,13 @@ public:
     }
     std::string getType() const override
     {
-        return "InitDeclarator";
+        std:: string res = identifier_->getType();
+        if (res == "pointer"){
+            return res;
+        }
+        else{
+            return "None";
+        }
     }
 
     std::string getId() const override
@@ -135,7 +144,8 @@ public:
         return identifier_->getId();
     }
 
-    void updateId(std:: string input) override{
+    void updateId(std::string input) override
+    {
         identifier_->updateId(input);
     }
 

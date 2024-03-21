@@ -70,27 +70,19 @@ public:
     StructMemberAccess(Node* struct_instance_, const std::string& name_): struct_instance(struct_instance_), name(name_){}
 
     virtual void EmitRISC(std::ostream &stream, Context &context) const override {
-        // Assuming `instance` is an expression that evaluates to a struct instance,
-        // and `member` is the name of the struct member being accessed.
 
-        // Calculate the base address of the struct instance into a register
-        instance->EmitRISC(stream, context);
+        struct_instance->EmitRISC(stream, context);
 
-        // Retrieve the offset and type of the member from the context's structMap
-        auto memberInfo = context.structMap[member];
+        auto memberInfo = context.structMap[name];
         std::string type = memberInfo.first;
         int offset = memberInfo.second;
 
-        // Generate the code to access the struct member using the base address and offset
-        // This is highly dependent on the architecture and the type of the member.
-        // Here is a placeholder for illustrative purposes:
         stream << "// Load the address of the struct instance into a register (done in instance->EmitRISC)\n";
         stream << "// Add the offset of the member (" << offset << ") to the base address\n";
         stream << "// Depending on the type (" << type << "), use the appropriate load instruction\n";
     }
 
     virtual void Print(std::ostream &stream) const override {
-        // Implement as needed for debugging
     }
 };
 

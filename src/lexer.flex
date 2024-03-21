@@ -59,9 +59,13 @@ IS  (u|U|l|L)*
 {D}+{IS}?		      {yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_CONSTANT);}
 L?'(\\.|[^\\'])+'	{yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_CONSTANT);}
 
-{D}+{E}{FS}?		        {yylval.number_float = strtod(yytext, NULL); return(FLOAT_CONSTANT);}
-{D}*"."{D}+({E})?{FS}?	{yylval.number_float = strtod(yytext, NULL); return(FLOAT_CONSTANT);}
-{D}+"."{D}*({E})?{FS}?	{yylval.number_float = strtod(yytext, NULL); return(FLOAT_CONSTANT);}
+{D}+{E}{FS}?[fF]            { yylval.number_float = strtof(yytext, NULL); return (FLOAT_CONSTANT); }
+{D}*"."{D}+({E})?{FS}?[fF]  { yylval.number_float = strtof(yytext, NULL); return (FLOAT_CONSTANT); }
+{D}+"."{D}*({E})?{FS}?[fF]  { yylval.number_float = strtof(yytext, NULL); return (FLOAT_CONSTANT); }
+{D}+{E}{FS}?                { yylval.number_float = strtod(yytext, NULL); return (DOUBLE_CONSTANT); }
+{D}*"."{D}+({E})?{FS}?      { yylval.number_float = strtod(yytext, NULL); return (DOUBLE_CONSTANT); }
+{D}+"."{D}*({E})?{FS}?      { yylval.number_float = strtod(yytext, NULL); return (DOUBLE_CONSTANT); }
+
 
 L?\"(\\.|[^\\"])*\"	{/* TODO process string literal */; return(STRING_LITERAL);}
 

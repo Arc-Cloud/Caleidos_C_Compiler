@@ -44,6 +44,12 @@ class Function: public Node {
                     stream << ".word " << pair.second << std::endl;
                 }
                 context.FloatWords.clear();
+                for (const auto& [label, parts] : context.DoubleWords) {
+                    stream << label << ":" << std::endl;
+                    stream << ".word   " << parts.second << std::endl;
+                    stream << ".word   " << parts.first << std::endl;
+                }
+                context.DoubleWords.clear();
                 context.ExitFrame(context);
         }
 
@@ -69,7 +75,7 @@ public:
     {
         context.WriteInstType(" ");
         if (declarations != NULL)
-        {   
+        {
             // int decnum = declarations ->getSize(); this code can be exploited for memory management but im lazy now
             context.inFunc = true;
             declarations->EmitRISC(stream, context);
@@ -77,7 +83,7 @@ public:
         }
 
         if (statements != NULL)
-        {   
+        {
             statements->EmitRISC(stream, context);
         }
 

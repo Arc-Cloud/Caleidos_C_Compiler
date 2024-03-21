@@ -19,7 +19,7 @@
   yytokentype  token;
 }
 
-%token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL
+%token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL DOUBLE_CONSTANT
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP AND_OP OR_OP
 %token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN
 %token TYPE_NAME TYPEDEF EXTERN STATIC AUTO REGISTER SIZEOF
@@ -41,7 +41,7 @@
 %type <string> unary_operator assignment_operator storage_class_specifier
 
 %type <number_int> INT_CONSTANT STRING_LITERAL
-%type <number_float> FLOAT_CONSTANT
+%type <number_float> FLOAT_CONSTANT DOUBLE_CONSTANT
 %type <string> IDENTIFIER
 
 
@@ -68,7 +68,8 @@ function_definition
 primary_expression
 	: IDENTIFIER {$$ = new Variable(*$1); delete $1;}
 	| INT_CONSTANT {$$ = new IntConstant($1);}
-    | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
+    | FLOAT_CONSTANT {$$ = new FloatLiteral($1);}
+	| DOUBLE_CONSTANT {$$ = new DoubleLiteral($1);}
 	| STRING_LITERAL
 	| '(' expression ')' {$$ = $2;}
 	;

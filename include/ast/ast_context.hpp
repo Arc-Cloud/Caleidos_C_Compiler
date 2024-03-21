@@ -80,6 +80,8 @@ public:
     /// Float
     std::map<std::string, int> FloatWords;
     std::map<std::string, std::string> datatype;
+
+    std::unordered_map<std::string, std::pair<unsigned int, unsigned int>> DoubleWords;
     ///
 
     /// string
@@ -209,7 +211,7 @@ public:
     /*
         -----------------------------FRAME MANAGEMENT-------------------------------
 
-    */  
+    */
 
     int framecount = 0;
     void newFrame(Context &current){
@@ -223,7 +225,7 @@ public:
          current.MemoryMapping = new_MemoryMapping;
          current.datatype = new_datatype;
          framecount++;
-        
+
     }
 
     void ExitFrame(Context &current){

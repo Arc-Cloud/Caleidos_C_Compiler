@@ -98,49 +98,87 @@ public:
     }
 };
 
-class FloatConstant : public Node
-{
+class FloatLiteral : public Node {
 private:
-    float value_;
-
+    float value;
 public:
-    FloatConstant(float value) : value_(value){};
+    FloatLiteral(float v) : value(v) {}
 
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
-        if (context.ReadInstType() == "call"){
-            stream << "li a" << context.ParamCounter++ << "," << value_<< std::endl;
-        }
-        else{
-                float val = value_;
-                unsigned int ieee754 = *reinterpret_cast<unsigned int*>(&val);
+        // if (context.ReadInstType() == "call"){
+        //     stream << "li a" << context.ParamCounter++ << "," << value_<< std::endl;
+        // }
+            float val = value;
+            unsigned int ieee754 = *reinterpret_cast<unsigned int*>(&val);
+            std::string label = context.makeName("LC");
+            context.FloatWords[label] = ieee754;
+            std:: string constant_hi = context.makeName("CH");
+            std:: string float_lo = context.makeName("FL");
+            std:: string high = context.AllocReg(constant_hi);
+            std:: string low = context.AllocReg(float_lo);
+            stream << "lui " << high << ",\%hi" << "("  << label << ")" << std::endl;
+            stream << "flw " << low << ",\%lo" << "("  << label << ")" << "(" << high << ")" <<std::endl;
+            context.DeallocReg(constant_hi);
+            context.dst = float_lo;
 
-                std::string label = context.makeName("LC");
-                context.FloatWords[label] = ieee754;
-
-                std:: string constant_hi = context.makeName("CH");
-                std:: string float_lo = context.makeName("FL");
-
-                std:: string high = context.AllocReg(constant_hi);
-                std:: string low = context.AllocReg(float_lo);
-                stream << "lui " << high << ",\%hi" << "("  << label << ")" << std::endl;
-                stream << "flw " << low << ",\%lo" << "("  << label << ")" << "(" << high << ")" <<std::endl;
-                context.DeallocReg(constant_hi);
-                context.dst = float_lo;
-        }
     }
-
-    void Print(std::ostream &stream) const override{};
 
     std::string getType() const override
     {
         return "float";
+
     }
 
     int getVal() const override
     {
-        return value_;
+        return value;
     }
+
+    void Print(std::ostream &stream) const override{};
+};
+
+
+class DoubleLiteral : public Node {
+private:
+    double value;
+public:
+    DoubleLiteral(double v) : value(v) {}
+    void EmitRISC(std::ostream &stream, Context &context) const override
+    {
+        // if (context.ReadInstType() == "call"){
+        //     stream << "li a" << context.ParamCounter++ << "," << value_<< std::endl;
+        // }
+        double val = value;
+        unsigned long long ieee754 = *reinterpret_cast<unsigned long long*>(&val);
+        unsigned int hi = ieee754 >> 32;
+        unsigned int lo = ieee754 & 0xFFFFFFFF;
+        std::string label = context.makeName("LC");
+        context.DoubleWords[label] = {hi, lo};
+        std:: string constant_hi = context.makeName("CH");
+        std:: string float_lo = context.makeName("DL");
+        std::string reg = context.AllocReg(constant_hi);
+        std::string floatReg = context.AllocReg(float_lo);
+        stream << "lui " << reg << ",\%hi(" << label << ")" << std::endl;
+        stream << "fld " << floatReg << ",\%lo(" << label << ")(" << reg << ")" << std::endl;
+        context.DeallocReg(constant_hi);
+        context.dst = float_lo;
+
+
+    }
+
+    std::string getType() const override
+    {
+        return "double";
+
+    }
+
+    int getVal() const override
+    {
+        return value;
+    }
+
+    void Print(std::ostream &stream) const override{};
 };
 
 #endif

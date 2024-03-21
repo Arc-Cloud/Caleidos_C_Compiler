@@ -93,8 +93,8 @@ unary_expression
 	: postfix_expression {$$ = $1;}
 	| INC_OP unary_expression //{$$ = new ($2);}
 	| DEC_OP unary_expression //{$$ = new ($2);}
-	| '&' unary_expression
-	| '*' unary_expression
+	| '&' unary_expression {$$ = new Dereference($2);}
+	| '*' unary_expression {$$ = new Pointer($2);}
   	| '+' unary_expression {$$ = $2;}
 	| '-' unary_expression {$$ = new UnaryMinusOp($2);}
 	| '~' unary_expression {$$ = new UnaryBitwiseNotOp($2);}
@@ -280,7 +280,7 @@ enumerator
 	;
 
 declarator
-	: pointer direct_declarator
+	: pointer direct_declarator {$$ = new PointerDeclarator($2);}
 	| direct_declarator { $$ = $1; }
 	;
 
@@ -295,8 +295,8 @@ direct_declarator
 	;
 
 pointer
-	: '*'
-	| '*' pointer
+	: '*' {}
+	| '*' pointer {}
 	;
 
 parameter_list

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 #include "../ast_node.hpp"
 
@@ -35,37 +36,81 @@ public:
 
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
-        if(context.datatype[id] == "float"){
-            std:: string variable_float = context.makeName("F");
-            std:: string float_res = context.AllocReg(variable_float);
-            stream << "flw " <<  float_res  << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
+        if (context.datatype[id] == "float")
+        {
+            std::string variable_float = context.makeName("F");
+            std::string float_res = context.AllocReg(variable_float);
+            stream << "flw " << float_res << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
             // if function is of return type (belongs elsewhere): int stream << "fcvt.w.s " << res << "," << float_res << ",rtz" << std::endl;
             context.dst = variable_float;
         }
-        else if (context.datatype[id] == "double"){
-            std:: string variable = context.makeName("D");
-            std:: string res = context.AllocReg(variable);
+        else if (context.datatype[id] == "double")
+        {
+            std::string variable = context.makeName("D");
+            std::string res = context.AllocReg(variable);
             stream << "fld " << res << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
             context.dst = variable;
         }
-        else if (context.enums.count(id)){
-            std:: string variable_ = context.makeName("V");
-            std:: string res = context.AllocReg(variable_);
+        else if (context.enums.count(id))
+        {
+            std::string variable_ = context.makeName("V");
+            std::string res = context.AllocReg(variable_);
             stream << "li " << res << "," << context.enums[id] << std::endl;
             context.enums.erase(id);
             context.dst = variable_;
         }
-        else{
-            std:: string variable_ = context.makeName("V");
+        else
+        {
+            std::string variable_;
+            if (context.pointerlist.count(id))
+            {
+                variable_ = context.makeName("P");
+            }
+            else
+            {
+                variable_ = context.makeName("V");
+            }
             context.AssignType(variable_, context.getDataType(id));
-            std:: string res = context.AllocReg(variable_);
-            stream << "lw " <<  res  << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
+            std::string res = context.AllocReg(variable_);
+            stream << "lw " << res << "," << context.MemoryMapping[id] << "(sp)" << std::endl;
             context.dst = variable_;
         }
     }
 
     void Print(std::ostream &stream) const override{};
 };
+
+class Pointer: public Node{
+    private:
+    Node*  point;
+    public:
+    Pointer(Node* _point): point(_point){};
+    virtual ~Pointer(){
+        delete point;
+    }
+
+    virtual void Print(std::ostream &stream) const override{};
+
+    std:: string getType() const override{
+        return "pointer";
+    }
+    std:: string getId() const override{
+        return point -> getId();
+    }
+
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override
+    {   
+        std:: string res = context.makeName("P");
+        std:: string result = context.makeName("P");
+        std:: string regs = context.AllocReg(result);
+        std:: string reg = context.AllocReg(res);
+        stream << "lw " << reg << "," << context.MemoryMapping[point->getId()] << "(sp)" << std::endl;
+        stream << "lw " << regs  << ",0(" << reg << ")" << std::endl;
+        context.DeallocReg(res);
+        context.dst = result;  
+    };
+};
+
 
 class IntConstant : public Node
 {

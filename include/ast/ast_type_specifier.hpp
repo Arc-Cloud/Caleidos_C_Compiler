@@ -5,9 +5,13 @@
 
 enum _Types
 {
+    _void,
+    _char,
     _int,
     _float,
-    _double
+    _double,
+    _signed,
+    _unsigned
 };
 
 class TypeSpecifier : public Node
@@ -32,6 +36,9 @@ public:
             break;
         case _double:
             return "double";
+            break;
+        case _char:
+            return "char";
             break;
 
         default:

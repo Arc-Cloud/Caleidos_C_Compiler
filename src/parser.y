@@ -19,7 +19,7 @@
   yytokentype  token;
 }
 
-%token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL DOUBLE_CONSTANT
+%token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL DOUBLE_CONSTANT CHAR_LITERAL
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP AND_OP OR_OP
 %token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN
 %token TYPE_NAME TYPEDEF EXTERN STATIC AUTO REGISTER SIZEOF
@@ -31,18 +31,19 @@
 %type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
-%type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
+%type <node> init_declarator type_specifier struct_specifier struct_declaration
 %type <node> struct_declarator enum_specifier enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list argument_expression_list enumerator_list
+%type <nodes> statement_list translation_unit declaration_list initializer_list parameter_list argument_expression_list
+%type <nodes> enumerator_list struct_declaration_list specifier_qualifier_list struct_declarator_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
-%type <number_int> INT_CONSTANT STRING_LITERAL
+%type <number_int> INT_CONSTANT
 %type <number_float> FLOAT_CONSTANT DOUBLE_CONSTANT
-%type <string> IDENTIFIER
+%type <string> IDENTIFIER CHAR_LITERAL STRING_LITERAL
 
 
 %start ROOT
@@ -71,6 +72,7 @@ primary_expression
     | FLOAT_CONSTANT {$$ = new FloatLiteral($1);}
 	| DOUBLE_CONSTANT {$$ = new DoubleLiteral($1);}
 	| STRING_LITERAL
+	| CHAR_LITERAL {$$ = new Char(*$1); delete $1;}
 	| '(' expression ')' {$$ = $2;}
 	;
 
@@ -79,7 +81,7 @@ postfix_expression
 	| postfix_expression '[' expression ']' {$$ = new ArrayIndex($1,$3);}
 	| postfix_expression '(' ')' {$$ = new Call($1, NULL);}
 	| postfix_expression '(' argument_expression_list ')' {$$ = new Call($1, $3);}
-	| postfix_expression '.' IDENTIFIER
+	| postfix_expression '.' IDENTIFIER {$$ = new StructMemberAccess($1, *$3); delete $3;}
 	| postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression INC_OP {$$ = new UnaryIncrOp($1);}
 	| postfix_expression DEC_OP {$$ = new UnaryDecrOp($1);}
@@ -219,49 +221,49 @@ storage_class_specifier
 	;
 
 type_specifier
-	: VOID
-	| CHAR
-	| SHORT
+	: VOID {$$ = new TypeSpecifier(_Types::_void);}
+	| CHAR {$$ = new TypeSpecifier(_Types::_char);}
+	| SHORT // not required
 	| INT {$$ = new TypeSpecifier(_Types::_int);}
-	| LONG
-	| FLOAT {$$ =  new TypeSpecifier(_Types:: _float);}
-	| DOUBLE {$$ = new TypeSpecifier(_Types:: _double);}
-	| SIGNED
-	| UNSIGNED
-    | struct_specifier
+	| LONG // not required
+	| FLOAT {$$ = new TypeSpecifier(_Types::_float);}
+	| DOUBLE {$$ = new TypeSpecifier(_Types::_double);}
+	| SIGNED {$$ = new TypeSpecifier(_Types::_signed);}
+	| UNSIGNED {$$ = new TypeSpecifier(_Types::_unsigned);}
+    | struct_specifier {$$ = $1;}
 	| enum_specifier {$$ = $1;}
 	| TYPE_NAME
 	;
 
 struct_specifier
-	: STRUCT IDENTIFIER '{' struct_declaration_list '}'
-	| STRUCT '{' struct_declaration_list '}'
-	| STRUCT IDENTIFIER
+	: STRUCT IDENTIFIER '{' struct_declaration_list '}' {$$ = new StructSpec(new Variable(*$2), $4); delete $2;}
+	| STRUCT '{' struct_declaration_list '}' {$$ = new StructSpec(NULL,$3);}
+	| STRUCT IDENTIFIER {$$ = new StructSpec(new Variable(*$2), NULL); delete $2;}
 	;
 
 struct_declaration_list
-	: struct_declaration
-	| struct_declaration_list struct_declaration
+	: struct_declaration {$$ = new NodeList($1);}
+	| struct_declaration_list struct_declaration {$1 -> PushBack($2); $$ = $1;}
 	;
 
 struct_declaration
-	: specifier_qualifier_list struct_declarator_list ';'
+	: specifier_qualifier_list struct_declarator_list ';' {$$ = new StructBuildMap($1,$2);}
 	;
 
 specifier_qualifier_list
-	: type_specifier specifier_qualifier_list
-	| type_specifier
+	: type_specifier specifier_qualifier_list {$2 -> PushBack($1); $$ = $2;}
+	| type_specifier {$$ = new NodeList($1);}
 	;
 
 struct_declarator_list
-	: struct_declarator
-	| struct_declarator_list ',' struct_declarator
+	: struct_declarator {$$ = new NodeList($1);}
+	| struct_declarator_list ',' struct_declarator {$1 -> PushBack($3); $$ = $1;}
 	;
 
 struct_declarator
 	: declarator {$$ = $1;}
-	| ':' constant_expression // not needed
-	| declarator ':' constant_expression //not needed
+	| ':' constant_expression
+	| declarator ':' constant_expression
 	;
 
 enum_specifier
@@ -286,7 +288,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER {$$ = new Variable(*$1);delete $1;}
+	: IDENTIFIER {$$ = new Variable(*$1); delete $1;}
 	| '(' declarator ')' {$$ = $2;}
 	| direct_declarator '[' constant_expression ']' {$$ = new DeclareArray($1, $3);}
 	| direct_declarator '[' ']'
@@ -315,7 +317,7 @@ identifier_list
 	| identifier_list ',' IDENTIFIER
 	;
 type_name
-	: specifier_qualifier_list
+	: specifier_qualifier_list {$$ = $1;}
 	| specifier_qualifier_list abstract_declarator
 	;
 
@@ -349,11 +351,11 @@ initializer_list
 	;
 
 statement
-	: labeled_statement
+	: labeled_statement {$$ = $1;}
 	| compound_statement {$$ = $1;}
 	| expression_statement {$$ = $1;}
-	| selection_statement
-	| iteration_statement
+	| selection_statement {$$ = $1;}
+	| iteration_statement {$$ = $1;}
 	| jump_statement { $$ = $1; }
 	;
 

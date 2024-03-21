@@ -3,6 +3,9 @@
 #include <string>
 #include <unordered_map>
 #include <map>
+// An object of class Context is passed between AST nodes during compilation.
+// This can be used to pass around information about what's currently being
+// compiled (e.g. function scope and variable names).
 #include <set>
 
 //this thing is so messy but hey it works hehe would probably clean it up if we had time
@@ -84,8 +87,36 @@ public:
     std::unordered_map<std::string, std::pair<unsigned int, unsigned int>> DoubleWords;
     ///
 
+    /// Struct
+    int CurrentOffset = 0;
+    std::string currentStructName;
+    std::map<std::string, std::map<std::string, std::pair<std::string, int>>> structMap;
+    std::map<std::string, int> StructMem;
+
+    void printStructMap(const std::map<std::string, std::map<std::string, std::pair<std::string, int>>>& structMap, std::ostream& stream) {
+        for (const auto& structEntry : structMap) {
+            const std::string& structName = structEntry.first;
+            const auto& members = structEntry.second;
+
+            stream << "Struct: " << structName << std::endl;
+
+            for (const auto& memberEntry : members) {
+                const std::string& memberName = memberEntry.first;
+                const std::string& memberType = memberEntry.second.first;
+                int memberOffset = memberEntry.second.second;
+
+                stream << "  Member: " << memberName << ", Type: " << memberType << ", Offset: " << memberOffset << std::endl;
+            }
+
+            stream << std::endl; // Add an extra newline for readability
+        }
+    }
+
+    ///
+
     /// string
     std::unordered_map<std::string, std::string> Strings;
+    ///
 
     ///pointer
     std:: set <std:: string> pointerlist;
@@ -262,6 +293,37 @@ public:
         return default_mem;
     }
 
+ /*
+        -----------------------------Data size-------------------------------
+    */
+
+   int data_size(std::string type){
+    if(type == "void"){
+        return 1;
+    }
+    else if(type == "char"){
+        return 1;
+    }
+    else if(type == "int"){
+        return 4;
+    }
+    else if(type == "float"){
+        return 4;
+    }
+    else if(type == "double"){
+        return 8;
+    }
+    else if(type == "unsigned"){
+        return 4;
+    }
+    else if(type == "signed"){
+        return 4;
+    }
+    else{
+        return 0;
+    }
+
+   }
 
 };
 

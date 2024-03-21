@@ -159,11 +159,19 @@ public:
 
     void EmitRISC(std::ostream &stream, Context &context) const override
     {
-
-        std::string resultReg = context.AllocReg("result");
-        int result = sizeof(Operand->getVal());
-        stream << "li " << resultReg << "," << result << std::endl;
-        context.dst = "result";
+        if(Operand->getType() == "variable"){
+            std::string resultReg = context.AllocReg("result");
+            int result = context.data_size(context.datatype[Operand->getId()]);
+            stream << "li " << resultReg << "," << result << std::endl;
+            context.dst = "result";
+        }
+        else{
+            std::string resultReg = context.AllocReg("result");
+            stream<< Operand->getId() << std::endl;
+            int result = context.data_size(Operand->getType());
+            stream << "li " << resultReg << "," << result << std::endl;
+            context.dst = "result";
+        }
 
     }
 

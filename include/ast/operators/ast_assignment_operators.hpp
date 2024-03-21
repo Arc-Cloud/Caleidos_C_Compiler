@@ -56,7 +56,12 @@ public:
             stream << "lw " << reg << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;
             stream << "sw " << context.bindings[context.dst] << ",0" << "(" << reg <<")" << std::endl;
             context.DeallocReg(res);
-            context.DeallocReg(context.dst); 
+            context.DeallocReg(context.dst);
+        }
+        else if (identifier_->getType() == "struct"){
+            std::string name = identifier_->getId();
+            stream << "sw " << context.bindings[context.dst] << "," << context.StructMem[name] << "(sp)" << std::endl;
+            context.DeallocReg(context.dst);
         }
 
         else if ((name[1] == 'F'))

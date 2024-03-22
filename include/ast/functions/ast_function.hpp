@@ -50,6 +50,11 @@ class Function: public Node {
                     stream << ".word   " << parts.first << std::endl;
                 }
                 context.DoubleWords.clear();
+                for (const auto& [label, parts]: context.StringsHolder){
+                    stream << label << ":" << std::endl;
+                    stream <<".string " << parts << std::endl; 
+                }
+                context.StringsHolder.clear();
                 context.ExitFrame(context);
         }
 

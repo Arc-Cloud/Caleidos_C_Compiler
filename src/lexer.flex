@@ -67,7 +67,7 @@ IS  (u|U|l|L)*
 
 
 L?'(\\.|[^\\'])+'			{ yylval.string=new std::string(yytext); return (CHAR_LITERAL); }
-L?\"(\\.|[^\\"])*\"	{/* TODO process string literal */; return(STRING_LITERAL);}
+L?\"(\\.|[^\\"])*\"	{yylval.string=new std::string(yytext); return(STRING_LITERAL);}
 
 "..."      {return(ELLIPSIS);}
 ">>="			 {return(RIGHT_ASSIGN);}

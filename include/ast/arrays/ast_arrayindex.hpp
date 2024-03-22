@@ -63,11 +63,23 @@ public:
         {
             if (context.pointerlist.count(id->getId()))
             {
-
-                    if (index ->getType() == "constant"){
-                        id ->EmitRISC(stream, context);
-                        std:: string reg = context.dst;
-                        stream << "lw " << context.bindings[reg] << "," << (index ->getVal()*4) << "("<< context.bindings[reg] << ")" << std::endl;
+                if (context.StringVar.count(id->getId()))
+                {
+                    id->EmitRISC(stream, context);
+                    std::string reg = context.dst;
+                    // stream << "lw " << context.bindings[reg] << "," << index->getVal() << "(" << context.bindings[reg] << ")" << std::endl;
+                    stream << "addi " << context.bindings[reg] << "," << context.bindings[reg] << "," << index -> getVal() << std::endl;
+                    stream << "lbu " << context.bindings[reg] << ",0(" << context.bindings[reg] << ")" << std::endl;
+                    context.dst = reg; 
+                }
+                else
+                {
+                    if (index->getType() == "constant")
+                    {
+                        id->EmitRISC(stream, context);
+                        std::string reg = context.dst;
+                        stream << "lw " << context.bindings[reg] << "," << (index->getVal() * 4) << "(" << context.bindings[reg] << ")" << std::endl;
+                        context.DeallocReg(context.dst);
                     }
                     else
                     {
@@ -86,6 +98,7 @@ public:
                         context.DeallocReg(_id);
                         context.dst = res;
                     }
+                }
             }
             else
             {

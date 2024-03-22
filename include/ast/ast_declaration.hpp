@@ -164,20 +164,26 @@ public:
         //     stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
         //     context.DeallocReg(context.dst);
         // }
-        if(context.datatype[identifier_->getId()] == "float"){
+        if (context.datatype[identifier_->getId()] == "float")
+        {
             value->EmitRISC(stream, context);
             stream << "fsw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
             context.DeallocReg(context.dst);
         }
-        else if(context.datatype[identifier_->getId()] == "double"){
+        else if (context.datatype[identifier_->getId()] == "double")
+        {
             value->EmitRISC(stream, context);
             stream << "fsd " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
             context.DeallocReg(context.dst);
         }
-        else{
-        value->EmitRISC(stream, context);
-        stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
-        context.DeallocReg(context.dst);
+        else
+        {
+            if (context.datatype[identifier_->getId()] == "char"){
+                context.StringVar.insert(identifier_->getId());
+            }
+            value->EmitRISC(stream, context);
+            stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
+            context.DeallocReg(context.dst);
         }
     };
 

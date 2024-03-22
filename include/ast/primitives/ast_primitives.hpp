@@ -266,6 +266,15 @@ class String: public Node{
     virtual ~String(){};
     void EmitRISC(std::ostream &stream, Context &context) const override{
 
+        std:: string label = context.makeName("ST");
+        context.StringsHolder[label] = content;
+        std:: string string_hi = context.makeName("CH");
+        std:: string string_lo = context.makeName("FL");
+        std::string reg1 = context.AllocReg(string_hi);
+        // std::string reg2 = context.AllocReg(string_lo);
+        stream << "lui " << reg1 << ",\%hi" << "("  << label << ")" << std::endl;
+        stream << "addi " << reg1 << "," << reg1 << ",\%lo" << "("<< label << ")" << std::endl;
+        context.dst = string_hi;
     }
     void Print(std::ostream &stream) const override{};
 

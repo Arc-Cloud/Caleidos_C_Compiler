@@ -80,6 +80,10 @@ public:
     std::string contLabel;
     ///
 
+    /// string
+    std:: unordered_map<std:: string, std::string> StringsHolder;
+    std:: set<std::string> StringVar;
+
     /// Float
     std::map<std::string, int> FloatWords;
     std::map<std::string, std::string> datatype;

@@ -24,6 +24,9 @@ class PointerDeclarator: public Node{
 
     virtual void EmitRISC(std::ostream &stream, Context &context) const override
     {
+        if(point -> getType() == "funcdec"){
+            point -> EmitRISC(stream,context);
+        }
     };
 };
 

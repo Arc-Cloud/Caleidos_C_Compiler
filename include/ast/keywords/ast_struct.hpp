@@ -3,111 +3,115 @@
 
 #include "../ast_node.hpp"
 
-class StructSpec: public Node {
-    protected:
-        Node*  id;
-        NodeList* structs;
+class DefineSpecial: public Node{
+    private:
+    std:: string id;
+    Node* statement;
     public:
-        StructSpec(Node* id_, NodeList* structs_): id(id_), structs(structs_){};
-        ~StructSpec(){
-            delete id;
-            delete structs;
-        }
+    DefineSpecial(std:: string _id, Node* _statement): id(_id), statement(_statement){};
+    virtual ~DefineSpecial(){
+        delete statement;
+    }
 
-        virtual void EmitRISC(std::ostream &stream, Context &context) const override{
-
-
-            context.currentStructName = id->getId();
-            structs->EmitRISC(stream,context);
-
-        }
-
-        virtual void Print(std::ostream &stream) const override{};
-
-        std::string getType() const override{
-        return "struc build";
-        }
+    std:: string getType()const override{
+            return "struct";
+    }
 
 
-};
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override{
+        statement -> EmitRISC(stream, context);
+        context.StructMapping[id] = context.StructMem;
+    }
 
-
-class StructBuildMap: public Node {
-    protected:
-        NodeList* typeSpecifiers;
-        NodeList* declarators;
-
-    public:
-        StructBuildMap(NodeList* typeSpecifiers_, NodeList* declarators_): typeSpecifiers(typeSpecifiers_), declarators(declarators_){};
-        ~StructBuildMap(){
-            delete typeSpecifiers;
-            delete declarators;
-        }
-
-        virtual void EmitRISC(std::ostream &stream, Context &context) const override{
-
-
-            std::string type;
-
-            if (auto typeSpecNode = typeSpecifiers->getFirstNode()) {
-                type = typeSpecNode->getType();
-            }
-
-            for (auto& declarator : *declarators) {
-                std::string name = declarator->getId();
-                context.structMap[context.currentStructName][name] = std::pair(type, context.CurrentOffset);
-                context.CurrentOffset += 4;
-                context.StructMem[name] = context.default_mem - context.CurrentOffset;
-            }
-
-
-
-        }
-
-        virtual void Print(std::ostream &stream) const override{};
-
-        std::string getType() const override{
-        return "struct_map_build";
-        }
-
+    virtual void Print(std::ostream &stream) const override{};
 };
 
 
 
-class StructMemberAccess : public Node {
-protected:
-    Node* struct_instance;
-    std::string name;
-
-public:
-    StructMemberAccess(Node* struct_instance_, std::string name_): struct_instance(struct_instance_), name(name_){}
-
-    virtual void EmitRISC(std::ostream &stream, Context &context) const override {
-
-        struct_instance->EmitRISC(stream, context);
-
-        auto& memberInfo = context.structMap[struct_instance->getId()][name];
-        std::string type = memberInfo.first;
-        int offset = memberInfo.second;
-
-        /*std:: string variable_ = context.makeName("V");
-        context.AssignType(variable_, context.getDataType(name));
-        std:: string res = context.AllocReg(variable_);
-        stream << "lw " <<  res  << "," << context.StructMem[name] << "(sp)" << std::endl;
-        context.dst = variable_;*/
-
+class StructDeclare: public Node{
+    private:
+    Node* Typespec;
+    Node* init;
+    public:
+    StructDeclare(Node*_typespec, Node* _init): Typespec(_typespec), init(_init){};
+    virtual ~StructDeclare(){
+        delete Typespec;
+        delete init;
     }
 
-    virtual void Print(std::ostream &stream) const override {
+    std:: string getType()const override{
+            return "struct";
     }
 
-    std::string getType() const override{
+
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override{
+        std:: string var = init -> getId();
+        int datatype = Typespec->getSize();
+        context.structsize += datatype * 4;
+        context.StructMem[var] = context.structsize;
+    }
+
+    virtual void Print(std::ostream &stream) const override{};
+
+};
+
+class Structinit: public Node{
+    private:
+    std:: string id;
+    public:
+    Structinit(std:: string _id): id(_id){};
+    virtual ~Structinit(){}
+    std:: string getType()const override{
         return "struct";
-        }
+    }
+    std:: string getId() const override{
+        return id; 
+    }
 
-    std::string getId() const override{
-        return name;
+
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override{
+    }
+
+    virtual void Print(std::ostream &stream) const override{};
+
+};
+
+class StructExpression: public Node{
+    private:
+    Node* StructId;
+    std:: string id;
+    public:
+    StructExpression(Node* _StructId, std:: string _id): StructId(_StructId), id(_id){};
+    virtual ~StructExpression(){
+        delete StructId;
+    }
+    std:: string getType()const override{
+        return "struct";
+    }
+    std:: string getId() const override{
+        return id;
+    }
+
+    // this is so fucked but it works
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override
+    {
+        if (context.ReadInstType() == "assign")
+        {   
+            std::map<std::string, int> mem = context.StructMapping[context.StructMap[StructId->getId()]];
+            stream << "sw " << context.bindings[context.dst] << "," << mem[id] << "(sp)" << std::endl;
+            context.DeallocReg(context.dst);
         }
+        else{
+            std:: string res = context.makeName("Z");
+            std:: string reg = context.AllocReg(res);
+            std::map<std::string, int> mem = context.StructMapping[context.StructMap[StructId->getId()]];
+            stream << "lw " << reg << "," << mem[id] << "(sp)" << std::endl;
+            context.dst = res;
+        }
+    }
+
+    virtual void Print(std::ostream &stream) const override{};
+
 };
 
 

@@ -48,7 +48,12 @@ public:
 
             context.WriteInstType("AssignArray");
             identifier_->EmitRISC(stream, context);
-            context.WriteInstType(" ");
+            context.WriteInstType("None");
+        }
+        else if (identifier_->getType() == "struct"){
+            context.WriteInstType("assign");
+            identifier_ -> EmitRISC(stream,context); // should hv done it like this for all the assignment instead of doing it here lmao
+            context.WriteInstType("None");
         }
         else if (identifier_->getType() == "pointer"){
             std:: string res = context.makeName("P");
@@ -58,12 +63,6 @@ public:
             context.DeallocReg(res);
             context.DeallocReg(context.dst);
         }
-        else if (identifier_->getType() == "struct"){
-            std::string name = identifier_->getId();
-            stream << "sw " << context.bindings[context.dst] << "," << context.StructMem[name] << "(sp)" << std::endl;
-            context.DeallocReg(context.dst);
-        }
-
         else if ((name[1] == 'F'))
         {
             stream << "fsw " << context.bindings[context.dst] << "," << context.MemoryMapping[mem] << "(sp)" << std::endl;

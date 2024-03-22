@@ -45,7 +45,7 @@ Located in the `src` directory, the core of our compiler's source code includes:
 Our `testing` directory is devoted to ensuring our compiler works correctly and efficiently. It includes:
 
 - [compiler_tests](./testing/compiler_tests): A suite of tests, including both provided and custom cases, aimed at rigorously testing our compiler's functionality and compliance with the C90 standard.
-- [Debugging Guidelines](./testing/compiler_tests): Offers insights and methods for debugging the compiler, aiding us and future developers in troubleshooting and refining the compiler's performance.
+- [Debugging Guidelines](./testing/compiler_tests): Offers insights and methods for debugging the compiler, aiding in troubleshooting and refining the compiler's performance.
 
 
 As we conclude this project, we're happy to present a compiler that meets the technical and academic goals we set out to achieve. This project has been fun but very demanding, a testament to the dedication, teamwork, and the  learning we have achieved along the way.

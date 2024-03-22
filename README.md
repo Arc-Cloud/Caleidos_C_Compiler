@@ -14,8 +14,9 @@ This repository is part of the EIE 2nd year Imperial College London Instruction 
 
 ## Overview
 
+### Executing the compiler
 
-#### Documentation
+### Documentation
 
 In the `documentation` directory, you'll find detailed information about our project's specifications, development plans, and how we tracked our progress. This includes:
 
@@ -23,7 +24,7 @@ In the `documentation` directory, you'll find detailed information about our pro
 - [Timeline](./documentation/planning/Timeline.md): Our project timeline, outlining the milestones we set and their deadlines.
 - [Test Pass Tracker](./documentation/planning/TestPassTracker.md): A tracker for our test cases, helping us monitor how well our compiler is performing and where improvements are needed.
 
-#### Include Directory
+### Include Directory
 
 The `include` directory contains all the header files crucial to our compiler's operation. Some of the key files are:
 
@@ -31,7 +32,7 @@ The `include` directory contains all the header files crucial to our compiler's 
 - [ast_context.hpp](./include/ast/ast_context.hpp): Manages the compiler's context, ensuring that the necessary information is carried through the various stages of compilation.
 - [ast_primitives](./include/ast/primitives/ast_primitives.hpp): Contains the definitions for primitive data types and foundational AST nodes, essential for type checking and variable management.
 
-#### Source Code
+### Source Code
 
 Located in the `src` directory, the core of our compiler's source code includes:
 
@@ -39,7 +40,7 @@ Located in the `src` directory, the core of our compiler's source code includes:
 - [lexer](./src/lexer.flex) (Flex): Tokenizes the C90 code, making it easier to parse and understand.
 - [compiler.cpp](./src/compiler.cpp): Orchestrates the entire compilation process, from parsing C90 code to generating RISC-V assembly.
 
-#### Testing
+### Testing
 
 Our `testing` directory is devoted to ensuring our compiler works correctly and efficiently. It includes:
 

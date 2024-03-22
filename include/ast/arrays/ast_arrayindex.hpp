@@ -79,7 +79,7 @@ public:
                         id->EmitRISC(stream, context);
                         std::string reg = context.dst;
                         stream << "lw " << context.bindings[reg] << "," << (index->getVal() * 4) << "(" << context.bindings[reg] << ")" << std::endl;
-                        context.DeallocReg(context.dst);
+                        context.dst = reg;
                     }
                     else
                     {

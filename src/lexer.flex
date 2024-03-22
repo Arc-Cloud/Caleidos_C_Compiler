@@ -5,8 +5,25 @@
   // https://www.lysator.liu.se/c/ANSI-C-grammar-l.html#MUL-ASSIGN
   // Avoid error "error: `fileno' was not declared in this scope"
   extern "C" int fileno(FILE *stream);
-
+  #include <map>;
+  #include <string>;
   #include "parser.tab.hpp"
+
+  std:: map <std:: string, std:: string> TypeDef;
+
+  void update_map(std:: string key, std:: string target){
+      TypeDef[key] = target;
+  }
+
+  auto check_map(std:: string id){
+    if (TypeDef.count(id)){
+      if (TypeDef[id] == "int") {
+        return(INT);
+      }
+    }
+    return IDENTIFIER;
+  }
+
 %}
 
 D	  [0-9]
@@ -52,7 +69,7 @@ IS  (u|U|l|L)*
 "volatile"	{return(VOLATILE);}
 "while"			{return(WHILE);}
 
-{L}({L}|{D})*		{yylval.string = new std::string(yytext); return(IDENTIFIER);}
+{L}({L}|{D})*		{yylval.string = new std::string(yytext); return (check_map(std::string(yytext)));}
 
 0[xX]{H}+{IS}?		{yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_CONSTANT);}
 0{D}+{IS}?		    {yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_CONSTANT);}

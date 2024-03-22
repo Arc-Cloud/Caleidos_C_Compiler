@@ -1,31 +1,25 @@
 ## Lexer and Parser Development
 
 ### **Start of the Week**
-- a
+- Check for inconsistencies in the parser & lexer
 
 ### **Review**
-- a
-
-## Basic Language Constructs
-
-### **Start of the Week**
-- a
-
-### **Review**
-- a
+- All good altered the existing structure a bit as some parts are implemented incorrectly
 
 ## Intermediate Features
 
 ### **Start of the Week**
-- a
+- Aim to implement most intermediate features, split tasks between us.
 
 ### **Review**
-- a
+- Went well most intermediate features implemented
 
 ## Testing
 
 ### **Start of the Week**
-- a
+- Add more test cases to find edge cases
 
 ### **Review**
-- a
+- Edge cases were found and the structure was adjusted to handle them
+
+*Test Cases Passed: 56/86*

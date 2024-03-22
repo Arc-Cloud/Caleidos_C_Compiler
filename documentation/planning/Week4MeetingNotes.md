@@ -1,31 +1,26 @@
-## Lexer and Parser Development
-
-### **Start of the Week**
-- a
-
-### **Review**
-- a
-
-## Basic Language Constructs
-
-### **Start of the Week**
-- a
-
-### **Review**
-- a
 
 ## Intermediate Features
 
 ### **Start of the Week**
-- a
+- Complete all intermediate features
 
 ### **Review**
-- a
+- Achieved
+
+## Advanced Features
+
+### **Start of the Week**
+- finish all advanced features
+
+### **Review**
+- We mostly achieved our goal, just missing one of the typedef cases
 
 ## Testing
 
 ### **Start of the Week**
-- a
+- Add more test cases to encapsulate more edge cases
 
 ### **Review**
-- a
+- more edge cases were identified and accounted for
+
+*Test Cases Passed: 85/86*

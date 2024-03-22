@@ -4,7 +4,7 @@
 - We will continue to improve our understanding of the parser but we are relatively content with our current understanding
 
 ### **Review**
-- a
+- Cemented understanding
 
 ## Basic Features
 
@@ -12,7 +12,7 @@
 - We will soon complete all basic features and we are happy with our progress so far
 
 ### **Review**
-- a
+- Basic features completed
 
 ## Intermediate Features
 
@@ -20,7 +20,7 @@
 - We will start properly implementing intermediate features with the aim of completing most if not all by the end of the week
 
 ### **Review**
-- a
+- Most intermediate features were implemented, just missing a few.
 
 ## Testing
 
@@ -28,8 +28,8 @@
 - We plan to implement all basic and intermediate features before we will begin to create new test cases and thouroughly test to buld up robustness
 
 ### **Review**
-- a
+- Ready to start expanding testing
 
 ## Overall Progress
 
-*Test Cases Passed: 27*
+*Test Cases Passed: 27/86*

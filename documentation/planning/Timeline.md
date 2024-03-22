@@ -14,42 +14,42 @@
 |  | Implement variable declarations and support for the int type. | [ x ] |
 |  | Code generation for arithmetic and logical expressions. | [ x ] |
 |  | Implement if-then-else statements. | [ x ] |
-|  | Add support for while loops. | [ ] |
+|  | Add support for while loops. | [ x ] |
 
 ### Week 2: Complete Basic and Start Intermediate Features Implementation (05 March - 11 March)
 
 | Category | Task | Completed |
 |----------|------|:--------:|
 | Parser Development | integrate code with the parser | [ x ] |
-| Basic Language Constructs | Continue development and testing of basic constructs. | [ ] |
-| Intermediate Features | Support files with multiple functions and function calls. | [ ] |
+| Basic Language Constructs | Continue development and testing of basic constructs. | [ x ] |
+| Intermediate Features | Support files with multiple functions and function calls. | [ x ] |
 |  | Implement functions with up to 8 parameters. | [ x ] |
-|  | Add support for for loops and both global and local arrays. | [ ] |
-|  | Implement array initialization and element manipulation. | [ ] |
-|  | Support for recursive function calls, enum, and switch statements. | [ ] |
-|  | Implement break and continue keywords. | [ ] |
-| Testing | Unit tests for each implemented feature. | [ ] |
+|  | Add support for for loops and both global and local arrays. | [ x ] |
+|  | Implement array initialization and element manipulation. | [ x ] |
+|  | Support for recursive function calls, enum, and switch statements. | [ x ] |
+|  | Implement break and continue keywords. | [ x ] |
+| Testing | Unit tests for each implemented feature. | [ x ] |
 
 ### Week 3: Intermediate Features and Start of Advanced Features (12 March - 18 March)
 
 | Category | Task | Completed |
 |----------|------|:--------:|
-| Lexer and Parser Development | Finalize any pending lexer and parser improvements. | [ ] |
-| Intermediate Features | Complete all planned intermediate features. | [ ] |
-| Start Advanced Features | Begin implementing support for double, float, char, unsigned, structs, and pointers. | [ ] |
-| Testing | Integration tests for basic and intermediate features. | [ ] |
-|  | Start unit tests for advanced features. | [ ] |
+| Lexer and Parser Development | Finalize any pending lexer and parser improvements. | [ x ] |
+| Intermediate Features | Complete all planned intermediate features. | [ x ] |
+| Start Advanced Features | Begin implementing support for double, float, char, unsigned, structs, and pointers. | [ x ] |
+| Testing | Integration tests for basic and intermediate features. | [ x ] |
+|  | Start unit tests for advanced features. | [ x ] |
 
 ### Week 4: Finalization, Testing, Documentation, and Submission (19 March - 22 March)
 
 | Category | Task | Completed |
 |----------|------|:--------:|
-| Advanced Features Completion | Complete support for all advanced data types and structures. | [ ] |
+| Advanced Features Completion | Complete support for all advanced data types and structures. | [ x ] |
 |  | Implement external function calls and functions with more than 8 parameters. | [ ] |
-|  | Add support for pointer operations, typedef, sizeof(...), and complex expressions. | [ ] |
-| Testing and Debugging | Comprehensive testing with provided and custom test cases. | [ ] |
-|  | Debugging of any issues found; focus on optimization and compliance. | [ ] |
-| Documentation and Cleanup | Document the compiler design, implementation details, and usage instructions. | [ ] |
-| Submission | Finalize all documentation and code. | [ ] |
+|  | Add support for pointer operations, typedef, sizeof(...), and complex expressions. | [ x ] |
+| Testing and Debugging | Comprehensive testing with provided and custom test cases. | [ x ] |
+|  | Debugging of any issues found; focus on optimization and compliance. | [ x ] |
+| Documentation and Cleanup | Document the compiler design. | [ x ] |
+| Submission | Finalize all documentation and code. | [ x ] |
 |  | Submit the compiler and accompanying documentation before the deadline on 22 March 2024, 23:59. | [ ] |
 

@@ -19,6 +19,10 @@ class Function: public Node {
             delete id;
         }
 
+        std:: string getType()const override{
+            return "function";
+        }
+
         virtual void EmitRISC(std::ostream &stream, Context &context) const override{
                 context.newFrame(context);
                 if (compound_statement_ != NULL){

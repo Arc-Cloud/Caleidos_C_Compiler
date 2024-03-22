@@ -62,7 +62,7 @@ public:
         else
         {
             std::string variable_;
-            if (context.pointerlist.count(id))
+            if (context.pointerlist.count(id) && !context.StringVar.count(id))
             {
                 variable_ = context.makeName("P");
             }
@@ -80,37 +80,48 @@ public:
     void Print(std::ostream &stream) const override{};
 };
 
-class Pointer: public Node{
-    private:
-    Node*  point;
-    public:
-    Pointer(Node* _point): point(_point){};
-    virtual ~Pointer(){
+class Pointer : public Node
+{
+private:
+    Node *point;
+
+public:
+    Pointer(Node *_point) : point(_point){};
+    virtual ~Pointer()
+    {
         delete point;
     }
 
     virtual void Print(std::ostream &stream) const override{};
 
-    std:: string getType() const override{
+    std::string getType() const override
+    {
         return "pointer";
     }
-    std:: string getId() const override{
-        return point -> getId();
+    std::string getId() const override
+    {
+        return point->getId();
     }
 
     virtual void EmitRISC(std::ostream &stream, Context &context) const override
-    {   
-        std:: string res = context.makeName("P");
-        std:: string result = context.makeName("P");
-        std:: string regs = context.AllocReg(result);
-        std:: string reg = context.AllocReg(res);
+    {
+        std::string res = context.makeName("P");
+        std::string result = context.makeName("P");
+        std::string regs = context.AllocReg(result);
+        std::string reg = context.AllocReg(res);
         stream << "lw " << reg << "," << context.MemoryMapping[point->getId()] << "(sp)" << std::endl;
-        stream << "lw " << regs  << ",0(" << reg << ")" << std::endl;
+        if (context.StringVar.count(point->getId()))
+        {   
+            stream << "lbu " << regs << ",0(" << reg << ")" << std::endl;
+        }
+        else
+        {
+            stream << "lw " << regs << ",0(" << reg << ")" << std::endl;
+        }
         context.DeallocReg(res);
-        context.dst = result;  
+        context.dst = result;
     };
 };
-
 
 class IntConstant : public Node
 {

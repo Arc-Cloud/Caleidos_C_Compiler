@@ -62,6 +62,9 @@ public:
         std::string var = init_->getId();
         if(init_ -> getType() == "pointer"){
             context.pointerlist.insert(var);
+            if (Typespec_-> getType() == "char"){
+                context.StringVar.insert(var);
+            }
         }
         std::string type = Typespec_->getType();
         int datatype = Typespec_->getSize(); // will be useful later when we deal with numbers other than integer
@@ -178,9 +181,9 @@ public:
         }
         else
         {
-            if (context.datatype[identifier_->getId()] == "char"){
-                context.StringVar.insert(identifier_->getId());
-            }
+            // if (context.datatype[identifier_->getId()] == "char"){
+            //     context.StringVar.insert(identifier_->getId());
+            // }
             value->EmitRISC(stream, context);
             stream << "sw " << context.bindings[context.dst] << "," << context.MemoryMapping[identifier_->getId()] << "(sp)" << std::endl;
             context.DeallocReg(context.dst);

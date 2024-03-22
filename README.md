@@ -10,7 +10,7 @@ This repository is part of the EIE 2nd year Imperial College London Instruction 
 |Contributors|CID|Email|
 | ------ | ------ | ------ |
 |Maximilian Adam| 02286647 | maximilian.adam22@imperial.ac.uk |
-| Hanif Rais | | hanif.rais22@imperial.ac.uk |
+| Hanif Rais | 0223478 | hanif.rais22@imperial.ac.uk |
 
 ## Overview
 

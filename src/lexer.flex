@@ -11,14 +11,51 @@
 
   std:: map <std:: string, std:: string> TypeDef;
 
+  std::string resolveTypedef(const std::string& id, std::set<std::string>& visited) {
+    //real type
+    if (!TypeDef.count(id)) return id;
+
+    // cycle
+    if (visited.find(id) != visited.end()) {
+        std::cerr << "Error: Typedef cycle detected for '" << id << "'." << std::endl;
+        exit(1);
+    }
+
+    visited.insert(id); // Mark this id as visited to detect cycles.
+    return resolveTypedef(TypeDef[id], visited); //next typedef
+  }
+
+  // wrapper function
+  std::string resolveTypedef(const std::string& id) {
+      std::set<std::string> visited;
+      return resolveTypedef(id, visited);
+  }
+
   void update_map(std:: string key, std:: string target){
       TypeDef[key] = target;
   }
 
   auto check_map(std:: string id){
+
     if (TypeDef.count(id)){
-      if (TypeDef[id] == "int") {
+      id = resolveTypedef(id);
+      if (id == "int") {
         return(INT);
+      }
+      else if (id == "float") {
+        return(FLOAT);
+      }
+      else if (id == "char") {
+        return(CHAR);
+      }
+      else if (id == "void") {
+        return(VOID);
+      }
+      else if (id == "double") {
+        return(DOUBLE);
+      }
+      else{
+        std::cerr<< "bad type" << std::endl;
       }
     }
     return IDENTIFIER;

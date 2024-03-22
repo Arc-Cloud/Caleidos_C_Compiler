@@ -44,13 +44,11 @@
 #include "ast/operators/ast_logical_operators.hpp"
 #include "ast/operators/ast_unary_operators.hpp"
 
-
-// pointers
-
 // primitives
 #include "ast/primitives/ast_primitives.hpp"
 
 // types
+#include "ast/types/ast_typedef.hpp"
 
 
 

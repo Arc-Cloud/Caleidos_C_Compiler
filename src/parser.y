@@ -5,8 +5,10 @@
 
     extern Node *g_root;
     extern FILE *yyin;
+	extern void update_map(std:: string key, std:: string target);
     int yylex(void);
     void yyerror(const char *);
+	
 }
 
 // Represents the value associated with any kind of AST node.
@@ -198,11 +200,17 @@ constant_expression
 	;
 declaration
 	: declaration_specifiers ';' {$$ = $1;}
-	| declaration_specifiers init_declarator ';' {$$ = new Declaration($1, $2);}
+	| declaration_specifiers init_declarator ';'{
+		if ($1 -> getId() == "typedef"){
+			update_map($2 -> getId(), $1 -> getType());
+		}else{
+			$$ = new Declaration($1, $2);
+		}
+	} 
 	;
 declaration_specifiers
 	: storage_class_specifier
-	| storage_class_specifier declaration_specifiers
+	| storage_class_specifier declaration_specifiers {$$ = new TypeDef($2);}
 	| type_specifier { $$ = $1; }
 	| type_specifier declaration_specifiers //not needed
 	;

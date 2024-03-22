@@ -10,11 +10,17 @@ This repository is part of the EIE 2nd year Imperial College London Instruction 
 |Contributors|CID|Email|
 | ------ | ------ | ------ |
 |Maximilian Adam| 02286647 | maximilian.adam22@imperial.ac.uk |
-| Hanif Rais | 0223478 | hanif.rais22@imperial.ac.uk |
+| Hanif Rais | 02234780 | hanif.rais22@imperial.ac.uk |
 
 ## Overview
 
 ### Executing the compiler
+
+Our compiler can be built by calling `make bin/c_compiler` (or just `make`), and must be invoked as follows:
+
+    bin/c_compiler -S <source-file.c> -o <dest-file.s>
+
+The command-line parameters must be provided in the order outlined above 
 
 ### Documentation
 

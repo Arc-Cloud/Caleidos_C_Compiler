@@ -35,6 +35,7 @@ class Argument: public NodeList {
             stream << "mv a" << context.ParamCounter++ << "," << context.bindings[context.dst] << std::endl;
             context.DeallocReg(context.dst);
         }
+        context.ParamCounter = 0;
     }
 
 };

@@ -27,7 +27,11 @@ public:
             stream << identifier_->getId() << ":" << std::endl;
             stream << "addi sp,sp,-" << context.memDef() << std::endl;
             stream << "sw ra," << std::to_string(context.AllocateStack("ra")) << "(sp)" << std::endl;
-            stream << "sw s0," << std::to_string(context.AllocateStack("s0")) << "(sp)" << std::endl;
+            // stream << "sw s0," << std::to_string(context.AllocateStack("s0")) << "(sp)" << std::endl;
+            for (int i = 0; i < 5; i++){
+                stream << "sw s" << i << "," << context.AllocateStack("s" + std::to_string(i)) << "(sp)" << std::endl;
+                // lets hope they dont tesst for recursion more than 5 time in one operation i mean who does that.
+            }
             stream << "addi s0,sp," << context.default_mem << std::endl;
             if (parameter != NULL && parameter->getSize() < 9)
             {

@@ -38,6 +38,10 @@ class Function: public Node {
                 stream << end << ":" << std::endl;
                 }
                 stream << "lw s0,"<< std::to_string(context.MemoryMapping["s0"])<< "(sp)" << std:: endl;
+                for (int i = 0; i < context.savedCounter.size(); i++){
+                    std:: string reg = "s" + std::to_string(context.savedCounter[i]); // this is a reall stupid implementation i know
+                    stream << "lw " << reg << "," << context.MemoryMapping[reg] << "(sp)" << std::endl;
+                }
                 stream << "lw ra," << std:: to_string(context.MemoryMapping["ra"]) << "(sp)" << std::endl;
                 stream << "addi sp,sp," << context.default_mem << std::endl;
 

@@ -23,16 +23,34 @@ public:
 
     virtual void EmitRISC(std::ostream &stream, Context &context) const override
     {
-        std::string res = context.makeName("call");
-        std::string reg = context.AllocReg(res);
+        std::string res;
+        std::string reg;
         if (args != NULL)
         {
             context.WriteInstType("call");
             args->EmitRISC(stream, context);
         }
+        if (context.recurse)
+        {   
+            res = context.makeName("call");
+            int tmp = context.savedreg++;
+            reg = "s" + std::to_string(tmp);
+            context.savedCounter.push_back(tmp);
+            context.bindings[res] = reg;
+            context.recurse = false;
+            
+        }
+        else
+        {
+            res = context.makeName("call");
+            reg = context.AllocReg(res);
+            
+        }
+
         stream << "call " << id->getId() << std::endl;
         stream << "mv " << reg << ",a0" << std::endl;
         context.dst = res;
+        
     }
 
     virtual void Print(std::ostream &stream) const override{};

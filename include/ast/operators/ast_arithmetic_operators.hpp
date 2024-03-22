@@ -41,10 +41,21 @@ public:
             std::string right;
             if (rightOperand_->getType() == "call")
             {
-                rightOperand_->EmitRISC(stream, context);
-                right = context.dst;
-                leftOperand_->EmitRISC(stream, context);
-                left = context.dst;
+                if (leftOperand_->getType() == "call")
+                {
+                    context.recurse = true;
+                    leftOperand_->EmitRISC(stream, context);
+                    left = context.dst;
+                    rightOperand_->EmitRISC(stream, context);
+                    right = context.dst;
+                }
+                else
+                {
+                    rightOperand_->EmitRISC(stream, context);
+                    right = context.dst;
+                    leftOperand_->EmitRISC(stream, context);
+                    left = context.dst;
+                }
             }
             else
             {
@@ -95,6 +106,7 @@ public:
             }
             else
             {
+
                 std::string op = context.makeName("O");
                 std::string res = context.AllocReg(op);
                 stream << "add " << res << "," << context.bindings[left] << "," << context.bindings[right] << std::endl;
@@ -102,7 +114,6 @@ public:
                 context.DeallocReg(right);
                 context.dst = op;
             }
-
         }
     }
 };
@@ -140,7 +151,7 @@ public:
             context.dst = "result";
         }
         else
-        {
+        {   
             std::string left;
             std::string right;
             if (rightOperand_->getType() == "call")
@@ -247,6 +258,21 @@ public:
             std::string right;
             if (rightOperand_->getType() == "call")
             {
+                if (leftOperand_->getType() == "call")
+                {
+                    context.recurse = true;
+                    leftOperand_->EmitRISC(stream, context);
+                    left = context.dst;
+                    rightOperand_->EmitRISC(stream, context);
+                    right = context.dst;
+                }
+                else
+                {
+                    rightOperand_->EmitRISC(stream, context);
+                    right = context.dst;
+                    leftOperand_->EmitRISC(stream, context);
+                    left = context.dst;
+                }
                 rightOperand_->EmitRISC(stream, context);
                 right = context.dst;
                 leftOperand_->EmitRISC(stream, context);

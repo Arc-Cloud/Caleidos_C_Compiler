@@ -81,8 +81,8 @@ postfix_expression
 	| postfix_expression '[' expression ']' {$$ = new ArrayIndex($1,$3);}
 	| postfix_expression '(' ')' {$$ = new Call($1, NULL);}
 	| postfix_expression '(' argument_expression_list ')' {$$ = new Call($1, $3);}
-	| postfix_expression '.' IDENTIFIER {$$ = new StructMemberAccess($1, *$3); delete $3;}
-	| postfix_expression PTR_OP IDENTIFIER
+	| postfix_expression '.' IDENTIFIER  {$$ = new StructExpression($1, *$3); delete $3;}
+	| postfix_expression PTR_OP IDENTIFIER // im arrogant for thinking to implement this
 	| postfix_expression INC_OP {$$ = new UnaryIncrOp($1);}
 	| postfix_expression DEC_OP {$$ = new UnaryDecrOp($1);}
 	;
@@ -236,9 +236,9 @@ type_specifier
 	;
 
 struct_specifier
-	: STRUCT IDENTIFIER '{' struct_declaration_list '}' {$$ = new StructSpec(new Variable(*$2), $4); delete $2;}
-	| STRUCT '{' struct_declaration_list '}' {$$ = new StructSpec(NULL,$3);}
-	| STRUCT IDENTIFIER {$$ = new StructSpec(new Variable(*$2), NULL); delete $2;}
+	: STRUCT IDENTIFIER '{' struct_declaration_list '}' {$$ = new DefineSpecial(*$2, $4); delete $2;}
+	| STRUCT '{' struct_declaration_list '}' 
+	| STRUCT IDENTIFIER  {$$ = new Structinit(*$2); delete $2;}
 	;
 
 struct_declaration_list
@@ -247,7 +247,7 @@ struct_declaration_list
 	;
 
 struct_declaration
-	: specifier_qualifier_list struct_declarator_list ';'
+	: struct_declarator ';' {$$ = $1;}
 	;
 
 specifier_qualifier_list
@@ -256,12 +256,12 @@ specifier_qualifier_list
 	;
 
 struct_declarator_list
-	: struct_declarator {$$ = new NodeList($1);}
-	| struct_declarator_list ',' struct_declarator {$1 -> PushBack($3); $$ = $1;}
+	: struct_declarator 
+	| struct_declarator_list ',' struct_declarator 
 	;
 
 struct_declarator
-	: declarator {$$ = $1;}
+	:type_specifier declarator {$$ = new StructDeclare($1, $2);}
 	| ':' constant_expression
 	| declarator ':' constant_expression
 	;

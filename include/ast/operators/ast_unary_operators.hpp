@@ -158,8 +158,15 @@ public:
     virtual void Print(std::ostream &stream) const override{};
 
     void EmitRISC(std::ostream &stream, Context &context) const override
-    {
-        if(Operand->getType() == "variable"){
+    {   
+
+        if (context.datatype[Operand -> getId()] == "struct"){
+            std::string resultReg = context.AllocReg("result");
+            int result = context.structsize; // wouldnt work with more than two struct;
+            stream << "li " << resultReg << "," << result << std::endl;
+            context.dst = "result";
+        }
+        else if(Operand->getType() == "variable"){
             std::string resultReg = context.AllocReg("result");
             int result = context.data_size(context.datatype[Operand->getId()]);
             stream << "li " << resultReg << "," << result << std::endl;

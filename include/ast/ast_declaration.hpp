@@ -83,6 +83,9 @@ public:
                 context.AllocateStack(mem);
             }
         }
+        else if (type == "struct"){
+            context.StructMap[var] = Typespec_ ->getId();
+        }
         else
         {
             if (context.inFunc){

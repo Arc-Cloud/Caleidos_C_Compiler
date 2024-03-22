@@ -40,6 +40,9 @@ public:
         case _char:
             return "char";
             break;
+        case _void:
+            return "void";
+            break;
 
         default:
             std::cerr << "data Type not implemented" << std::endl;
